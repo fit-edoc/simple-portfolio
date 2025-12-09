@@ -1,5 +1,7 @@
 import React from "react";
+import { DiNodejs, DiReact } from "react-icons/di";
 import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaJs, FaGitAlt, FaDocker } from "react-icons/fa";
+import { RiSupabaseFill } from "react-icons/ri";
 import { SiTypescript, SiMongodb, SiTailwindcss, SiNextdotjs, SiPostgresql, SiFirebase, SiRedux } from "react-icons/si";
 
 export interface Project {
@@ -26,7 +28,7 @@ export const projects: Project[] = [
     href: "https://techyogeek.vercel.app/",
     github:"https://github.com/fit-edoc/TECHYOGEEK",
     techstack: [
-      { name: "Next.js", icon: <SiNextdotjs className="text-black dark:text-white" /> },
+      { name: "Supabase", icon: <RiSupabaseFill className="text-black dark:text-white" /> },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
       { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },
     ],
@@ -42,7 +44,7 @@ export const projects: Project[] = [
      github:"https://github.com/fit-edoc/twofoldsstudio",
     techstack: [
       { name: "React", icon: <FaReact className="text-blue-400" /> },
-      { name: "Framer Motion", icon: <div className="font-bold">FM</div> }, // Placeholder if icon not available
+     // Placeholder if icon not available
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ],
   },
@@ -57,8 +59,9 @@ export const projects: Project[] = [
      github:"",
     techstack: [
       { name: "React", icon: <FaReact className="text-blue-400" /> },
-      { name: "Firebase", icon: <SiFirebase className="text-yellow-500" /> },
+     { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
+      { name: "Nodejs", icon: <DiNodejs className="text-green-400" /> },
     ],
   },
   {
@@ -72,7 +75,8 @@ export const projects: Project[] = [
      github:"https://github.com/fit-edoc/PIZZA-SHOP",
     techstack: [
       { name: "HTML5", icon: <FaHtml5 className="text-orange-500" /> },
-      { name: "CSS3", icon: <FaCss3Alt className="text-blue-500" /> },
+     { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
+       { name: "React", icon: <DiReact className="text-blue-500" /> },
       { name: "JavaScript", icon: <FaJs className="text-yellow-400" /> },
     ],
   },
@@ -86,7 +90,7 @@ export const projects: Project[] = [
     href: "https://flekxyshop.vercel.app/",
      github:"https://github.com/fit-edoc/flekxy",
     techstack: [
-      { name: "Next.js", icon: <SiNextdotjs className="text-black dark:text-white" /> },
+     { name: "React", icon: <FaReact className="text-blue-400" /> },
       { name: "Redux", icon: <SiRedux className="text-purple-500" /> },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ],
