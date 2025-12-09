@@ -1,5 +1,6 @@
 import { ThemeProvider } from "./Components/common/ThemeProvider";
 import { Navbar } from "./Components/Nav";
+import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
 
 
@@ -8,6 +9,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider>
+          <SmoothScroll />
           <Navbar />
           {children}
         </ThemeProvider>
