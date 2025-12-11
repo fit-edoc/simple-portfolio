@@ -60,13 +60,13 @@ const Project = () => {
               {/* Content */}
               <div className="p-6 flex flex-col flex-grow">
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-blue-300 transition-colors">
                     {project.title}
                   </h3>
                   <Link
                     href={project.href}
                     target="_blank"
-                    className="p-2 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white transition-colors"
+                    className="p-2 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:bg-blue-300 hover:text-white transition-colors"
                   >
                     <ArrowUpRight size={18} />
                   </Link>
