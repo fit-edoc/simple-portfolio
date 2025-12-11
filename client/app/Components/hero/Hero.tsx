@@ -19,9 +19,9 @@ const iconItem = [
 ];
 
 const socialIcon = [
-  {id:1,icon:<Github/>,ref:""},
-  {id:2,icon:<X/>,ref:""},
-  {id:3,icon:<Linkedin/>,ref:""}
+  {id:1,icon:<GithubIcon size={30} className="border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"  />,ref:"https://github.com/fit-edoc"},
+  {id:2,icon:<X size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:"https://x.com/fitedocc"},
+  {id:3,icon:<Linkedin size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:""}
 ]
 
 const Hero = () => {
@@ -97,8 +97,14 @@ const Hero = () => {
           Full Stack Developer — I build modern web apps using MERN / Next.js /
           TypeScript.
         </p>
-        <div className="flex py-2.5 gap-1 items-center"> 
-          <GithubIcon size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30" /> <X size={30} className="border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white  dark:border-white/30" /><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-brand-linkedin  fill-blue-400 border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"><path stroke="" d="M0 0h24v24H0z" fill="none" /><path d="M17 2a5 5 0 0 1 5 5v10a5 5 0 0 1 -5 5h-10a5 5 0 0 1 -5 -5v-10a5 5 0 0 1 5 -5zm-9 8a1 1 0 0 0 -1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0 -1 -1m6 0a3 3 0 0 0 -1.168 .236l-.125 .057a1 1 0 0 0 -1.707 .707v5a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a1 1 0 0 0 2 0v-3a3 3 0 0 0 -3 -3m-6 -3a1 1 0 0 0 -.993 .883l-.007 .127a1 1 0 0 0 1.993 .117l.007 -.127a1 1 0 0 0 -1 -1" /></svg></div>
+
+        <div className="flex gap-1.5">
+          {socialIcon.map((item,index)=>(
+             <a  key={item.id} href={item.ref}>{item.icon}</a>
+          ))}
+        </div>
+        {/* <div className="flex py-2.5 gap-1 items-center"> 
+          <GithubIcon size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30" /> <X size={30} className="border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white  dark:border-white/30" /><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-brand-linkedin  fill-blue-400 border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"><path stroke="" d="M0 0h24v24H0z" fill="none" /><path d="M17 2a5 5 0 0 1 5 5v10a5 5 0 0 1 -5 5h-10a5 5 0 0 1 -5 -5v-10a5 5 0 0 1 5 -5zm-9 8a1 1 0 0 0 -1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0 -1 -1m6 0a3 3 0 0 0 -1.168 .236l-.125 .057a1 1 0 0 0 -1.707 .707v5a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a1 1 0 0 0 2 0v-3a3 3 0 0 0 -3 -3m-6 -3a1 1 0 0 0 -.993 .883l-.007 .127a1 1 0 0 0 1.993 .117l.007 -.127a1 1 0 0 0 -1 -1" /></svg></div> */}
         <div className="flex gap-1.5 mt-1.5">
           <a href="https://drive.google.com/file/d/1tW-y_zJx0Lj7zwoUOfCyymvY-vfvdK5K/view?usp=drive_link"> <button className="px-4 py-1 text-black rounded-full border  bg-white border-black/30 hover:bg-black hover:text-white dark:border-white/30  dark:bg-black  dark:text-white dark:hover:bg-white dark:hover:text-black"><Resume /></button> </a> <a href="mailto:himanshuverma2660@gmail.com"><button className=" flex items-center gap-1.5 justify-center px-4 py-1 text-black rounded-full border  bg-white border-black/30 hover:bg-black hover:text-white dark:border-white/30  dark:bg-black  dark:text-white dark:hover:bg-white dark:hover:text-black">Connect with <Talk /></button></a></div>
 
