@@ -10,6 +10,7 @@ import Resume from "../ui/icons/Resume";
 import Talk from "../ui/icons/Talk";
 import Github from "../technologies/Github";
 import { GithubIcon, Linkedin, X } from "lucide-react";
+import Work from "../ui/icons/Work";
 
 const iconItem = [
   { id: 1, icons: <Eat />, tooltip: "Eat" },
@@ -66,8 +67,10 @@ const Hero = () => {
       <main className="max-w-4xl mx-auto py-20 px-4 border-x-[0.5px] border-black/30 dark:border-white/20">
         <div className="flex">
           <h1 className="text-5xl font-bold mb-4">Hi, I'm Himanshu</h1>
+        
         </div>
 
+  <Work/>
         <motion.div
           variants={container}
           initial="hidden"

@@ -7,9 +7,8 @@ import "./globals.css";
 export const metadata = {
   title: "Himanshudocs",
   icons: {
-    icon: "/profile.jpg",          // default favicon
-    shortcut: "/profile.jpg",
-    apple: "/apple-touch-icon.png",
+    icon: "/favicon.jpg",          // default favicon
+  
   },
 };
 
