@@ -56,7 +56,7 @@ export const projects: Project[] = [
     img: "/images/project3.jpg",
     color: "black",
     href: "https://evalwell.vercel.app/",
-     github:"",
+     github:"https://github.com/fit-edoc/evalwell-client",
     techstack: [
       { name: "React", icon: <FaReact className="text-blue-400" /> },
      { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },

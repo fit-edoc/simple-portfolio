@@ -1,13 +1,15 @@
-import React from 'react'
 
+"use client"
+import React from 'react'
+import {motion} from "motion/react"
 const Loader = () => {
   return (
-    <div className='h-screen w-screen'>
-        <div className="">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 12l14 0" /></svg>
-        </div>
+    <motion.div className='absolute  z-50'  animate={{display:"hidden"}}>
+        <motion.div className="bg-amber-500 " initial={{height:"100vh",width:"100vw"}}  animate={{height:"0vh",display:"hidden"}} transition={{duration:5}}>
+           
+        </motion.div>
       
-    </div>
+    </motion.div>
   )
 }
 

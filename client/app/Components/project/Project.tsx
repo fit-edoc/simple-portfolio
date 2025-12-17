@@ -65,7 +65,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
             >
               <GithubIcon
                 className="hover:bg-white rounded-full hover:text-black px-0.5 py-0.5"
-                size={18}
+                size={20}
               />
             </a>
           )}
