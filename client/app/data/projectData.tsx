@@ -24,7 +24,7 @@ export const projects: Project[] = [
     title: "TECHYOGEEK",
     description:
       "A modern tech event platform that helps users discover the latest tech meetups, workshops, and events happening nearby.",
-    img: "/images/project1.jpg",
+    img: "/images/projectt1.jpg",
     href: "https://techyogeek.vercel.app/",
     github:"https://github.com/fit-edoc/TECHYOGEEK",
     techstack: [
@@ -38,7 +38,7 @@ export const projects: Project[] = [
     title: "CREATIVESTUDIO",
     description:
       "A digital creative agency website showcasing services, branding solutions, and stunning UI/UX designs.",
-    img: "/images/project2.jpg",
+    img: "/images/projecttt2.jpg",
     color: "black",
     href: "https://creativefoldsstudio.vercel.app/",
      github:"https://github.com/fit-edoc/twofoldsstudio",
@@ -53,7 +53,7 @@ export const projects: Project[] = [
     title: "MENTAL HEALTH",
     description:
       "A mental wellness platform where users can check their mental health status and explore supportive resources.",
-    img: "/images/project3.jpg",
+    img: "/images/projecttt3.jpg",
     color: "black",
     href: "https://evalwell.vercel.app/",
      github:"https://github.com/fit-edoc/evalwell-client",
@@ -69,7 +69,7 @@ export const projects: Project[] = [
     title: "PIZZAMANIAC",
     description:
       "A visually appealing food landing page designed for a pizza brand with engaging UI and smooth interactions.",
-    img: "/images/project4.jpg",
+    img: "/images/projectt4.jpg",
     color: "black",
     href: "https://pizzamaniac.vercel.app/",
      github:"https://github.com/fit-edoc/PIZZA-SHOP",
@@ -85,7 +85,7 @@ export const projects: Project[] = [
     title: "FlekxyShop",
     description:
       "A minimal and responsive e-commerce storefront showcasing products with clean UI and intuitive navigation.",
-    img: "/images/project5.jpg",
+    img: "/images/projectt5.jpg",
     color: "white",
     href: "https://flekxyshop.vercel.app/",
      github:"https://github.com/fit-edoc/flekxy",
@@ -100,7 +100,22 @@ export const projects: Project[] = [
     title: "JobCatch",
     description:
       "A job portal platform that connects job seekers with opportunities and allows companies to post and view listings.",
-    img: "/images/project6.png",
+    img: "/images/projectt6.jpg",
+    color: "black",
+    href: "https://job-catch.vercel.app/",
+     github:"https://github.com/fit-edoc/JOB-CATCH",
+    techstack: [
+      { name: "MERN Stack", icon: <SiMongodb className="text-green-500" /> },
+      { name: "Redux", icon: <SiRedux className="text-purple-500" /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
+    ],
+  },
+   {
+    id: 7,
+    title: "Digital",
+    description:
+      "Landing page for digital market agency",
+    img: "/images/projectt7.jpg",
     color: "black",
     href: "https://job-catch.vercel.app/",
      github:"https://github.com/fit-edoc/JOB-CATCH",
