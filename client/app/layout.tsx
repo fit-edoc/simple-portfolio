@@ -3,7 +3,7 @@ import { Navbar } from "./Components/Nav";
 import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
 import Loader from "./Loader/Loader";
-import CustomCursor from "./Components/cursor/CustomCursor";
+
 
 
 export const metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       
       <body>
         <ThemeProvider>
-          <CustomCursor/>
+          {/* <CustomCursor/> */}
           <Loader/>
           <SmoothScroll />
           <Navbar />
