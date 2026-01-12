@@ -86,7 +86,7 @@ const Hero = () => {
               onMouseLeave={() => setCurrent(null)}
             >
               {current === item.id && (
-                <motion.div initial={{y:10,opacity:0}} animate={{y:0,opacity:1}} className="absolute top-[-90%] right-[50%] bg-black text-white px-2.5 rounded-md dark:bg-white dark:text-black">
+                <motion.div initial={{y:10,opacity:0}} animate={{y:0,opacity:1}} className="absolute top-[-90%] left-[-12px]  bg-black text-white px-2.5 rounded-md dark:bg-white dark:text-black">
                   {item.tooltip}
                 </motion.div>
               )}
