@@ -20,17 +20,21 @@ const iconItem = [
 ];
 
 const socialIcon = [
-  {id:1,icon:<GithubIcon size={30} className="border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"  />,ref:"https://github.com/fit-edoc"},
-  {id:2,icon:<X size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:"https://x.com/fitedocc"},
-  {id:3,icon:<Linkedin size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:""}
+  {id:1,icon:<GithubIcon size={30} className="border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"  />,ref:"https://github.com/fit-edoc", tooltip:"github"},
+  {id:2,icon:<X size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:"https://x.com/fitedocc",tooltip:"x"},
+  {id:3,icon:<Linkedin size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:"",tooltip:"linkedin"}
 ]
 
 const Hero = () => {
-  const [current, setCurrent] = useState<number | null>(null);
+  const [current, setCurrent] = useState<{
+    id:number,
+    type:"icon" | "social"
+  } | null>(null);
 
-  const handleMouse = (id: number) => {
-    setCurrent(id);
-  };
+ const handleMouse = (type: "icon" | "social", id: number) => {
+  setCurrent({ type, id });
+};
+
 
   const container: Variants = {
     hidden: {},
@@ -82,10 +86,10 @@ const Hero = () => {
               key={item.id}
               variants={itemVariant}
               className="relative cursor-pointer my-2.5"
-              onMouseEnter={() => handleMouse(item.id)}
+              onMouseEnter={() => handleMouse("icon",item.id)}
               onMouseLeave={() => setCurrent(null)}
             >
-              {current === item.id && (
+              {current?.type === "icon" && current.id === item.id && (
                 <motion.div initial={{y:10,opacity:0}} animate={{y:0,opacity:1}} className="absolute top-[-90%] left-[-12px]  bg-black text-white px-2.5 rounded-md dark:bg-white dark:text-black">
                   {item.tooltip}
                 </motion.div>
@@ -103,7 +107,13 @@ const Hero = () => {
 
         <div className="flex gap-1.5">
           {socialIcon.map((item,index)=>(
-             <a  key={item.id} href={item.ref}>{item.icon}</a>
+            
+             <a  key={item.id} className="relative" onMouseEnter={()=>handleMouse("social",item.id)} onMouseLeave={()=>setCurrent(null)} href={item.ref}>
+              {current?.type === "social" && current.id === item.id && (
+                <motion.div initial={{y:10,opacity:0}} animate={{y:0,opacity:1}} className="absolute top-[-90%] left-[-50%]   bg-black text-white px-2.5 rounded-md dark:bg-white dark:text-black">
+                  {item.tooltip}
+                </motion.div>
+              )}{item.icon}</a>
           ))}
         </div>
         {/* <div className="flex py-2.5 gap-1 items-center"> 
