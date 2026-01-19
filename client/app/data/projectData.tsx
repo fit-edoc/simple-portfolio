@@ -112,13 +112,27 @@ export const projects: Project[] = [
   },
    {
     id: 7,
-    title: "Digital",
+    title: "Digital-marketplace",
     description:
       "Landing page for digital market agency",
     img: "/images/projectt7.jpg",
     color: "black",
     href: "https://digital-marketplace-opal.vercel.app/",
      github:"https://github.com/fit-edoc/Digital-marketplace",
+    techstack: [
+      { name: "React", icon: <FaReact className="text-blue-400" /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
+    ],
+  },
+  {
+    id: 8,
+    title: "InstaGen",
+    description:
+      "Its generate instagram style profile and comments",
+    img: "/images/projectt8.jpg",
+    color: "black",
+    href: "https://instagen-three.vercel.app/",
+     github:"https://github.com/fit-edoc/INSTAGEN",
     techstack: [
       { name: "React", icon: <FaReact className="text-blue-400" /> },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
