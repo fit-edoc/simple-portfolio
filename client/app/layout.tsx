@@ -9,7 +9,7 @@ import Loader from "./Loader/Loader";
 export const metadata = {
   title: "Himanshudocs",
   icons: {
-    icon: "./profile.jpg",          // default favicon
+    icon: "./dp.jpg",          // default favicon
   
   },
 };
