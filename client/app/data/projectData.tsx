@@ -138,4 +138,32 @@ export const projects: Project[] = [
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ],
   },
+    {
+    id: 9,
+    title: "reusableblock",
+    description:
+      "reusable compoents library",
+    img: "/images/project9.jpg",
+    color: "black",
+    href: "https://reusableblocks.vercel.app/",
+     github:"https://github.com/fit-edoc/compoLib",
+    techstack: [
+      { name: "React", icon: <FaReact className="text-blue-400" /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
+    ],
+  },
+    {
+    id: 10,
+    title: "flowdense",
+    description:
+      "video gradient tool",
+    img: "/images/project10.jpg",
+    color: "black",
+    href: "https://flow-dense.vercel.app/",
+     github:"https://github.com/fit-edoc/FlowDense",
+    techstack: [
+      { name: "React", icon: <FaReact className="text-blue-400" /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
+    ],
+  },
 ];
