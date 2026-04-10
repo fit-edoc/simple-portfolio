@@ -1,7 +1,7 @@
 import React from "react";
 import { DiNodejs, DiReact } from "react-icons/di";
 import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaJs, FaGitAlt, FaDocker } from "react-icons/fa";
-import { RiSupabaseFill } from "react-icons/ri";
+import { RiNextjsFill, RiSupabaseFill } from "react-icons/ri";
 import { SiTypescript, SiMongodb, SiTailwindcss, SiNextdotjs, SiPostgresql, SiFirebase, SiRedux } from "react-icons/si";
 
 export interface Project {
@@ -134,7 +134,7 @@ export const projects: Project[] = [
     href: "https://instagen-three.vercel.app/",
      github:"https://github.com/fit-edoc/INSTAGEN",
     techstack: [
-      { name: "React", icon: <FaReact className="text-blue-400" /> },
+      { name: "Nextjs", icon: <RiNextjsFill className="dark:text-white" /> },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ],
   },
@@ -162,7 +162,7 @@ export const projects: Project[] = [
     href: "https://flow-dense.vercel.app/",
      github:"https://github.com/fit-edoc/FlowDense",
     techstack: [
-      { name: "React", icon: <FaReact className="text-blue-400" /> },
+      {name: "Nextjs", icon: <RiNextjsFill className="dark:text-white" /> },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ],
   },
