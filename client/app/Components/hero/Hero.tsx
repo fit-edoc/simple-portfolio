@@ -101,7 +101,7 @@ const Hero = () => {
         </motion.div>
 
         <p className="text-lg text-gray-600 dark:text-gray-300 mt-1.5">
-          Full Stack Developer — I build modern web apps using MERN / Next.js /
+          Full Stack Developer & ReactJS Developer based in Delhi — I build modern web apps using MERN / Next.js /
           TypeScript.
         </p>
 
