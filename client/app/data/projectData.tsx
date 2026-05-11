@@ -24,7 +24,7 @@ export const projects: Project[] = [
     title: "TECHYOGEEK",
     description:
       "A modern tech event platform that helps users discover the latest tech meetups, workshops, and events happening nearby.",
-    img: "/images/projectt1.jpg",
+    img: "/images/tech.jpg",
     href: "https://techyogeek.vercel.app/",
     github:"https://github.com/fit-edoc/TECHYOGEEK",
     techstack: [
@@ -38,7 +38,7 @@ export const projects: Project[] = [
     title: "CREATIVESTUDIO",
     description:
       "A digital creative agency website showcasing services, branding solutions, and stunning UI/UX designs.",
-    img: "/images/projecttt2.jpg",
+    img: "/images/creative.jpg",
     color: "black",
     href: "https://creativefoldsstudio.vercel.app/",
      github:"https://github.com/fit-edoc/twofoldsstudio",
@@ -53,7 +53,7 @@ export const projects: Project[] = [
     title: "MENTAL HEALTH",
     description:
       "A mental wellness platform where users can check their mental health status and explore supportive resources.",
-    img: "/images/projecttt3.jpg",
+    img: "/images/mental.jpg",
     color: "black",
     href: "https://evalwell.vercel.app/",
      github:"https://github.com/fit-edoc/evalwell-client",
@@ -69,7 +69,7 @@ export const projects: Project[] = [
     title: "PIZZAMANIAC",
     description:
       "A visually appealing food landing page designed for a pizza brand with engaging UI and smooth interactions.",
-    img: "/images/projectt4.jpg",
+    img: "/images/pizza.jpg",
     color: "black",
     href: "https://pizzamaniac.vercel.app/",
      github:"https://github.com/fit-edoc/PIZZA-SHOP",
@@ -85,7 +85,7 @@ export const projects: Project[] = [
     title: "FlekxyShop",
     description:
       "A minimal and responsive e-commerce storefront showcasing products with clean UI and intuitive navigation.",
-    img: "/images/projectt5.jpg",
+    img: "/images/flekxy.jpg",
     color: "white",
     href: "https://flekxyshop.vercel.app/",
      github:"https://github.com/fit-edoc/flekxy",
@@ -100,7 +100,7 @@ export const projects: Project[] = [
     title: "JobCatch",
     description:
       "A job portal platform that connects job seekers with opportunities and allows companies to post and view listings.",
-    img: "/images/projectt6.jpg",
+    img: "/images/job.jpg",
     color: "black",
     href: "https://job-catch.vercel.app/",
      github:"https://github.com/fit-edoc/JOB-CATCH",
@@ -115,7 +115,7 @@ export const projects: Project[] = [
     title: "Digital-marketplace",
     description:
       "Landing page for digital market agency",
-    img: "/images/projectt7.jpg",
+    img: "/images/digi.jpg",
     color: "black",
     href: "https://digital-marketplace-opal.vercel.app/",
      github:"https://github.com/fit-edoc/Digital-marketplace",
@@ -129,7 +129,7 @@ export const projects: Project[] = [
     title: "InstaGen",
     description:
       "Its generate instagram style profile and comments",
-    img: "/images/projectt8.jpg",
+    img: "/images/insta.jpg",
     color: "black",
     href: "https://instagen-three.vercel.app/",
      github:"https://github.com/fit-edoc/INSTAGEN",
@@ -143,7 +143,7 @@ export const projects: Project[] = [
     title: "reusableblock",
     description:
       "reusable compoents library",
-    img: "/images/project9.jpg",
+    img: "/images/reuse.jpg",
     color: "black",
     href: "https://reusableblocks.vercel.app/",
      github:"https://github.com/fit-edoc/compoLib",
@@ -157,7 +157,7 @@ export const projects: Project[] = [
     title: "flowdense",
     description:
       "video gradient tool",
-    img: "/images/project10.jpg",
+    img: "/images/flow.jpg",
     color: "black",
     href: "https://flow-dense.vercel.app/",
      github:"https://github.com/fit-edoc/FlowDense",
@@ -165,5 +165,22 @@ export const projects: Project[] = [
       {name: "Nextjs", icon: <RiNextjsFill className="dark:text-white" /> },
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ],
+
   },
+  {
+    id:11,
+    title:"ATS PROB",
+    description:"Its AI based tool to check your Resume",
+    img:"/images/ats.jpg",
+    color:"",
+    href:"https://ats-prob.vercel.app/",
+    github:"https://github.com/fit-edoc/ATS-Prob",
+    techstack:[
+      {name:"Nextjs",icon:<RiNextjsFill className="dark:text-white" />},
+      {name:"Tailwind CSS",icon:<SiTailwindcss className="text-cyan-500" />},
+      {name:"MERN STACK",icon:<SiMongodb className="text-green-500" />}
+    ]
+  }
+
+  
 ];
