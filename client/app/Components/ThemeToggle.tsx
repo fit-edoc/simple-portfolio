@@ -19,10 +19,7 @@ export default function ThemeToggle() {
 
   const handleToggle = () => {
     // 🔊 play sound
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0; // restart sound
-      audioRef.current.play().catch(() => {});
-    }
+  
 
     // 🎨 theme change
     if (!document.startViewTransition) {
@@ -58,7 +55,7 @@ export default function ThemeToggle() {
       </button>
 
       {/* 🔊 audio element */}
-      <audio ref={audioRef} src="/switch.mp3" preload="auto" />
+     
     </>
   );
 }
