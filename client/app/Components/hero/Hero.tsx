@@ -70,7 +70,7 @@ const Hero = () => {
     <div className="min-h-[400px]">
       <main className="max-w-4xl mx-auto py-20 px-4 border-x-[0.5px] border-black/30 dark:border-white/20">
         <div className="flex">
-          <h1 className="text-5xl font-sans mb-4">Hi, I'm Himanshu</h1>
+          <h1 className="text-5xl font-sans mb-4">Hi, I'm <span className="font-heading"> Himanshu</span></h1>
         
         </div>
 

@@ -19,22 +19,9 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+
   {
     id: 1,
-    title: "TECHYOGEEK",
-    description:
-      "A modern tech event platform that helps users discover the latest tech meetups, workshops, and events happening nearby.",
-    img: "/images/tech.jpg",
-    href: "https://techyogeek.vercel.app/",
-    github:"https://github.com/fit-edoc/TECHYOGEEK",
-    techstack: [
-      { name: "Supabase", icon: <RiSupabaseFill className="text-black dark:text-white" /> },
-      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
-      { name: "MongoDB", icon: <SiMongodb className="text-green-500" /> },
-    ],
-  },
-  {
-    id: 2,
     title: "CREATIVESTUDIO",
     description:
       "A digital creative agency website showcasing services, branding solutions, and stunning UI/UX designs.",
@@ -49,7 +36,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 3,
+    id: 2,
     title: "MENTAL HEALTH",
     description:
       "A mental wellness platform where users can check their mental health status and explore supportive resources.",
@@ -64,39 +51,10 @@ export const projects: Project[] = [
       { name: "Nodejs", icon: <DiNodejs className="text-green-400" /> },
     ],
   },
+ 
+ 
   {
-    id: 4,
-    title: "PIZZAMANIAC",
-    description:
-      "A visually appealing food landing page designed for a pizza brand with engaging UI and smooth interactions.",
-    img: "/images/pizza.jpg",
-    color: "black",
-    href: "https://pizzamaniac.vercel.app/",
-     github:"https://github.com/fit-edoc/PIZZA-SHOP",
-    techstack: [
-      { name: "HTML5", icon: <FaHtml5 className="text-orange-500" /> },
-     { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
-       { name: "React", icon: <DiReact className="text-blue-500" /> },
-      { name: "JavaScript", icon: <FaJs className="text-yellow-400" /> },
-    ],
-  },
-  {
-    id: 5,
-    title: "FlekxyShop",
-    description:
-      "A minimal and responsive e-commerce storefront showcasing products with clean UI and intuitive navigation.",
-    img: "/images/flekxy.jpg",
-    color: "white",
-    href: "https://flekxyshop.vercel.app/",
-     github:"https://github.com/fit-edoc/flekxy",
-    techstack: [
-     { name: "React", icon: <FaReact className="text-blue-400" /> },
-      { name: "Redux", icon: <SiRedux className="text-purple-500" /> },
-      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
-    ],
-  },
-  {
-    id: 6,
+    id: 3,
     title: "JobCatch",
     description:
       "A job portal platform that connects job seekers with opportunities and allows companies to post and view listings.",
@@ -111,7 +69,7 @@ export const projects: Project[] = [
     ],
   },
    {
-    id: 7,
+    id: 4,
     title: "Digital-marketplace",
     description:
       "Landing page for digital market agency",
@@ -125,7 +83,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 8,
+    id: 5,
     title: "InstaGen",
     description:
       "Its generate instagram style profile and comments",
@@ -138,22 +96,9 @@ export const projects: Project[] = [
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ],
   },
+ 
     {
-    id: 9,
-    title: "reusableblock",
-    description:
-      "reusable compoents library",
-    img: "/images/reuse.jpg",
-    color: "black",
-    href: "https://reusableblocks.vercel.app/",
-     github:"https://github.com/fit-edoc/compoLib",
-    techstack: [
-      { name: "React", icon: <FaReact className="text-blue-400" /> },
-      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
-    ],
-  },
-    {
-    id: 10,
+    id: 6,
     title: "flowdense",
     description:
       "video gradient tool",
@@ -168,7 +113,7 @@ export const projects: Project[] = [
 
   },
   {
-    id:11,
+    id: 7,
     title:"ATS PROB",
     description:"Its AI based tool to check your Resume",
     img:"/images/ats.jpg",

@@ -3,10 +3,14 @@ import { Navbar } from "./Components/Nav";
 import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
 import Loader from "./Loader/Loader";
-
-
-
+import localFont from 'next/font/local';
 import type { Metadata } from 'next';
+
+const customFont = localFont({
+  src: '../public/new.ttf',
+  variable: '--font-heading',
+  weight: '400 700',
+});
 
 export const metadata: Metadata = {
   title: "Himanshu Docs | Full Stack & ReactJS Developer in Delhi",
@@ -79,7 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body>
+      <body className={`${customFont.variable} dark:bg-black dark:text-white bg-white text-black`}>
         <ThemeProvider>
         
           <Loader />
