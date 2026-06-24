@@ -3,48 +3,92 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #121212;
+}
+
+.dark {
+  --background: #030303;
+  --foreground: #f5f5f7;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
 }
 
-.dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
-
-
 body {
-
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+  position: relative;
 }
 
+.font-heading {
+  font-family: var(--font-heading), system-ui, sans-serif;
+}
+
+/* Premium Grain/Noise Overlay */
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: "";
+  opacity: 0.055;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.dark .grain-overlay {
+  opacity: 0.075;
+}
+
+/* Smooth Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 119, 198, 0.2);
+  border-radius: 10px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 119, 198, 0.4);
+}
+
+::selection {
+  background-color: rgba(99, 102, 241, 0.2);
+  color: inherit;
+}
+
+/* View transitions */
 ::view-transition-old(root) {
   animation: none;
   z-index: 1;
 }
 
 ::view-transition-new(root) {
-  animation: 1s ease-in-out both reveal-from-top-right;
+  animation: 0.8s cubic-bezier(0.76, 0, 0.24, 1) both reveal-from-top-right;
   z-index: 2;
 }
 
 @keyframes reveal-from-top-right {
   from {
-    clip-path: circle(0% at 50% -10%);
-    filter: blur(20px);
-   
+    clip-path: circle(0% at 90% 10%);
+    filter: blur(10px);
   }
-
   to {
     filter: blur(0px);
     clip-path: circle(150% at 50% 50%);

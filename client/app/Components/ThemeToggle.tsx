@@ -37,19 +37,19 @@ export default function ThemeToggle() {
       <button
         aria-label="Toggle theme"
         onClick={handleToggle}
-        className="w-15 h-8 flex ml-2 items-center justify-center px-1.5 rounded-full transition-all duration-300"
+        className="w-12 h-8 flex items-center justify-center px-1 rounded-full transition-all duration-300 cursor-pointer"
       >
         <span
-          className={`w-10 h-7 rounded-2xl bg-white flex justify-center items-center dark:bg-black shadow-md transform transition-transform duration-1000 ${
+          className={`w-9 h-6.5 rounded-2xl bg-white flex justify-center items-center dark:bg-black shadow-md transform transition-transform duration-500 ${
             isDark
-              ? "shadow-neutral-400 shadow-md"
+              ? "shadow-neutral-100 shadow-sm"
               : "shadow-neutral-500 shadow-md"
           }`}
         >
           {isDark ? (
-            <Moon className="h-4 w-4 m-auto text-blue-300" />
+            <Moon className="h-3.5 w-3.5 m-auto text-neutral-300" />
           ) : (
-            <Sun className="h-4 w-4 m-auto text-yellow-500" />
+            <Sun className="h-3.5 w-3.5 m-auto text-yellow-500" />
           )}
         </span>
       </button>

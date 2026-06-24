@@ -8,7 +8,6 @@ import Repeat from "../ui/icons/Repeat";
 import { motion, Variants } from "motion/react";
 import Resume from "../ui/icons/Resume";
 import Talk from "../ui/icons/Talk";
-import Github from "../technologies/Github";
 import { GithubIcon, Linkedin, X } from "lucide-react";
 import Work from "../ui/icons/Work";
 
@@ -20,21 +19,50 @@ const iconItem = [
 ];
 
 const socialIcon = [
-  {id:1,icon:<GithubIcon size={30} className="border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"  />,ref:"https://github.com/fit-edoc", tooltip:"github"},
-  {id:2,icon:<X size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:"https://x.com/fitedocc",tooltip:"x"},
-  {id:3,icon:<Linkedin size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"/>,ref:"",tooltip:"linkedin"}
-]
+  {
+    id: 1,
+    icon: (
+      <GithubIcon
+        size={36}
+        className="border border-black/10 dark:border-white/10 rounded-full p-2 hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white transition-all duration-300 hover:scale-110"
+      />
+    ),
+    ref: "https://github.com/fit-edoc",
+    tooltip: "GitHub",
+  },
+  {
+    id: 2,
+    icon: (
+      <X
+        size={36}
+        className="border border-black/10 dark:border-white/10 rounded-full p-2 hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white transition-all duration-300 hover:scale-110"
+      />
+    ),
+    ref: "https://x.com/fitedocc",
+    tooltip: "X / Twitter",
+  },
+  {
+    id: 3,
+    icon: (
+      <Linkedin
+        size={36}
+        className="border border-black/10 dark:border-white/10 rounded-full p-2 hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white transition-all duration-300 hover:scale-110"
+      />
+    ),
+    ref: "https://linkedin.com",
+    tooltip: "LinkedIn",
+  },
+];
 
 const Hero = () => {
   const [current, setCurrent] = useState<{
-    id:number,
-    type:"icon" | "social"
+    id: number;
+    type: "icon" | "social";
   } | null>(null);
 
- const handleMouse = (type: "icon" | "social", id: number) => {
-  setCurrent({ type, id });
-};
-
+  const handleMouse = (type: "icon" | "social", id: number) => {
+    setCurrent({ type, id });
+  };
 
   const container: Variants = {
     hidden: {},
@@ -67,30 +95,42 @@ const Hero = () => {
   };
 
   return (
-    <div className="min-h-[400px]">
-      <main className="max-w-4xl mx-auto py-20 px-4 border-x-[0.5px] border-black/30 dark:border-white/20">
-        <div className="flex">
-          <h1 className="text-5xl font-sans mb-4">Hi, I'm <span className="font-heading"> Himanshu</span></h1>
-        
+    <div className="min-h-[500px] flex items-center justify-center py-12 relative overflow-hidden">
+      <main className="max-w-4xl mx-auto py-16 px-6 border-x-[0.5px] border-black/10 dark:border-white/10 w-full">
+        {/* Availability Badge */}
+        <Work />
+
+        {/* Heading */}
+        <div className="flex flex-col mb-4">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-heading font-bold tracking-tight text-gray-900 dark:text-white leading-none">
+            Hi, I'm{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r  from-neutral-700 to-neutral-400  dark:to-white font-heading">
+              Himanshu
+            </span>
+          </h1>
         </div>
 
-  <Work/>
+        {/* Rotating Routine Icons */}
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="flex gap-4 relative"
+          className="flex gap-4 my-6 relative"
         >
           {iconItem.map((item) => (
             <motion.div
               key={item.id}
               variants={itemVariant}
-              className="relative cursor-pointer my-2.5"
-              onMouseEnter={() => handleMouse("icon",item.id)}
+              className="relative cursor-pointer"
+              onMouseEnter={() => handleMouse("icon", item.id)}
               onMouseLeave={() => setCurrent(null)}
             >
               {current?.type === "icon" && current.id === item.id && (
-                <motion.div initial={{y:10,opacity:0}} animate={{y:0,opacity:1}} className="absolute top-[-90%] left-[-12px]  bg-black text-white px-2.5 rounded-md dark:bg-white dark:text-black">
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-semibold py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10"
+                >
                   {item.tooltip}
                 </motion.div>
               )}
@@ -100,27 +140,56 @@ const Hero = () => {
           ))}
         </motion.div>
 
-        <p className="text-lg text-gray-600 dark:text-gray-300 mt-1.5">
-          Full Stack Developer & ReactJS Developer based in Delhi — I build modern web apps using MERN / Next.js /
-          TypeScript.
+        {/* Bio */}
+        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed mb-8 font-sans">
+          Full Stack Developer & ReactJS Developer based in Delhi — I build modern, visually compelling web applications using MERN, Next.js, and TypeScript.
         </p>
 
-        <div className="flex gap-1.5">
-          {socialIcon.map((item,index)=>(
-            
-             <a  key={item.id} className="relative" onMouseEnter={()=>handleMouse("social",item.id)} onMouseLeave={()=>setCurrent(null)} href={item.ref}>
-              {current?.type === "social" && current.id === item.id && (
-                <motion.div initial={{y:10,opacity:0}} animate={{y:0,opacity:1}} className="absolute top-[-90%] left-[-50%]   bg-black text-white px-2.5 rounded-md dark:bg-white dark:text-black">
-                  {item.tooltip}
-                </motion.div>
-              )}{item.icon}</a>
-          ))}
-        </div>
-        {/* <div className="flex py-2.5 gap-1 items-center"> 
-          <GithubIcon size={30} className="  border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30" /> <X size={30} className="border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white  dark:border-white/30" /><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-brand-linkedin  fill-blue-400 border-[1px] border-black/30  rounded-full px-1.5 py-1.5  hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white dark:border-white/30"><path stroke="" d="M0 0h24v24H0z" fill="none" /><path d="M17 2a5 5 0 0 1 5 5v10a5 5 0 0 1 -5 5h-10a5 5 0 0 1 -5 -5v-10a5 5 0 0 1 5 -5zm-9 8a1 1 0 0 0 -1 1v5a1 1 0 0 0 2 0v-5a1 1 0 0 0 -1 -1m6 0a3 3 0 0 0 -1.168 .236l-.125 .057a1 1 0 0 0 -1.707 .707v5a1 1 0 0 0 2 0v-3a1 1 0 0 1 2 0v3a1 1 0 0 0 2 0v-3a3 3 0 0 0 -3 -3m-6 -3a1 1 0 0 0 -.993 .883l-.007 .127a1 1 0 0 0 1.993 .117l.007 -.127a1 1 0 0 0 -1 -1" /></svg></div> */}
-        <div className="flex gap-1.5 mt-1.5">
-          <a href="https://drive.google.com/file/d/1-PcJGW9BIBqpBqdr5UjB5sWZFB7OaW_K/view?usp=sharing"> <button className="px-4 py-1 text-black rounded-full border  bg-white border-black/30 hover:bg-black hover:text-white dark:border-white/30  dark:bg-black  dark:text-white dark:hover:bg-white dark:hover:text-black"><Resume /></button> </a> <a href="mailto:himanshuverma2660@gmail.com"><button className=" flex items-center gap-1.5 justify-center px-4 py-1 text-black rounded-full border  bg-white border-black/30 hover:bg-black hover:text-white dark:border-white/30  dark:bg-black  dark:text-white dark:hover:bg-white dark:hover:text-black">Connect with <Talk /></button></a></div>
+        {/* Social Links & CTA Buttons */}
+        <div className="flex flex-wrap items-center gap-6">
+          <div className="flex gap-2.5">
+            {socialIcon.map((item) => (
+              <a
+                key={item.id}
+                className="relative flex items-center justify-center"
+                onMouseEnter={() => handleMouse("social", item.id)}
+                onMouseLeave={() => setCurrent(null)}
+                href={item.ref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {current?.type === "social" && current.id === item.id && (
+                  <motion.div
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-semibold py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10"
+                  >
+                    {item.tooltip}
+                  </motion.div>
+                )}
+                {item.icon}
+              </a>
+            ))}
+          </div>
 
+          <div className="flex gap-3">
+            <a
+              href="https://drive.google.com/file/d/1-PcJGW9BIBqpBqdr5UjB5sWZFB7OaW_K/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center"
+            >
+              <button className="px-5 py-2 text-sm font-semibold font-heading rounded-full border border-black/15 bg-white text-black hover:bg-black hover:text-white dark:border-white/15 dark:bg-zinc-950 dark:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center gap-1.5 shadow-sm">
+                <Resume />
+              </button>
+            </a>
+            <a href="mailto:himanshuverma2660@gmail.com">
+              <button className="flex items-center gap-2 justify-center px-5 py-2 text-sm font-semibold font-heading text-white bg-neutral-950 hover:bg-neutral-500 rounded-full transition-all duration-300 shadow-md shadow-indigo-600/10">
+                Connect with <Talk />
+              </button>
+            </a>
+          </div>
+        </div>
       </main>
     </div>
   );

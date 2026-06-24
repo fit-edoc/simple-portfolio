@@ -1,14 +1,21 @@
-import { Circle, CircleAlertIcon, Coffee } from 'lucide-react'
 import { motion } from 'motion/react'
 import React from 'react'
 import { BsCircleFill } from 'react-icons/bs'
 
 const Work = () => {
   return (
-    <div className='h-[25px] max-w-[130px] py-2.5   gap-2 flex justify-center items-center rounded-full bg-green-200 shadow-[0px_0px_1px_black] dark:bg-green-950'>
-      <p className='text-green-950 dark:text-green-400 text-[12px]'>OPEN TO WORK</p>
-    <motion.p animate={{opacity:[0,1,0]}} whileHover={{x:[-4,0,4]}} transition={{duration:2,repeat:Infinity,repeatType:"mirror"}}>  <BsCircleFill className=' text-[8px] text-green-600 dark:text-green-200'/></motion.p>
-      
+    <div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/10 border border-emerald-500/20 mb-6'>
+      <span className='relative flex h-2 w-2'>
+        <motion.span 
+          animate={{ scale: [1, 1.8, 1], opacity: [0.8, 0, 0.8] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"
+        />
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+      </span>
+      <p className='text-emerald-700 dark:text-emerald-400 text-xs font-semibold tracking-wider font-heading uppercase'>
+        OPEN TO WORK
+      </p>
     </div>
   )
 }

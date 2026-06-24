@@ -3,13 +3,20 @@ import { Navbar } from "./Components/Nav";
 import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
 import Loader from "./Loader/Loader";
-import localFont from 'next/font/local';
+import localFont from "next/font/local";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import type { Metadata } from 'next';
 
-const customFont = localFont({
-  src: '../public/new.ttf',
+const youngSerif = localFont({
+  src: '../public/ok.ttf',
   variable: '--font-heading',
-  weight: '400 700',
+  weight: '400',
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -83,15 +90,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${customFont.variable} dark:bg-black dark:text-white bg-white text-black`}>
-        <ThemeProvider>
+      <body className={`${youngSerif.variable} ${plusJakartaSans.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300 relative`}>
+        {/* Grain overlay */}
+        {/* <div className="grain-overlay pointer-events-none" /> */}
         
+        {/* Ambient Gradient Background
+        <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none">
+          <div className="absolute top-[-10%] left-[-15%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-tr from-indigo-500/15 via-purple-500/10 to-pink-500/5 blur-[120px] dark:from-indigo-600/10 dark:via-purple-600/5 dark:to-transparent" />
+          <div className="absolute bottom-[-10%] right-[-15%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-blue-500/15 via-purple-500/10 to-indigo-500/5 blur-[120px] dark:from-blue-600/10 dark:via-purple-600/5 dark:to-transparent" />
+        </div> */}
+
+        <ThemeProvider>
           <Loader />
           <SmoothScroll/>
-
-            <Navbar/>
+          <Navbar/>
           {children}
-
         </ThemeProvider>
       </body>
     </html>
