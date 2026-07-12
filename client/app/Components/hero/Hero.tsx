@@ -104,7 +104,7 @@ const Hero = () => {
         <div className="flex flex-col mb-4">
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-heading font-bold tracking-tight text-gray-900 dark:text-white leading-none">
             Hi, I'm{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r  from-neutral-700 to-neutral-400  dark:to-white font-heading">
+            <span className=" font-heading">
               Himanshu
             </span>
           </h1>

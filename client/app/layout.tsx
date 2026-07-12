@@ -2,7 +2,7 @@ import { ThemeProvider } from "./Components/common/ThemeProvider";
 import { Navbar } from "./Components/Nav";
 import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
-import Loader from "./Loader/Loader";
+
 import localFont from "next/font/local";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import type { Metadata } from 'next';
@@ -101,7 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div> */}
 
         <ThemeProvider>
-          <Loader />
+         
           <SmoothScroll/>
           <Navbar/>
           {children}
