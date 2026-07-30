@@ -59,13 +59,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(120, 119, 198, 0.2);
+  background: rgb(0, 0, 0);
   border-radius: 10px;
   border: 2px solid var(--background);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(120, 119, 198, 0.4);
+  background: rgb(185, 56, 0);
 }
 
 ::selection {

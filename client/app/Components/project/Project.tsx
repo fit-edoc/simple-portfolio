@@ -24,8 +24,6 @@ const ProjectCard = ({
   index: number;
   onSelect: () => void;
 }) => {
-  const [imgError, setImgError] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 25 }}
@@ -38,90 +36,100 @@ const ProjectCard = ({
         layoutId={`project-card-${project.id}`}
         transition={modalTransition}
         onClick={onSelect}
-        className="group relative cursor-pointer bg-white/40 dark:bg-zinc-950/40 backdrop-blur-md rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 hover:border-indigo-500/30 dark:hover:border-indigo-500/30 hover:shadow-xl transition-all duration-300 flex flex-col h-full"
+        className="group relative cursor-pointer bg-white dark:bg-zinc-950 rounded-[2rem] overflow-hidden border border-black/5 dark:border-white/5 hover:shadow-2xl transition-all duration-300 flex flex-col h-full p-2"
       >
-        {/* Image Container */}
-        <div className="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-zinc-900 border-b border-black/5 dark:border-white/5">
+        {/* Top Image/Blob Container */}
+        <div className="relative h-60 w-full overflow-hidden rounded-[1.5rem] bg-zinc-100 dark:bg-zinc-900">
           <motion.div
             layoutId={`project-image-wrapper-${project.id}`}
             transition={modalTransition}
             className="w-full h-full relative"
           >
-            {!imgError ? (
-              <Image
-                src={project.img}
-                alt={project.title}
-                fill
-                className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                onError={() => setImgError(true)}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-indigo-500/80 via-purple-600/80 to-pink-500/80 flex items-center justify-center">
-                <span className="text-white font-heading font-bold opacity-80">{project.title}</span>
-              </div>
-            )}
+            <div className="w-full h-full relative flex items-center justify-center overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
+              {/* Blobs */}
+              <div className="absolute -top-10 -right-10 w-48 h-48 bg-orange-500/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
+              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-orange-700/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
+              
+              {/* Half Blur Overlay */}
+              <div className="absolute inset-0 bg-black/10 dark:bg-black/40 backdrop-blur-md" />
+            </div>
           </motion.div>
           
-          {/* Glow Hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 flex items-end p-4">
-            <span className="text-xs text-white/90 font-medium tracking-wider uppercase">View Project Details</span>
+          {/* Top Section Overlay Content (Title & Button) */}
+          <div className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10">
+            <div className="flex flex-col">
+              <motion.h3
+                layoutId={`project-title-${project.id}`}
+                transition={modalTransition}
+                className="text-lg sm:text-xl font-heading font-bold text-white mb-0.5"
+              >
+                {project.title}
+              </motion.h3>
+              <p className="text-white/70 text-[11px] sm:text-xs font-medium">
+                Featured Project
+              </p>
+            </div>
+            
+            <div className="px-5 py-2.5 rounded-2xl bg-white/20 backdrop-blur-md text-white text-sm font-semibold transition-colors border border-white/10 flex-shrink-0">
+              Details
+            </div>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-5 flex flex-col flex-grow">
-          <div className="flex justify-between items-center mb-3">
-            <motion.h3
-              layoutId={`project-title-${project.id}`}
-              transition={modalTransition}
-              className="text-lg font-heading font-bold text-gray-900 dark:text-white transition-colors group-hover:text-neutral-400 dark:group-hover:text-neutral-50"
-            >
-              {project.title}
-            </motion.h3>
-            <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-              <Link
-                href={project.href}
-                target="_blank"
-                className="p-1.5 rounded-full bg-gray-100/80 dark:bg-zinc-900/80 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-black transition-colors"
-              >
-                <ArrowUpRight size={14} />
-              </Link>
-              {project.github && (
-                <a
-                  href={project.github}
+        {/* Bottom Content Area */}
+        <div className="px-4 py-5 flex flex-col flex-grow">
+          {/* Description */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-2">
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white">Overview</h4>
+              <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                <Link
+                  href={project.href}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-1.5 rounded-full bg-gray-100/80 dark:bg-zinc-900/80 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white dark:hover:bg-indigo-400 dark:hover:text-black transition-colors"
+                  className="p-1 rounded-full text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
                 >
-                  <GithubIcon size={14} />
-                </a>
-              )}
+                  <ArrowUpRight size={16} />
+                </Link>
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1 rounded-full text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors"
+                  >
+                    <GithubIcon size={16} />
+                  </a>
+                )}
+              </div>
             </div>
+            <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-4 leading-relaxed font-sans">
+              {project.description}
+            </p>
           </div>
+          
+          <div className="w-full h-px bg-gray-100 dark:bg-zinc-800/50 my-2" />
 
-          <p className="text-gray-600 dark:text-gray-400 text-xs mb-4 line-clamp-2 leading-relaxed font-sans">
-            {project.description}
-          </p>
-
-          {/* Tech Stack */}
-          <div className="mt-auto pt-3 border-t border-black/5 dark:border-white/5">
-            <div className="flex flex-wrap gap-1.5">
-              {project.techstack?.slice(0, 3).map((tech: any, i: number) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-black/5 dark:bg-white/5 text-[10px] font-medium text-gray-600 dark:text-gray-300 border border-black/5 dark:border-white/5"
-                >
-                  <span>{tech.icon}</span>
-                  <span>{tech.name}</span>
+          {/* Stats/Tech */}
+          <div className="flex flex-wrap items-end gap-6 mt-auto pt-4">
+            {project.techstack?.slice(0, 3).map((tech: any, i: number) => (
+              <div key={i} className="flex flex-col">
+                <div className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-white mb-1">
+                  <span className="text-base flex items-center justify-center">{tech.icon}</span>
+                  <span className="text-sm">{tech.name}</span>
                 </div>
-              ))}
-              {project.techstack && project.techstack.length > 3 && (
-                <div className="px-2 py-0.5 rounded-full bg-black/5 dark:bg-white/5 text-[9px] font-medium text-gray-500 dark:text-gray-400 font-sans">
-                  +{project.techstack.length - 3} more
+                
+              </div>
+            ))}
+            {project.techstack && project.techstack.length > 3 && (
+              <div className="flex flex-col">
+                <div className="flex items-center font-bold text-gray-900 dark:text-white mb-1">
+                  <span className="text-sm">+{project.techstack.length - 3}</span>
                 </div>
-              )}
-            </div>
+                <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">
+                  More
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </motion.div>
@@ -171,7 +179,7 @@ const Project = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {projectsort.map((project, index) => (
             <ProjectCard
               key={project.id}
@@ -200,36 +208,72 @@ const Project = () => {
             <motion.div
               layoutId={`project-card-${selectedProject.id}`}
               transition={modalTransition}
-              className="relative bg-white dark:bg-zinc-950 rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-2xl z-10 max-h-[90vh] flex flex-col"
+              className="relative bg-white dark:bg-zinc-950 rounded-3xl overflow-hidden border border-black/10 dark:border-white/10 shadow-2xl w-full max-w-6xl z-10 h-[90vh] flex flex-col md:flex-row"
             >
               {/* Close Button */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/40 text-white hover:bg-black/70 transition-colors backdrop-blur-sm"
+                className="absolute top-4 right-4 z-30 p-2 rounded-full bg-black/40 text-white hover:bg-black/70 transition-colors backdrop-blur-sm md:bg-gray-100 md:dark:bg-zinc-800 md:text-black md:dark:text-white shadow-md"
               >
                 <X size={18} />
               </button>
 
-              {/* Banner Image */}
-              <div className="relative h-64 sm:h-80 w-full overflow-hidden bg-gray-100 dark:bg-zinc-900 border-b border-black/5 dark:border-white/5">
+              {/* Left Side: Iframe/Image */}
+              <div className="relative w-full md:w-[55%] h-[40vh] md:h-full bg-gray-100 dark:bg-zinc-900 border-b md:border-b-0 md:border-r border-black/5 dark:border-white/5 md:sticky md:top-0 flex-shrink-0">
                 <motion.div
                   layoutId={`project-image-wrapper-${selectedProject.id}`}
                   transition={modalTransition}
-                  className="w-full h-full relative"
+                  className="w-full h-full relative overflow-hidden"
                 >
-                  <Image
-                    src={selectedProject.img}
-                    alt={selectedProject.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+                  {selectedProject.href ? (
+                    <div className="w-full h-full relative group bg-white dark:bg-zinc-950 flex flex-col">
+                      {/* Browser Mockup Header */}
+                      <div className="w-full h-8 bg-gray-200 dark:bg-zinc-800 flex items-center px-3 gap-1.5 flex-shrink-0">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                        <div className="ml-3 px-2 py-0.5 bg-white/50 dark:bg-black/20 rounded text-[9px] text-gray-500 font-mono truncate max-w-[200px]">
+                          {selectedProject.href}
+                        </div>
+                      </div>
+                      
+                      <div className="relative flex-grow w-full">
+                        {/* Loading State Overlay */}
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-zinc-900 text-gray-400">
+                          <span className="text-sm font-medium animate-pulse">Loading Live Site...</span>
+                        </div>
+                        <iframe 
+                          src={selectedProject.href} 
+                          className="relative z-10 w-full h-full border-none"
+                          title={selectedProject.title}
+                          loading="lazy"
+                          sandbox="allow-scripts allow-same-origin"
+                        />
+                        {/* Invisible overlay for easier scrolling unless hovering */}
+                        <div className="absolute inset-0 z-20 bg-transparent transition-opacity hover:opacity-0 pointer-events-auto hover:pointer-events-none" />
+                      </div>
+                    </div>
+                  ) : (
+                    <Image
+                      src={selectedProject.img}
+                      alt={selectedProject.title}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  )}
                 </motion.div>
               </div>
 
-              {/* Modal Content */}
-              <div className="p-6 sm:p-8 overflow-y-auto flex-grow">
-                <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
+              {/* Right Side: Content */}
+              <div className="w-full md:w-[45%] p-6 sm:p-8 sm:px-10 overflow-y-auto flex flex-col h-full bg-white dark:bg-zinc-950">
+                <div className="flex flex-col mb-6 gap-3">
+                  {selectedProject.category && (
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-1 rounded-md w-fit">
+                      {selectedProject.category}
+                    </span>
+                  )}
+                  
                   <motion.h3
                     layoutId={`project-title-${selectedProject.id}`}
                     transition={modalTransition}
@@ -238,7 +282,7 @@ const Project = () => {
                     {selectedProject.title}
                   </motion.h3>
 
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 mt-2">
                     <Link
                       href={selectedProject.href}
                       target="_blank"
@@ -261,15 +305,37 @@ const Project = () => {
                   </div>
                 </div>
 
-                <div className="space-y-6">
+                <div className="space-y-6 flex-grow">
                   <div>
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2 font-heading">
-                      About the Project
+                      Overview
                     </h4>
                     <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-line font-sans">
                       {selectedProject.description}
                     </p>
                   </div>
+
+                  {selectedProject.painPoint && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2 font-heading">
+                        Problem Solved
+                      </h4>
+                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-line font-sans">
+                        {selectedProject.painPoint}
+                      </p>
+                    </div>
+                  )}
+
+                  {selectedProject.output && (
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2 font-heading">
+                        Output & Results
+                      </h4>
+                      <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed whitespace-pre-line font-sans">
+                        {selectedProject.output}
+                      </p>
+                    </div>
+                  )}
 
                   <div>
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3 font-heading">
