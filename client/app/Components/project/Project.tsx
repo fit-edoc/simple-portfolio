@@ -45,18 +45,20 @@ const ProjectCard = ({
             transition={modalTransition}
             className="w-full h-full relative"
           >
-            <div className="w-full h-full relative flex items-center justify-center overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
-              {/* Blobs */}
-              <div className="absolute -top-10 -right-10 w-48 h-48 bg-orange-500/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
-              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-orange-700/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
-              
-              {/* Half Blur Overlay */}
-              <div className="absolute inset-0 bg-black/10 dark:bg-black/40 backdrop-blur-md" />
+            <div className="w-full h-full relative overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
+              {project.img && (
+                <Image
+                  src={project.img}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                />
+              )}
             </div>
           </motion.div>
           
           {/* Top Section Overlay Content (Title & Button) */}
-          <div className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10">
+          <div className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end z-10">
             <div className="flex flex-col">
               <motion.h3
                 layoutId={`project-title-${project.id}`}

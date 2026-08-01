@@ -43,18 +43,18 @@ const ProjectCard = ({
           <motion.div
             layoutId={`project-image-wrapper-${project.id}`}
             transition={modalTransition}
-            className="w-full h-full relative"
-          >
+            className="w-full h-full relative">
+              
             <div className="w-full h-full relative flex items-center justify-center overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
               {/* Blobs */}
               <div className="absolute -top-10 -right-10 w-48 h-48 bg-orange-500/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
               <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-orange-700/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
-              
+
               {/* Half Blur Overlay */}
               <div className="absolute inset-0 bg-black/10 dark:bg-black/40 backdrop-blur-md" />
             </div>
           </motion.div>
-          
+
           {/* Top Section Overlay Content (Title & Button) */}
           <div className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10">
             <div className="flex flex-col">
@@ -69,7 +69,7 @@ const ProjectCard = ({
                 Featured Project
               </p>
             </div>
-            
+
             <div className="px-5 py-2.5 rounded-2xl bg-white/20 backdrop-blur-md text-white text-sm font-semibold transition-colors border border-white/10 flex-shrink-0">
               Details
             </div>
@@ -106,7 +106,7 @@ const ProjectCard = ({
               {project.description}
             </p>
           </div>
-          
+
           <div className="w-full h-px bg-gray-100 dark:bg-zinc-800/50 my-2" />
 
           {/* Stats/Tech */}
@@ -117,7 +117,7 @@ const ProjectCard = ({
                   <span className="text-base flex items-center justify-center">{tech.icon}</span>
                   <span className="text-sm">{tech.name}</span>
                 </div>
-                
+
               </div>
             ))}
             {project.techstack && project.techstack.length > 3 && (
@@ -236,14 +236,14 @@ const Project = () => {
                           {selectedProject.href}
                         </div>
                       </div>
-                      
+
                       <div className="relative flex-grow w-full">
                         {/* Loading State Overlay */}
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-zinc-900 text-gray-400">
                           <span className="text-sm font-medium animate-pulse">Loading Live Site...</span>
                         </div>
-                        <iframe 
-                          src={selectedProject.href} 
+                        <iframe
+                          src={selectedProject.href}
                           className="relative z-10 w-full h-full border-none"
                           title={selectedProject.title}
                           loading="lazy"
@@ -273,7 +273,7 @@ const Project = () => {
                       {selectedProject.category}
                     </span>
                   )}
-                  
+
                   <motion.h3
                     layoutId={`project-title-${selectedProject.id}`}
                     transition={modalTransition}
