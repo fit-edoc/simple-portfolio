@@ -63,37 +63,10 @@ export const projects: Project[] = [
       { name: "MERN STACK", icon: <SiMongodb className="text-green-500" /> }
     ]
   },
+ 
+ 
   {
     id: 4,
-    title: "Fitness Coaching Landing Page",
-    description: "Turn Your Online Fitness Coaching into a Consistent 3L+/month Business.",
-    img: "/images/gurjeet.jpg",
-    category: "Landing Page",
-    painPoint: "Needed a high-converting landing page with seamless WhatsApp integration to capture coaching leads effectively.",
-    output: "A fully responsive, fast-loading landing page that drives user engagement directly into WhatsApp conversations.",
-    href: "https://gurjeetleads.vercel.app/",
-    techstack: [
-      { name: "Nextjs", icon: <RiNextjsFill className="dark:text-white" /> },
-      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
-    ]
-  },
-  {
-    id: 5,
-    title: "Tangerine Studio",
-    description: "We are a creative social media & storytelling agency. We help brands, founders, and creators build authentic connections through scroll-stopping content and premium digital experiences.",
-    img: "/images/tangerine.jpg",
-    category: "Agency Website",
-    painPoint: "Needed a premium, visually engaging online presence to showcase creative work and attract high-end brands.",
-    output: "A modern, story-driven portfolio site that effectively highlights brand connections and scroll-stopping digital content.",
-    href: "https://tangerinestudio-ruby.vercel.app/",
-    techstack: [
-      { name: "Nextjs", icon: <RiNextjsFill className="dark:text-white" /> },
-      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
-      { name: "TypeScript", icon: <SiTypescript className="text-blue-600" /> },
-    ]
-  },
-  {
-    id: 6,
     title: "TaskTogether",
     description: "TaskTogether is a collaborative platform designed to streamline task delegation and improve team productivity.",
     img: "/images/tasktogether.jpg",
@@ -109,7 +82,7 @@ export const projects: Project[] = [
     ]
   },
   {
-    id: 7,
+    id: 5,
     title: "Tasker",
     description: "Tasker is a simple CRUD application for effortless task management. Create, read, update, and delete your daily to-dos with ease.",
     img: "/images/tasker.jpg",
