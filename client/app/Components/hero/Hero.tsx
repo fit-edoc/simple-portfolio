@@ -174,7 +174,7 @@ const Hero = () => {
 
           <div className="flex gap-3">
             <a
-              href="https://drive.google.com/file/d/1-PcJGW9BIBqpBqdr5UjB5sWZFB7OaW_K/view?usp=sharing"
+              href="https://drive.google.com/file/d/12SvqJxIUXk_HxkMI3ay5ukI-ruQt-OTy/view?usp=sharing"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center"
