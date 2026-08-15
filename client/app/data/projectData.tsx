@@ -2,7 +2,7 @@ import React from "react";
 import { DiNodejs, DiReact } from "react-icons/di";
 import { FaReact, FaNodeJs, FaHtml5, FaCss3Alt, FaJs, FaGitAlt, FaDocker } from "react-icons/fa";
 import { RiNextjsFill, RiSupabaseFill } from "react-icons/ri";
-import { SiTypescript, SiMongodb, SiTailwindcss, SiNextdotjs, SiPostgresql, SiFirebase, SiRedux } from "react-icons/si";
+import { SiTypescript, SiMongodb, SiTailwindcss, SiNextdotjs, SiPostgresql, SiFirebase, SiRedux, SiFastapi } from "react-icons/si";
 
 export interface Project {
   id: number;
@@ -100,5 +100,20 @@ export const projects: Project[] = [
       { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
     ]
 
+  },
+  {
+    id: 7,
+    title: "Crawson",
+    description: "A web scraper that extracts structural data, meta tags, links, images, and descriptions from any URL. You can select exactly what you want to extract.",
+    img: "/images/crawson.jpg",
+    category: "Web Scraping Tool",
+    painPoint: "There is no centralized platform which does this with a preview option and without requiring zip file downloads.",
+    output: "Extracts selected data seamlessly with a live preview and direct access without zip downloads.",
+    href: "https://crawson.vercel.app",
+    techstack: [
+      { name: "Nextjs", icon: <RiNextjsFill className="dark:text-white" /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500" /> },
+      {name:"FastApi",icon:<SiFastapi className="text-emerald-400 " />}
+    ]
   }
 ]

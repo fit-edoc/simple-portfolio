@@ -41,19 +41,21 @@ const ProjectCard = ({
         {/* Top Image/Blob Container */}
         <div className="relative h-60 w-full overflow-hidden rounded-[1.5rem] bg-zinc-100 dark:bg-zinc-900">
           <motion.div
-            layoutId={`project-image-wrapper-${project.id}`}
-            transition={modalTransition}
-            className="w-full h-full relative">
-              
-            <div className="w-full h-full relative flex items-center justify-center overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
-              {/* Blobs */}
-              <div className="absolute -top-10 -right-10 w-48 h-48 bg-orange-500/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
-              <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-orange-700/40 rounded-full blur-[50px] mix-blend-multiply dark:mix-blend-screen" />
-
-              {/* Half Blur Overlay */}
-              <div className="absolute inset-0 bg-black/10 dark:bg-black/40 backdrop-blur-md" />
-            </div>
-          </motion.div>
+                      layoutId={`project-image-wrapper-${project.id}`}
+                      transition={modalTransition}
+                      className="w-full h-full relative"
+                    >
+                      <div className="w-full h-full relative overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105">
+                        {project.img && (
+                          <Image
+                            src={project.img}
+                            alt={project.title}
+                            fill
+                            className="object-cover"
+                          />
+                        )}
+                      </div>
+                    </motion.div>
 
           {/* Top Section Overlay Content (Title & Button) */}
           <div className="absolute bottom-0 left-0 right-0 p-5 flex justify-between items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10">
@@ -213,7 +215,7 @@ const Project = () => {
               {/* Close Button */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 z-30 p-2 rounded-full bg-black/40 text-white hover:bg-black/70 transition-colors backdrop-blur-sm md:bg-gray-100 md:dark:bg-zinc-800 md:text-black md:dark:text-white shadow-md"
+                className="absolute top-4 right-4 z-30 p-2 rounded-full bg-black/40 text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors backdrop-blur-sm md:bg-gray-100 md:dark:bg-zinc-800 md:text-black md:dark:text-white shadow-md"
               >
                 <X size={18} />
               </button>
@@ -286,7 +288,7 @@ const Project = () => {
                     <Link
                       href={selectedProject.href}
                       target="_blank"
-                      className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-neutral-900 dark:bg-neutral-300 dark:text-black hover:bg-neutral-700 text-white font-medium text-xs transition-colors shadow-md shadow-neutral-400"
+                      className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-neutral-900 dark:bg-neutral-300 dark:text-black hover:bg-neutral-700 dark:hover:bg-neutral-400 text-white font-medium text-xs transition-colors"
                     >
                       <span>Live Demo</span>
                       <ArrowUpRight size={14} />
