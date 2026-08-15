@@ -14,7 +14,7 @@ export function Navbar() {
             height={80}
             alt="profile"
             className="rounded-full border border-black/10 dark:border-white/10 h-full w-full object-cover shadow-sm hover:scale-105 transition-transform duration-300"
-            src="/dp.jpg"
+            src="/profile.png"
           />
         </TransitionLink>
         <div className="flex items-center gap-4 sm:gap-6 font-heading text-[11px] sm:text-xs uppercase tracking-wider font-semibold">
