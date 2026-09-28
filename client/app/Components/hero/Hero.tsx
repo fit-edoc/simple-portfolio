@@ -95,16 +95,16 @@ const Hero = () => {
   };
 
   return (
-    <div className="min-h-[500px] flex items-center justify-center py-12 relative overflow-hidden">
+    <div className="min-h-[500px] flex items-center justify-center py-12 relative overflow-hidden font-geist">
       <main className="max-w-4xl mx-auto py-16 px-6 border-x-[0.5px] border-black/10 dark:border-white/10 w-full">
         {/* Availability Badge */}
         <Work />
 
         {/* Heading */}
         <div className="flex flex-col mb-4">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-heading font-bold tracking-tight text-gray-900 dark:text-white leading-none">
-            Hi, I'm{" "}
-            <span className=" font-heading">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-light tracking-[-0.035em] text-gray-900 dark:text-white leading-none font-geist">
+            Hi, I&apos;m{" "}
+            <span className="font-normal text-black dark:text-white">
               Himanshu
             </span>
           </h1>
@@ -129,7 +129,7 @@ const Hero = () => {
                 <motion.div
                   initial={{ y: 10, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-semibold py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10"
+                  className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-medium py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10 font-geist"
                 >
                   {item.tooltip}
                 </motion.div>
@@ -141,8 +141,9 @@ const Hero = () => {
         </motion.div>
 
         {/* Bio */}
-        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed mb-8 font-sans">
-          Full Stack Developer & ReactJS Developer based in Delhi — I build modern, visually compelling web applications using MERN, Next.js, and TypeScript.
+        <p className="text-base sm:text-lg font-light text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed mb-8 font-geist tracking-normal">
+        Full Stack Developer & AI Engineer based in Delhi, specializing in building scalable, high-performance web applications and AI-powered products. I work across Next.js, TypeScript, MERN, and modern AI stacks to turn complex ideas into reliable, intuitive software.
+
         </p>
 
         {/* Social Links & CTA Buttons */}
@@ -162,7 +163,7 @@ const Hero = () => {
                   <motion.div
                     initial={{ y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-semibold py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10"
+                    className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-medium py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10 font-geist"
                   >
                     {item.tooltip}
                   </motion.div>
@@ -179,12 +180,12 @@ const Hero = () => {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center"
             >
-              <button className="px-5 py-2 text-sm font-semibold font-heading rounded-full border border-black/15 bg-white text-black hover:bg-black hover:text-white dark:border-white/15 dark:bg-zinc-950 dark:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center gap-1.5 shadow-sm">
+              <button className="px-5 py-2 text-sm font-medium font-geist rounded-full border border-black/15 bg-white text-black hover:bg-black hover:text-white dark:border-white/15 dark:bg-zinc-950 dark:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center gap-1.5 shadow-sm cursor-pointer">
                 <Resume />
               </button>
             </a>
             <a href="mailto:himanshuverma2660@gmail.com">
-              <button className="flex items-center gap-2 justify-center px-5 py-2 text-sm font-semibold font-heading text-white bg-neutral-950 hover:bg-neutral-500 rounded-full transition-all duration-300 shadow-md shadow-indigo-600/10">
+              <button className="flex items-center gap-2 justify-center px-5 py-2 text-sm font-medium font-geist text-white bg-neutral-950 hover:bg-neutral-800 rounded-full transition-all duration-300 shadow-md cursor-pointer">
                 Connect with <Talk />
               </button>
             </a>
