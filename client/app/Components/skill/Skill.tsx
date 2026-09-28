@@ -9,7 +9,9 @@ import {
   FaDocker,
   FaPython,
 } from "react-icons/fa";
+import { IconType } from "react-icons";
 import {
+
   SiTypescript,
   SiMongodb,
   SiTailwindcss,
@@ -27,7 +29,7 @@ import {
 interface SkillItem {
   name: string;
   category: "AI & ML" | "Frontend" | "Backend & DB" | "DevOps & Tools";
-  icon: React.ElementType;
+  icon: IconType;
   color: string;
 }
 
