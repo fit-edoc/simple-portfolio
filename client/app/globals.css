@@ -17,6 +17,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
+  --font-geist: var(--font-geist-sans);
 }
 
 body {
@@ -29,6 +30,10 @@ body {
 
 .font-heading {
   font-family: var(--font-heading), system-ui, sans-serif;
+}
+
+.font-geist {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
 /* Premium Grain/Noise Overlay */
@@ -59,39 +64,67 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(255, 255, 255);
+  background: rgb(166, 55, 0);
   border-radius: 10px;
   border: 2px solid var(--background);
 }
 
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: rgb(185, 56, 0);
-}
+} */
+
 
 ::selection {
   background-color: rgba(99, 102, 241, 0.2);
   color: inherit;
 }
 
-/* View transitions */
+/* View transitions - Cyclone / Vortex at Center */
 ::view-transition-old(root) {
-  animation: none;
+  animation: 0.85s cubic-bezier(0.7, 0, 0.3, 1) both cyclone-old;
   z-index: 1;
+  transform-origin: 50% 50%;
 }
 
 ::view-transition-new(root) {
-  animation: 0.8s cubic-bezier(0.76, 0, 0.24, 1) both reveal-from-top-right;
-  z-index: 2;
+  animation: 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both cyclone-new;
+  z-index: 9999;
+  transform-origin: 50% 50%;
 }
 
-@keyframes reveal-from-top-right {
-  from {
-    clip-path: circle(0% at 90% 10%);
-    filter: blur(10px);
-  }
-  to {
+@keyframes cyclone-old {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
     filter: blur(0px);
+  }
+  60% {
+    opacity: 0.8;
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.15) rotate(240deg);
+    filter: blur(16px);
+  }
+}
+
+@keyframes cyclone-new {
+  0% {
+    opacity: 0;
+    clip-path: circle(0% at 50% 50%);
+    transform: scale(0.2) rotate(-240deg);
+    filter: blur(14px);
+  }
+  40% {
+    opacity: 1;
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
     clip-path: circle(150% at 50% 50%);
+    transform: scale(1) rotate(0deg);
+    filter: blur(0px);
   }
 }
 
