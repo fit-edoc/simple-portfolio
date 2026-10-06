@@ -21,10 +21,12 @@ const Contact = dynamic(() => import("./Components/contact/Contact"), {
 export default function Home() {
   return (
     <>
+    <div className="flex flex-col gap-10 ">
       <Hero />
-      <Skill />
       <Project />
+      <Skill />
       <Contact />
+    </div>
     </>
   );
 }

@@ -8,7 +8,7 @@ export function Navbar() {
   return (
     <div className="w-full fixed top-0 left-0 z-40 flex justify-center py-6 pointer-events-none">
       <nav className="nav mx-auto pointer-events-auto h-14 px-3 sm:px-4 rounded-full border dark:border-t-2 border-black/10 dark:border-white/10 flex items-center  bg-white/75 backdrop-blur-md dark:bg-zinc-950/75 dark:text-white text-black justify-between w-[310px] sm:w-[360px]">
-        <TransitionLink href="/" className="h-8 w-8 relative flex-shrink-0">
+        <TransitionLink href="/" className="h-8 w-8 relative shrink-0">
           <Image
             width={80}
             height={80}

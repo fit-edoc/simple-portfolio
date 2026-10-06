@@ -95,14 +95,14 @@ const Hero = () => {
   };
 
   return (
-    <div className="min-h-[500px] flex items-center justify-center py-12 relative overflow-hidden font-geist">
+    <div className="min-h-[500px] bg-linear-to-b  flex items-center justify-center py-12 relative overflow-hidden font-geist">
       <main className="max-w-4xl mx-auto py-16 px-6 border-x-[0.5px] border-black/10 dark:border-white/10 w-full">
         {/* Availability Badge */}
         <Work />
 
         {/* Heading */}
         <div className="flex flex-col mb-4">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-light tracking-[-0.035em] text-gray-900 dark:text-white leading-none font-geist">
+          <h1 className="text-2xl sm:text-6xl md:text-7xl font-light tracking-[-0.035em] text-gray-900 dark:text-white leading-none font-geist">
             Hi, I&apos;m{" "}
             <span className="font-normal text-black dark:text-white">
               Himanshu
@@ -142,7 +142,7 @@ const Hero = () => {
 
         {/* Bio */}
         <p className="text-base sm:text-lg font-light text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed mb-8 font-geist tracking-normal">
-        Full Stack Developer & AI Engineer based in Delhi, specializing in building scalable, high-performance web applications and AI-powered products. I work across Next.js, TypeScript, MERN, and modern AI stacks to turn complex ideas into reliable, intuitive software.
+          Full Stack Developer & AI Engineer based in Delhi, specializing in building scalable, high-performance web applications and AI-powered products. I work across Next.js, TypeScript, MERN, and modern AI stacks to turn complex ideas into reliable, intuitive software.
 
         </p>
 

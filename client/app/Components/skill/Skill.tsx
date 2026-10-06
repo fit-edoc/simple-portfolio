@@ -104,9 +104,8 @@ const Skill = () => {
                 {/* Icon Box */}
                 <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center bg-white/70 dark:bg-zinc-900/70 border border-neutral-400 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 hover:shadow-lg dark:hover:shadow-neutral-900/80 backdrop-blur-md transition-all duration-300">
                   <SkillIcon
-                    className={`text-2xl sm:text-[26px] transition-transform duration-300 ${
-                      isTailwindClass ? skill.color : ""
-                    }`}
+                    className={`text-2xl sm:text-[26px] transition-transform duration-300 ${isTailwindClass ? skill.color : ""
+                      }`}
                     style={{ color: !isTailwindClass ? skill.color : undefined }}
                   />
                 </div>

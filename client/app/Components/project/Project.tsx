@@ -26,10 +26,10 @@ const ProjectCard = ({
     >
       <div
         onClick={onSelect}
-        className="group relative cursor-pointer bg-white dark:bg-zinc-950 rounded-[2rem] overflow-hidden border border-black/8 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 hover:shadow-2xl transition-all duration-300 flex flex-col h-full p-2.5"
+        className="group relative cursor-pointer bg-white dark:bg-zinc-950 rounded overflow-hidden border border-black/8 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 hover:shadow-xl transition-all duration-300 flex flex-col h-full p-2.5"
       >
         {/* Top Image Container */}
-        <div className="relative h-60 w-full overflow-hidden rounded-[1.5rem] bg-zinc-100 dark:bg-zinc-900">
+        <div className="relative h-60 w-full overflow-hidden rounded bg-zinc-100 dark:bg-zinc-900">
           <div className="w-full h-full relative overflow-hidden transition-transform duration-500 ease-out group-hover:scale-105">
             {project.img && (
               <Image
@@ -181,7 +181,7 @@ const Project = () => {
       </div>
 
       {/* Smooth Project Details Modal */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {selectedProject && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8">
             {/* Backdrop with Smooth Fade */}
@@ -196,11 +196,11 @@ const Project = () => {
 
             {/* Modal Body with Smooth Scale & Slide (No Stretchy Distortion) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97, y: 12 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="relative bg-white dark:bg-zinc-950 rounded-2xl sm:rounded-3xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl w-full max-w-5xl z-10 max-h-[92vh] flex flex-col md:flex-row font-geist"
+              initial={{ opacity: 0, scale: 0.95, y: 16, filter: "blur(50px)" }}
+              animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 0.97, y: 12, filter: "blur(50px)" }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="relative bg-white dark:bg-zinc-950 rounded-2xl sm:rounded overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-2xl w-full max-w-5xl z-10 max-h-[92vh] flex flex-col md:flex-row font-geist"
             >
               {/* Close Button */}
               <button
@@ -265,16 +265,7 @@ const Project = () => {
                 {/* Header Info */}
                 <div className="flex flex-col mb-5 gap-2.5">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      {selectedProject.category && (
-                        <span className="text-[10px] uppercase tracking-wider font-mono text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-200/50 dark:border-indigo-500/20">
-                          {selectedProject.category}
-                        </span>
-                      )}
-                      <span className="text-[10px] font-mono text-neutral-400 dark:text-neutral-500 flex items-center gap-1">
-                        <Sparkles size={11} /> Project #{selectedProject.id}
-                      </span>
-                    </div>
+                    
 
                     {/* Header Quick Links */}
                     {selectedProject.github && (
@@ -310,7 +301,7 @@ const Project = () => {
 
                   {/* Problem Solved Card - Vibrant Sunset Gradient */}
                   {selectedProject.painPoint && (
-                    <div className="p-4 rounded-2xl bg-gradient-to-br from-rose-500/15 via-pink-500/10 to-orange-500/15 border border-rose-500/35 dark:border-rose-400/30 shadow-xs relative overflow-hidden">
+                    <div className="p-4 rounded-2xl bg-white border dark:bg-black dark:border-white shadow-xs relative overflow-hidden">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="p-1 rounded-md bg-rose-500/20 text-rose-600 dark:text-rose-300">
                           <AlertCircle size={14} />
