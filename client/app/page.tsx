@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Hero from "./Components/hero/Hero";
+import Footer from "./Components/footer/Footer";
 
 const Skill = dynamic(() => import("./Components/skill/Skill"), {
   ssr: false,
@@ -13,19 +14,16 @@ const Project = dynamic(() => import("./Components/project/Project"), {
   loading: () => <div className="min-h-[300px] flex items-center justify-center text-xs opacity-50 uppercase tracking-widest font-mono">Loading Projects...</div>
 });
 
-const Contact = dynamic(() => import("./Components/contact/Contact"), {
-  ssr: false,
-  loading: () => <div className="min-h-[300px] flex items-center justify-center text-xs opacity-50 uppercase tracking-widest font-mono">Loading Contact...</div>
-});
+
 
 export default function Home() {
   return (
     <>
-    <div className="flex flex-col gap-10 ">
+    <div className="flex flex-col gap-10">
       <Hero />
       <Project />
       <Skill />
-      <Contact />
+      <Footer />
     </div>
     </>
   );
