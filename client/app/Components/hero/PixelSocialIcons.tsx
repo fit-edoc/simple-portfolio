@@ -95,7 +95,7 @@ const socialLinks: SocialItem[] = [
   {
     id: "linkedin",
     name: "LinkedIn",
-    href: "https://linkedin.com",
+    href: "https://www.linkedin.com/in/himanshu-verma-6b4a94329/",
     icon: <PixelatedLinkedin className="w-5 h-5 sm:w-6 sm:h-6" />,
   },
 ];

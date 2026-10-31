@@ -66,7 +66,7 @@ export const Footer = () => {
               X / Twitter
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/himanshu-verma-6b4a94329/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-neutral-800 hover:text-black dark:text-neutral-200 dark:hover:text-white underline underline-offset-4 decoration-dashed decoration-neutral-400 dark:decoration-neutral-600 transition-colors select-none"
