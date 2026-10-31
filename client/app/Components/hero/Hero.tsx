@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { PixelGlassHeroBackground } from "./PixelGlassHeroBackground";
+import Dither from "../ui/Dither";
 import { PixelSocialIcons } from "./PixelSocialIcons";
 
 const Hero = () => {
@@ -29,8 +29,23 @@ const Hero = () => {
 
   return (
     <section className="w-full h-screen min-h-[640px] relative overflow-hidden bg-white text-black font-geist flex flex-col justify-end select-none">
-      {/* Motherboard SVG Circuits with Moving Pure White Light Paths */}
-      <PixelGlassHeroBackground />
+      {/* 4x4 Bayer Ordered Dithering Hero Top with Spring-Physics Hover */}
+      <div className="absolute top-0 left-0 w-full h-[52vh] sm:h-[56vh] max-h-[500px] overflow-hidden select-none z-10 pointer-events-auto">
+        <Dither
+          pixelSize={3}
+          colorFront="#00b3ff"
+          colorBack="#0a0a0a"
+          speed={1}
+          intensity={1}
+          stiffness={0.08}
+          damping={0.85}
+          repelRadius={120}
+          repelStrength={0.35}
+          className="w-full h-full"
+        />
+        {/* Subtle gradient blend to hero background */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+      </div>
 
       {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
       <div className="max-w-6xl mx-auto px-6 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">

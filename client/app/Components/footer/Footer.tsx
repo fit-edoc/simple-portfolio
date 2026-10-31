@@ -16,7 +16,7 @@ export const Footer = () => {
              ================================================================= */}
           <div className="flex items-center">
             <a
-              href="mailto:himanshuverma@gmail.com"
+              href="mailto:himanshuverma2660@gmail.com"
               className="text-xs sm:text-sm font-mono text-neutral-800 hover:text-black dark:text-neutral-200 dark:hover:text-white underline underline-offset-4 decoration-dashed decoration-neutral-400 dark:decoration-neutral-600 transition-colors select-none"
             >
               himanshuverma@gmail.com
@@ -28,7 +28,7 @@ export const Footer = () => {
              ================================================================= */}
           <div className="overflow-hidden flex items-center justify-center max-w-[280px] sm:max-w-[320px]">
             <motion.div
-              animate={{ x: [0, -180] }}
+            
               transition={{
                 repeat: Infinity,
                 ease: "linear",
@@ -37,20 +37,11 @@ export const Footer = () => {
               className="flex items-center gap-6 text-xs sm:text-sm font-mono text-neutral-600 dark:text-neutral-400 whitespace-nowrap select-none"
             >
               <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
+                <span className="w-1.5 h-1.5  border-b-4  border-black bg-black inline-block" />
                 <span>eat code sleep repeat</span>
-                <span className="opacity-50">↺</span>
+                <span className="w-1.5 h-1.5  border-b-4  border-black bg-black inline-block" />
               </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                <span>eat code sleep repeat</span>
-                <span className="opacity-50">↺</span>
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse" />
-                <span>eat code sleep repeat</span>
-                <span className="opacity-50">↺</span>
-              </span>
+             
             </motion.div>
           </div>
 
