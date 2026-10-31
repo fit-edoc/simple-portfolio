@@ -1,198 +1,95 @@
 "use client";
 
-import React, { useState } from "react";
-import Eat from "../ui/icons/Eat";
-import Sleep from "../ui/icons/Sleep";
-import Code from "../ui/icons/Code";
-import Repeat from "../ui/icons/Repeat";
-import { motion, Variants } from "motion/react";
-import Resume from "../ui/icons/Resume";
-import Talk from "../ui/icons/Talk";
-import { GithubIcon, Linkedin, X } from "lucide-react";
-import Work from "../ui/icons/Work";
-
-const iconItem = [
-  { id: 1, icons: <Eat />, tooltip: "Eat" },
-  { id: 2, icons: <Sleep />, tooltip: "Sleep" },
-  { id: 3, icons: <Code />, tooltip: "Code" },
-  { id: 4, icons: <Repeat />, tooltip: "Repeat" },
-];
-
-const socialIcon = [
-  {
-    id: 1,
-    icon: (
-      <GithubIcon
-        size={36}
-        className="border border-black/10 dark:border-white/10 rounded-full p-2 hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white transition-all duration-300 hover:scale-110"
-      />
-    ),
-    ref: "https://github.com/fit-edoc",
-    tooltip: "GitHub",
-  },
-  {
-    id: 2,
-    icon: (
-      <X
-        size={36}
-        className="border border-black/10 dark:border-white/10 rounded-full p-2 hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white transition-all duration-300 hover:scale-110"
-      />
-    ),
-    ref: "https://x.com/fitedocc",
-    tooltip: "X / Twitter",
-  },
-  {
-    id: 3,
-    icon: (
-      <Linkedin
-        size={36}
-        className="border border-black/10 dark:border-white/10 rounded-full p-2 hover:bg-black hover:text-white dark:hover:text-black dark:hover:bg-white transition-all duration-300 hover:scale-110"
-      />
-    ),
-    ref: "https://linkedin.com",
-    tooltip: "LinkedIn",
-  },
-];
+import React, { useState, useEffect } from "react";
+import { motion } from "motion/react";
+import { PixelGlassHeroBackground } from "./PixelGlassHeroBackground";
+import { PixelSocialIcons } from "./PixelSocialIcons";
 
 const Hero = () => {
-  const [current, setCurrent] = useState<{
-    id: number;
-    type: "icon" | "social";
-  } | null>(null);
+  const [time, setTime] = useState<string>("");
 
-  const handleMouse = (type: "icon" | "social", id: number) => {
-    setCurrent({ type, id });
-  };
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(
+        now.toLocaleTimeString("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        })
+      );
+    };
 
-  const container: Variants = {
-    hidden: {},
-    show: {
-      transition: {
-        repeat: Infinity,
-        repeatType: "loop",
-        staggerChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariant: Variants = {
-    hidden: {
-      opacity: 0,
-      y: 20,
-      rotate: 180,
-      filter: "blur(10px)",
-    },
-    show: {
-      opacity: 1,
-      y: 0,
-      rotate: 0,
-      filter: "blur(0px)",
-      transition: {
-        duration: 1,
-        ease: "easeOut",
-      },
-    },
-  };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="min-h-[500px] bg-linear-to-b  flex items-center justify-center py-12 relative overflow-hidden font-geist">
-      <main className="max-w-4xl mx-auto py-16 px-6 border-x-[0.5px] border-black/10 dark:border-white/10 w-full">
-        {/* Availability Badge */}
-        <Work />
+    <section className="w-full h-screen min-h-[640px] relative overflow-hidden bg-white text-black font-geist flex flex-col justify-end select-none">
+      {/* Motherboard SVG Circuits with Moving Pure White Light Paths */}
+      <PixelGlassHeroBackground />
 
-        {/* Heading */}
-        <div className="flex flex-col mb-4">
-          <h1 className="text-2xl sm:text-6xl md:text-7xl font-light tracking-[-0.035em] text-gray-900 dark:text-white leading-none font-geist">
-            Hi, I&apos;m{" "}
-            <span className="font-normal text-black dark:text-white">
-              Himanshu
-            </span>
-          </h1>
-        </div>
-
-        {/* Rotating Routine Icons */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="flex gap-4 my-6 relative"
-        >
-          {iconItem.map((item) => (
+      {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
+      <div className="max-w-6xl mx-auto px-6 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">
+        
+        {/* Bottom Content Row: Left-Aligned Text + Bottom-Right Social Icons */}
+        <div className="w-full flex flex-col md:flex-row md:items-end md:justify-between gap-6 pointer-events-auto">
+          
+          {/* Left: Hello + Name + Bio */}
+          <div className="flex flex-col items-start text-left max-w-xl lg:max-w-2xl lg:mt-5">
             <motion.div
-              key={item.id}
-              variants={itemVariant}
-              className="relative cursor-pointer"
-              onMouseEnter={() => handleMouse("icon", item.id)}
-              onMouseLeave={() => setCurrent(null)}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-start text-left w-full"
             >
-              {current?.type === "icon" && current.id === item.id && (
-                <motion.div
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-medium py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10 font-geist"
-                >
-                  {item.tooltip}
-                </motion.div>
-              )}
+              {/* Hello */}
+              <span className="text-lg sm:text-xl md:text-2xl font-medium text-neutral-700 tracking-tight block mb-1 text-left drop-shadow-[0_1px_6px_rgba(255,255,255,1)]">
+                Hello,
+              </span>
 
-              {item.icons}
+              {/* Capitalized Name in Geist Font - Tight Leading */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-neutral-950 leading-[0.95] text-left drop-shadow-[0_2px_10px_rgba(255,255,255,1)]">
+                I Am{" "}
+                <span className="font-normal text-black">
+                  Himanshu Verma
+                </span>
+              </h1>
             </motion.div>
-          ))}
-        </motion.div>
 
-        {/* Bio */}
-        <p className="text-base sm:text-lg font-light text-gray-600 dark:text-gray-400 max-w-2xl leading-relaxed mb-8 font-geist tracking-normal">
-          Full Stack Developer & AI Engineer based in Delhi, specializing in building scalable, high-performance web applications and AI-powered products. I work across Next.js, TypeScript, MERN, and modern AI stacks to turn complex ideas into reliable, intuitive software.
-
-        </p>
-
-        {/* Social Links & CTA Buttons */}
-        <div className="flex flex-wrap items-center gap-6">
-          <div className="flex gap-2.5">
-            {socialIcon.map((item) => (
-              <a
-                key={item.id}
-                className="relative flex items-center justify-center"
-                onMouseEnter={() => handleMouse("social", item.id)}
-                onMouseLeave={() => setCurrent(null)}
-                href={item.ref}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {current?.type === "social" && current.id === item.id && (
-                  <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-black text-white text-[10px] uppercase tracking-wider font-medium py-1 px-2.5 rounded-md dark:bg-white dark:text-black whitespace-nowrap z-20 shadow-md border border-white/10 dark:border-black/10 font-geist"
-                  >
-                    {item.tooltip}
-                  </motion.div>
-                )}
-                {item.icon}
-              </a>
-            ))}
-          </div>
-
-          <div className="flex gap-3">
-            <a
-              href="https://drive.google.com/file/d/12SvqJxIUXk_HxkMI3ay5ukI-ruQt-OTy/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center"
+            {/* About Me Bio */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-3 sm:mt-4 md:mt-6 text-left w-full"
             >
-              <button className="px-5 py-2 text-sm font-medium font-geist rounded-full border border-black/15 bg-white text-black hover:bg-black hover:text-white dark:border-white/15 dark:bg-zinc-950 dark:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center gap-1.5 shadow-sm cursor-pointer">
-                <Resume />
-              </button>
-            </a>
-            <a href="mailto:himanshuverma2660@gmail.com">
-              <button className="flex items-center gap-2 justify-center px-5 py-2 text-sm font-medium font-geist text-white bg-neutral-950 hover:bg-neutral-800 rounded-full transition-all duration-300 shadow-md cursor-pointer">
-                Connect with <Talk />
-              </button>
-            </a>
+              <p className="text-xs sm:text-sm md:text-xl font-normal text-neutral-800 leading-snug text-left tracking-normal max-w-xl drop-shadow-[0_1px_6px_rgba(255,255,255,1)]">
+                Full Stack Developer & AI Engineer based in Delhi, specializing in building high-performance, scalable web applications and intelligent digital experiences. Working with Next.js, TypeScript, modern backend architectures, and AI integrations.
+              </p>
+            </motion.div>
           </div>
+
+          {/* Right: India & Timezone + Pixelated Social Icons */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="shrink-0 flex flex-col items-start md:items-end justify-end gap-3 pb-1"
+          >
+            {/* India & Timezone (Normal Text with Dashed Underline, No Badge) */}
+            <span className="text-xs sm:text-sm font-mono text-neutral-800 dark:text-neutral-200 underline underline-offset-4 decoration-dashed decoration-neutral-400 dark:decoration-neutral-600 cursor-default select-none">
+              India, {time ? `${time} IST` : "IST"}
+            </span>
+
+            <PixelSocialIcons />
+          </motion.div>
         </div>
-      </main>
-    </div>
+      </div>
+    </section>
   );
 };
 
