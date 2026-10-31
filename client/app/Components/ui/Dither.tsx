@@ -132,6 +132,17 @@ export default function Dither({
     vy: 0,
   });
 
+  // Dynamic color ref allows instant prop color swaps without tearing down the canvas context
+  const colorsRef = useRef({
+    front: parseColorToUint32(colorFront),
+    back: parseColorToUint32(colorBack),
+  });
+
+  useEffect(() => {
+    colorsRef.current.front = parseColorToUint32(colorFront);
+    colorsRef.current.back = parseColorToUint32(colorBack);
+  }, [colorFront, colorBack]);
+
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
@@ -150,10 +161,6 @@ export default function Dither({
     let animId = 0;
     let isReadyFired = false;
     let lastTime = performance.now();
-
-    // Parse color values to 32-bit packed integers
-    let frontUint32 = parseColorToUint32(colorFront);
-    let backUint32 = parseColorToUint32(colorBack);
 
     // Track active dimensions
     let containerWidth = 0;
@@ -243,6 +250,9 @@ export default function Dither({
 
       const dt = Math.min((timeNow - lastTime) / 1000, 0.05);
       lastTime = timeNow;
+
+      const frontUint32 = colorsRef.current.front;
+      const backUint32 = colorsRef.current.back;
 
       // Update spring hover physics
       const targetX = mouseStateRef.current.active
@@ -346,8 +356,6 @@ export default function Dither({
     };
   }, [
     pixelSize,
-    colorFront,
-    colorBack,
     speed,
     intensity,
     stiffness,

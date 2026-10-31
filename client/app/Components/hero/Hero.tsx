@@ -5,8 +5,37 @@ import { motion } from "motion/react";
 import Dither from "../ui/Dither";
 import { PixelSocialIcons } from "./PixelSocialIcons";
 
+// Curated high-aesthetic retro & cyber palette for dynamic Bayer dithering
+const DITHER_PALETTE = [
+  "#00ff66", // Cyber Phosphor Green
+  "#00b3ff", // Electric Cyan
+  "#ff007f", // Hot Neon Magenta
+  "#ff9500", // Retro Amber
+  "#a855f7", // Electric Purple
+  "#00f0ff", // Neon Aquamarine
+  "#ff2e93", // Vibrant Hot Pink
+  "#10b981", // Emerald
+  "#eab308", // Vivid Gold
+  "#06b6d4", // Bright Teal
+];
+
 const Hero = () => {
   const [time, setTime] = useState<string>("");
+  const [ditherColor, setDitherColor] = useState<string>(DITHER_PALETTE[0]);
+
+  // Pick a distinct color on mount/render and cycle through the palette
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * DITHER_PALETTE.length);
+    setDitherColor(DITHER_PALETTE[randomIndex]);
+
+    let currentIndex = randomIndex;
+    const colorInterval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % DITHER_PALETTE.length;
+      setDitherColor(DITHER_PALETTE[currentIndex]);
+    }, 4500);
+
+    return () => clearInterval(colorInterval);
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
@@ -33,7 +62,7 @@ const Hero = () => {
       <div className="absolute top-0 left-0 w-full h-[52vh] sm:h-[56vh] max-h-[500px] overflow-hidden select-none z-10 pointer-events-auto">
         <Dither
           pixelSize={3}
-          colorFront="#00ff66"
+          colorFront={ditherColor}
           colorBack="#0a0a0a"
           speed={1}
           intensity={1}
