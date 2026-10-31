@@ -33,7 +33,7 @@ const Hero = () => {
       <div className="absolute top-0 left-0 w-full h-[52vh] sm:h-[56vh] max-h-[500px] overflow-hidden select-none z-10 pointer-events-auto">
         <Dither
           pixelSize={3}
-          colorFront="#00b3ff"
+          colorFront="#00ff66"
           colorBack="#0a0a0a"
           speed={1}
           intensity={1}
