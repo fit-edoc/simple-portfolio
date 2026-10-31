@@ -16,7 +16,7 @@ const TechShape = () => {
     });
 
     return (
-        <Float speed={2} rotationIntensity={1.5} floatIntensity={2}>
+        <Float speed={2} rotationIntensity={1.5}  floatIntensity={2}>
             <Icosahedron args={[1, 15]} ref={meshRef} scale={2.5}>
                 <MeshDistortMaterial
                     color="#4F46E5" // Indigo-600, you can change this to match theme
