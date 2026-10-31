@@ -1,22 +1,24 @@
-import { ThemeProvider } from "./Components/common/ThemeProvider";
-import { Navbar } from "./Components/Nav";
 import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
 
+import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import type { Metadata } from 'next';
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 const youngSerif = localFont({
   src: '../public/ok.ttf',
   variable: '--font-heading',
   weight: '400',
-});
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -90,7 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${youngSerif.variable} ${plusJakartaSans.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300 relative`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${youngSerif.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300 relative`}>
         {/* Grain overlay */}
         {/* <div className="grain-overlay pointer-events-none" /> */}
 
@@ -100,12 +102,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="absolute bottom-[-10%] right-[-15%] w-[60vw] h-[60vw] rounded-full bg-gradient-to-br from-blue-500/15 via-purple-500/10 to-indigo-500/5 blur-[120px] dark:from-blue-600/10 dark:via-purple-600/5 dark:to-transparent" />
         </div> */}
 
-        <ThemeProvider>
+      
 
           <SmoothScroll />
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
-        </ThemeProvider>
+    
       </body>
     </html>
   );
