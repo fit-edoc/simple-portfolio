@@ -64,7 +64,7 @@ const Hero = () => {
           pixelSize={3}
           colorFront={ditherColor}
           colorBack="#0a0a0a"
-          speed={1}
+          speed={0.1}
           intensity={1}
           stiffness={0.08}
           damping={0.85}
@@ -73,11 +73,11 @@ const Hero = () => {
           className="w-full h-full"
         />
         {/* Subtle gradient blend to hero background */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-white  backdrop-blur-3xl to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-[50vh] w-full bg-linear-to-t from-white/30 to-transparent  pointer-events-none" />
       </div>
 
       {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
-      <div className="max-w-6xl mx-auto px-6 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">
+      <div className="max-w-6xl mx-auto px-6 md:py-4 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">
         
         {/* Bottom Content Row: Left-Aligned Text + Bottom-Right Social Icons */}
         <div className="w-full flex flex-col md:flex-row md:items-end md:justify-between gap-6 pointer-events-auto">
