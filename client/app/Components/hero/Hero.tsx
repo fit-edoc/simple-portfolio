@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import Dither from "../ui/Dither";
 import { PixelSocialIcons } from "./PixelSocialIcons";
 
@@ -19,8 +19,15 @@ const DITHER_PALETTE = [
   "#06b6d4", // Bright Teal
 ];
 
+interface TimeData {
+  hoursMinutes: string;
+  tensDigit: string;
+  onesDigit: string;
+  period: string;
+}
+
 const Hero = () => {
-  const [time, setTime] = useState<string>("");
+  const [timeData, setTimeData] = useState<TimeData | null>(null);
   const [ditherColor, setDitherColor] = useState<string>(DITHER_PALETTE[0]);
 
   // Pick a distinct color on mount/render and cycle through the palette
@@ -40,15 +47,26 @@ const Hero = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setTime(
-        now.toLocaleTimeString("en-US", {
-          timeZone: "Asia/Kolkata",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: true,
-        })
-      );
+      const formatted = now.toLocaleTimeString("en-US", {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      });
+
+      const [timeStr, period] = formatted.split(" ");
+      if (timeStr) {
+        const [hh, mm, ss] = timeStr.split(":");
+        if (hh && mm && ss) {
+          setTimeData({
+            hoursMinutes: `${hh}:${mm}:`,
+            tensDigit: ss[0] || "0",
+            onesDigit: ss[1] || "0",
+            period: period || "",
+          });
+        }
+      }
     };
 
     updateTime();
@@ -66,8 +84,8 @@ const Hero = () => {
           colorBack="#0a0a0a"
           speed={0.1}
           intensity={1}
-          stiffness={0.08}
-          damping={0.85}
+         
+        
           repelRadius={120}
           repelStrength={0.35}
           className="w-full h-full"
@@ -77,7 +95,7 @@ const Hero = () => {
       </div>
 
       {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
-      <div className="max-w-6xl mx-auto px-6 md:py-4 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">
+      <div className="max-w-6xl mx-auto px-6 md:py-2 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">
         
         {/* Bottom Content Row: Left-Aligned Text + Bottom-Right Social Icons */}
         <div className="w-full flex flex-col md:flex-row md:items-end md:justify-between gap-6 pointer-events-auto">
@@ -124,9 +142,56 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="shrink-0 flex flex-col items-start md:items-end justify-end gap-3 pb-1"
           >
-            {/* India & Timezone (Normal Text with Dashed Underline, No Badge) */}
-            <span className="text-xs sm:text-sm font-mono text-neutral-800 dark:text-neutral-200 underline underline-offset-4 decoration-dashed decoration-neutral-400 dark:decoration-neutral-600 cursor-default select-none">
-              India, {time ? `${time} IST` : "IST"}
+            {/* India & Timezone (Normal Text with Dashed Underline, Stopwatch Seconds Roll) */}
+            <span className="text-xs sm:text-sm font-mono text-neutral-800 dark:text-neutral-200 underline underline-offset-4 decoration-dashed decoration-neutral-400 dark:decoration-neutral-600 cursor-default select-none inline-flex items-center">
+              <span>India,&nbsp;</span>
+              {timeData ? (
+                <span className="inline-flex items-center">
+                  <span>{timeData.hoursMinutes}</span>
+
+                  {/* Stopwatch Tens of Seconds Digit Reel */}
+                  <span className="inline-block relative overflow-hidden h-[1.3em] w-[1ch] text-center leading-[1.3em] align-baseline">
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      <motion.span
+                        key={timeData.tensDigit}
+                        initial={{ y: "100%", opacity: 0.2 }}
+                        animate={{ y: "0%", opacity: 1 }}
+                        exit={{ y: "-100%", opacity: 0.2 }}
+                        transition={{
+                          duration: 0.32,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="inline-block tabular-nums"
+                      >
+                        {timeData.tensDigit}
+                      </motion.span>
+                    </AnimatePresence>
+                  </span>
+
+                  {/* Stopwatch Ones of Seconds Digit Reel */}
+                  <span className="inline-block relative overflow-hidden h-[1.3em] w-[1ch] text-center leading-[1.3em] align-baseline">
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      <motion.span
+                        key={timeData.onesDigit}
+                        initial={{ y: "100%", opacity: 0.2 }}
+                        animate={{ y: "0%", opacity: 1 }}
+                        exit={{ y: "-100%", opacity: 0.2 }}
+                        transition={{
+                          duration: 0.26,
+                          ease: [0.22, 1, 0.36, 1],
+                        }}
+                        className="inline-block tabular-nums"
+                      >
+                        {timeData.onesDigit}
+                      </motion.span>
+                    </AnimatePresence>
+                  </span>
+
+                  <span>&nbsp;{timeData.period}&nbsp;IST</span>
+                </span>
+              ) : (
+                <span>IST</span>
+              )}
             </span>
 
             <PixelSocialIcons />
