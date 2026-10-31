@@ -1,134 +1,124 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import {
-  FaReact,
-  FaNodeJs,
-  FaGitAlt,
-  FaDocker,
-  FaPython,
-} from "react-icons/fa";
-import { IconType } from "react-icons";
-import {
+  CategoryKeysCanvas,
+  HeroIconCanvas,
+  CATEGORIZED_TECHS,
+  TechItem,
+} from "./KeycapKeyboard";
 
-  SiTypescript,
-  SiMongodb,
-  SiTailwindcss,
-  SiNextdotjs,
-  SiPostgresql,
-  SiOpenai,
-  SiHuggingface,
-  SiFastapi,
-  SiPytorch,
-  SiLangchain,
-  SiRedis,
-  SiJavascript,
-} from "react-icons/si";
+type CategoryKey = "Frontend" | "Backend" | "Infra & Deployment" | "Tools";
 
-interface SkillItem {
-  name: string;
-  category: "AI & ML" | "Frontend" | "Backend & DB" | "DevOps & Tools";
-  icon: IconType;
-  color: string;
-}
-
-const skills: SkillItem[] = [
-  // AI & ML Stack
-  { name: "OpenAI / LLMs", category: "AI & ML", icon: SiOpenai, color: "#10A37F" },
-  { name: "LangChain", category: "AI & ML", icon: SiLangchain, color: "#1C3C3C" },
-  { name: "Hugging Face", category: "AI & ML", icon: SiHuggingface, color: "#FFA000" },
-  { name: "PyTorch", category: "AI & ML", icon: SiPytorch, color: "#EE4C2C" },
-  { name: "Python", category: "AI & ML", icon: FaPython, color: "#3776AB" },
-  { name: "FastAPI", category: "AI & ML", icon: SiFastapi, color: "#009688" },
-
-  // Frontend Stack
-  { name: "Next.js", category: "Frontend", icon: SiNextdotjs, color: "text-neutral-900 dark:text-white" },
-  { name: "React", category: "Frontend", icon: FaReact, color: "#61DAFB" },
-  { name: "TypeScript", category: "Frontend", icon: SiTypescript, color: "#3178C6" },
-  { name: "JavaScript", category: "Frontend", icon: SiJavascript, color: "#F7DF1E" },
-  { name: "Tailwind CSS", category: "Frontend", icon: SiTailwindcss, color: "#06B6D4" },
-
-  // Backend & Database
-  { name: "Node.js", category: "Backend & DB", icon: FaNodeJs, color: "#339933" },
-  { name: "PostgreSQL", category: "Backend & DB", icon: SiPostgresql, color: "#4169E1" },
-  { name: "MongoDB", category: "Backend & DB", icon: SiMongodb, color: "#47A248" },
-  { name: "Redis", category: "Backend & DB", icon: SiRedis, color: "#DC382D" },
-
-  // DevOps & Tooling
-  { name: "Docker", category: "DevOps & Tools", icon: FaDocker, color: "#2496ED" },
-  { name: "Git", category: "DevOps & Tools", icon: FaGitAlt, color: "#F05032" },
+const CATEGORIES: CategoryKey[] = [
+  "Frontend",
+  "Backend",
+  "Infra & Deployment",
+  "Tools",
 ];
 
 const Skill = () => {
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<CategoryKey>("Frontend");
+  const [selectedTech, setSelectedTech] = useState<TechItem>(
+    CATEGORIZED_TECHS["Frontend"][0]
+  );
+
+  // When category changes, set active tech to the first key in that category
+  const handleCategoryChange = (category: CategoryKey) => {
+    setActiveCategory(category);
+    setSelectedTech(CATEGORIZED_TECHS[category][0]);
+  };
 
   return (
-    <section className="py-16 w-full overflow-hidden bg-transparent relative font-geist">
-      <div className="max-w-4xl mx-auto px-6 border-x-[0.5px] border-black/10 dark:border-white/10">
+    <section
+      className="py-20 sm:py-0 w-full overflow-hidden bg-transparent relative font-geist"
+      id="skills"
+    >
+      <div className="max-w-6xl mx-auto px-6 border-x-[0.5px] border-black/10 dark:border-white/10">
+        
+        {/* ===================================================================
+            SECTION HEADER
+           =================================================================== */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-12"
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12 pb-6 border-b border-neutral-200/60 dark:border-neutral-800/60"
         >
-          <h2 className="text-3xl sm:text-4xl font-light tracking-tight mb-3 text-neutral-900 dark:text-white">
-            Technical & AI Stack
-          </h2>
-          <p className="text-base font-light text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-2xl">
-            Core technologies, AI frameworks, and development tooling I utilize to build modern, intelligent, and scalable applications.
+          <div className="flex flex-col items-start text-left">
+            
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-[-0.035em] text-neutral-950 dark:text-white leading-[1.05]">
+              Technical Stack
+            </h2>
+          </div>
+
+          <p className="text-xs sm:text-sm font-normal text-neutral-500 dark:text-neutral-400 max-w-md text-left md:text-right leading-relaxed">
+            A curated set of technologies, frameworks, and cloud tooling I use to design, build, and deploy production-grade software and scalable digital systems.
           </p>
         </motion.div>
 
-        {/* Icon Grid */}
-        <div className="flex flex-wrap gap-3 sm:gap-3.5">
-          {skills.map((skill, index) => {
-            const SkillIcon = skill.icon;
-            const isTailwindClass = skill.color.startsWith("text-");
-            const isHovered = hoveredSkill === skill.name;
+        {/* ===================================================================
+            CATEGORY TABS (Frontend, Backend, Infra & Deployment, Tools)
+           =================================================================== */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-8">
+          {CATEGORIES.map((category) => {
+            const isActive = activeCategory === category;
+            const count = CATEGORIZED_TECHS[category].length;
 
             return (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, scale: 0.85 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: index * 0.025 }}
-                whileHover={{ y: -4, scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                onMouseEnter={() => setHoveredSkill(skill.name)}
-                onMouseLeave={() => setHoveredSkill(null)}
-                className="relative cursor-pointer"
+              <button
+                key={category}
+                onClick={() => handleCategoryChange(category)}
+                className={`px-4 py-1.5 rounded-lg text-xs sm:text-sm font-mono tracking-tight transition-all duration-200 cursor-pointer flex items-center gap-2 border ${
+                  isActive
+                    ? "bg-black text-white dark:bg-white dark:text-black border-black dark:border-white shadow-md"
+                    : "bg-neutral-100 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600"
+                }`}
               >
-                {/* Icon Box */}
-                <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center bg-white/70 dark:bg-zinc-900/70 border border-neutral-400 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 hover:shadow-lg dark:hover:shadow-neutral-900/80 backdrop-blur-md transition-all duration-300">
-                  <SkillIcon
-                    className={`text-2xl sm:text-[26px] transition-transform duration-300 ${isTailwindClass ? skill.color : ""
-                      }`}
-                    style={{ color: !isTailwindClass ? skill.color : undefined }}
-                  />
-                </div>
-
-                {/* Animated Tooltip on Hover */}
-                <AnimatePresence>
-                  {isHovered && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.92 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 4, scale: 0.95 }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="absolute -top-10 left-1/2 -translate-x-1/2 bg-neutral-950 text-white dark:bg-white dark:text-neutral-950 text-[11px] font-medium tracking-tight py-1 px-2.5 rounded-lg shadow-xl pointer-events-none whitespace-nowrap z-30 flex items-center gap-1.5 border border-white/10 dark:border-black/10"
-                    >
-                      <span>{skill.name}</span>
-                      <span className="text-[9px] opacity-60 font-mono">({skill.category})</span>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
+                <span>{category}</span>
+                <span
+                  className={`text-[10px] px-1.5 py-0.2 rounded ${
+                    isActive
+                      ? "bg-white/20 dark:bg-black/20 text-white dark:text-black"
+                      : "bg-neutral-200 dark:bg-neutral-800 text-neutral-500"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
             );
           })}
         </div>
+
+        {/* ===================================================================
+            SPLIT LAYOUT:
+            LEFT: Available 3D Category Keycaps (Small smooth keys, clickable)
+            RIGHT: Just Show the Icon (Hero Keycap / Icon Showcase)
+           =================================================================== */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch"
+        >
+          {/* Left: Available Keys in Category (58% width on desktop) */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            <CategoryKeysCanvas
+              category={activeCategory}
+              onSelectTech={(tech) => setSelectedTech(tech)}
+              selectedTech={selectedTech}
+            />
+          </div>
+
+          {/* Right: Just Show the Icon (42% width on desktop) */}
+          <div className="lg:col-span-5 flex flex-col justify-center">
+            <HeroIconCanvas tech={selectedTech} />
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );
