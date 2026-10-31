@@ -32,7 +32,7 @@ const Hero = () => {
     const colorInterval = setInterval(() => {
       currentIndex = (currentIndex + 1) % DITHER_PALETTE.length;
       setDitherColor(DITHER_PALETTE[currentIndex]);
-    }, 4500);
+    }, 5000);
 
     return () => clearInterval(colorInterval);
   }, []);
@@ -73,7 +73,7 @@ const Hero = () => {
           className="w-full h-full"
         />
         {/* Subtle gradient blend to hero background */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-white  backdrop-blur-3xl to-transparent pointer-events-none" />
       </div>
 
       {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
