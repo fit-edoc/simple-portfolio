@@ -243,7 +243,7 @@ const ProjectRow: React.FC<ProjectRowProps> = ({
         >
           <div className="max-w-xl xl:max-w-2xl">
             {/* Project Description (Quotation-like editorial treatment through typography and spacing) */}
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-[25px] font-normal text-neutral-800 dark:text-neutral-200 leading-[1.5] sm:leading-[1.55] tracking-[-0.015em]">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-[25px] font-normal text-neutral-800 dark:text-neutral-200 leading-normal sm:leading-relaxed md:leading-tight tracking-[-0.015em]">
               {project.description}
             </p>
 
@@ -280,7 +280,7 @@ const Project = () => {
 
   return (
     <section
-      className="w-full py-20 sm:py-28 md:py-36 bg-transparent text-foreground relative font-geist"
+      className="w-full  py-10 sm:py-28 md:py-36 bg-transparent text-foreground relative font-geist"
       id="projects"
     >
       {/* Full-Width Fluid Container with Generous Studio Padding */}
@@ -289,7 +289,7 @@ const Project = () => {
         {/* ===================================================================
             SECTION HEADER: MINIMAL & EDITORIAL
            =================================================================== */}
-        <header className="w-full mb-16 sm:mb-24 md:mb-28 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-neutral-200/60 dark:border-neutral-800/60">
+        <header className="w-full  sm:mb-24 md:mb-28 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-neutral-200/60 dark:border-neutral-800/60">
           <div>
             
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-[-0.035em] text-neutral-950 dark:text-white leading-[1.05]">

@@ -95,18 +95,18 @@ const Hero = () => {
       </div>
 
       {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
-      <div className="max-w-6xl mx-auto px-6 md:py-2 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">
+      <div className="max-w-6xl py-2 mx-auto px-6 md:py-2 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pb-8 sm:pb-12 pointer-events-none">
         
         {/* Bottom Content Row: Left-Aligned Text + Bottom-Right Social Icons */}
-        <div className="w-full flex flex-col md:flex-row md:items-end md:justify-between gap-6 pointer-events-auto">
+        <div className="w-full  flex flex-col  md:flex-row md:items-end md:justify-between gap-6 pointer-events-auto">
           
           {/* Left: Hello + Name + Bio */}
-          <div className="flex flex-col items-start text-left max-w-xl lg:max-w-2xl lg:mt-5">
+          <div className="flex flex-col  items-start text-left max-w-xl lg:max-w-2xl lg:mt-5">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-start text-left w-full"
+              className="flex flex-col items-start text-left  w-full"
             >
               {/* Hello */}
               <span className="text-lg sm:text-xl md:text-2xl font-medium text-neutral-700 tracking-tight block mb-1 text-left drop-shadow-[0_1px_6px_rgba(255,255,255,1)]">
@@ -114,9 +114,9 @@ const Hero = () => {
               </span>
 
               {/* Capitalized Name in Geist Font - Tight Leading */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-neutral-950 leading-[0.95] text-left drop-shadow-[0_2px_10px_rgba(255,255,255,1)]">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-neutral-950 leading-[0.95] text-left drop-shadow-[0_2px_10px_rgba(255,255,255,1)]">
                 I Am{" "}
-                <span className="font-normal text-black">
+                <span className="font-normal text-black border-dashed border-b -py-2">
                   Himanshu Verma
                 </span>
               </h1>
@@ -129,8 +129,8 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="mt-3 sm:mt-4 md:mt-6 text-left w-full"
             >
-              <p className="text-xs sm:text-sm md:text-xl font-normal text-neutral-800 leading-snug text-left tracking-normal max-w-xl drop-shadow-[0_1px_6px_rgba(255,255,255,1)]">
-                Full Stack Developer & AI Engineer based in Delhi, specializing in building high-performance, scalable web applications and intelligent digital experiences. Working with Next.js, TypeScript, modern backend architectures, and AI integrations.
+              <p className="text-md sm:text-sm md:text-xl font-normal text-neutral-800 leading-snug text-left tracking-normal max-w-xl drop-shadow-[0_1px_6px_rgba(255,255,255,1)]">
+    Full Stack Developer who is passionate about building AI-powered products from idea to launch. I turn real problems into fast, reliable web apps using Next.js, TypeScript, and LLM integrations.
               </p>
             </motion.div>
           </div>

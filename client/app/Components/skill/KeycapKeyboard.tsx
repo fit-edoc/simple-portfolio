@@ -164,9 +164,9 @@ export const CATEGORIZED_TECHS: Record<
       name: "WebGL / Three.js",
       shortLabel: "3D",
       category: "Tools",
-      color: "#ff2d87", // Vibrant pink matching reference image!
+      color: "#ff2d87",
       textColor: "#000000",
-      iconType: "globe", // Pixel globe matching user's image!
+      iconType: "globe",
     },
     {
       id: "figma",
@@ -207,22 +207,72 @@ export const CATEGORIZED_TECHS: Record<
   ],
 };
 
-// Generate 512x512 High-Res Texture with XL Inner Dish Border Radius & Bold Pixel Art Icon
+// ============================================================================
+// SINGLETON TEXTURE & GEOMETRY CACHES (PREVENTS GPU MEMORY LEAKS & CRASHES)
+// ============================================================================
+const textureCache = new Map<string, THREE.CanvasTexture>();
+let cachedSmallKeyGeom: THREE.BufferGeometry | null = null;
+let cachedHeroKeyGeom: THREE.BufferGeometry | null = null;
+let sharedAudioCtx: AudioContext | null = null;
+
+// Procedural Keycap Geometry with Concave Ergonomic Dish
+function createKeycapGeometry(size: number, height: number): THREE.BufferGeometry {
+  const geom = new THREE.BoxGeometry(size, height, size, 8, 8, 8);
+  const pos = geom.attributes.position;
+
+  for (let i = 0; i < pos.count; i++) {
+    let x = pos.getX(i);
+    let y = pos.getY(i);
+    let z = pos.getZ(i);
+
+    const normY = (y + height / 2) / height;
+    const taper = 1.12 - normY * 0.28;
+    x *= taper;
+    z *= taper;
+
+    if (y > height * 0.42) {
+      const dist = Math.sqrt(x * x + z * z);
+      const dish = Math.max(0, 0.06 * (1 - Math.min(1, (dist / (size * 0.5)) ** 2)));
+      y -= dish;
+    }
+
+    pos.setXYZ(i, x, y, z);
+  }
+
+  geom.computeVertexNormals();
+  return geom;
+}
+
+function getSmallKeycapGeometry(): THREE.BufferGeometry {
+  if (!cachedSmallKeyGeom) {
+    cachedSmallKeyGeom = createKeycapGeometry(1.2, 0.52);
+  }
+  return cachedSmallKeyGeom;
+}
+
+function getHeroKeycapGeometry(): THREE.BufferGeometry {
+  if (!cachedHeroKeyGeom) {
+    cachedHeroKeyGeom = createKeycapGeometry(1.65, 0.75);
+  }
+  return cachedHeroKeyGeom;
+}
+
+// Draw 320x320 Crisp Canvas Texture for Keycap
 export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 320;
+  canvas.height = 320;
   const ctx = canvas.getContext("2d");
 
   if (ctx) {
-    // 1. Keycap Base Color
+    // 1. Base Color
     ctx.fillStyle = tech.color;
-    ctx.fillRect(0, 0, 512, 512);
+    ctx.fillRect(0, 0, 320, 320);
 
-    // 2. XL Inner Border Radius Dish (Matches reference photo)
-    const margin = 32;
-    const size = 512 - margin * 2;
-    const xlRadius = 76; // XL curvature on inner dish
+    // 2. XL Inner Dish Radius
+    const margin = 20;
+    const size = 320 - margin * 2;
+    const xlRadius = 48;
 
     ctx.save();
     ctx.beginPath();
@@ -243,8 +293,8 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
     ctx.closePath();
     ctx.clip();
 
-    // Dish Radial Lighting (Simulates concave ergonomic keycap scoop)
-    const dishGrad = ctx.createRadialGradient(256, 256, 50, 256, 256, 240);
+    // Radial Lighting Scoop
+    const dishGrad = ctx.createRadialGradient(160, 160, 30, 160, 160, 150);
     dishGrad.addColorStop(0, "rgba(255, 255, 255, 0.22)");
     dishGrad.addColorStop(0.65, "rgba(255, 255, 255, 0.03)");
     dishGrad.addColorStop(0.88, "rgba(0, 0, 0, 0.12)");
@@ -252,20 +302,20 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
     ctx.fillStyle = dishGrad;
     ctx.fill();
 
-    // Inner Dish Rim Stroke with XL Radius
-    ctx.lineWidth = 14;
+    // Rim Stroke
+    ctx.lineWidth = 10;
     ctx.strokeStyle = "rgba(0, 0, 0, 0.2)";
     ctx.stroke();
 
-    ctx.lineWidth = 6;
+    ctx.lineWidth = 4;
     ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
     ctx.stroke();
 
-    // 3. Draw Crisp Center Pixel Glyph
+    // 3. Pixel Glyph
     ctx.fillStyle = tech.textColor;
-    const cx = 256;
-    const cy = 256;
-    const s = 13.5; // pixel unit scale
+    const cx = 160;
+    const cy = 160;
+    const s = 8.5;
 
     const drawPixelRect = (px: number, py: number, pw: number, ph: number) => {
       ctx.fillRect(
@@ -277,7 +327,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
     };
 
     switch (tech.iconType) {
-      case "globe": // Exact Pixel Globe from the uploaded user photo!
+      case "globe":
         drawPixelRect(5, 1, 6, 1);
         drawPixelRect(3, 2, 10, 1);
         drawPixelRect(2, 3, 12, 1);
@@ -288,7 +338,6 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(3, 13, 10, 1);
         drawPixelRect(5, 14, 6, 1);
 
-        // Negative cutout continents
         ctx.fillStyle = tech.color;
         drawPixelRect(4, 3, 2, 2);
         drawPixelRect(3, 5, 3, 3);
@@ -300,7 +349,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(10, 9, 2, 3);
         break;
 
-      case "react": // Atom
+      case "react":
         drawPixelRect(7, 7, 2, 2);
         drawPixelRect(4, 4, 8, 1);
         drawPixelRect(4, 11, 8, 1);
@@ -312,7 +361,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(12, 10, 1, 1);
         break;
 
-      case "nextjs": // N
+      case "nextjs":
         drawPixelRect(2, 2, 2, 12);
         drawPixelRect(12, 2, 2, 12);
         drawPixelRect(4, 4, 2, 2);
@@ -321,7 +370,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(10, 10, 2, 2);
         break;
 
-      case "typescript": // TS
+      case "typescript":
         drawPixelRect(2, 4, 6, 2);
         drawPixelRect(4, 6, 2, 7);
         drawPixelRect(9, 4, 5, 2);
@@ -331,7 +380,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(9, 11, 5, 2);
         break;
 
-      case "tailwind": // Wind
+      case "tailwind":
         drawPixelRect(2, 7, 3, 2);
         drawPixelRect(5, 5, 4, 2);
         drawPixelRect(9, 5, 2, 2);
@@ -341,7 +390,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(11, 11, 3, 2);
         break;
 
-      case "javascript": // JS
+      case "javascript":
         drawPixelRect(4, 4, 2, 7);
         drawPixelRect(2, 9, 2, 2);
         drawPixelRect(3, 11, 3, 2);
@@ -352,7 +401,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(9, 11, 5, 2);
         break;
 
-      case "nodejs": // Hexagon
+      case "nodejs":
         drawPixelRect(5, 2, 6, 2);
         drawPixelRect(2, 4, 2, 8);
         drawPixelRect(12, 4, 2, 8);
@@ -362,7 +411,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(9, 6, 2, 4);
         break;
 
-      case "postgresql": // Database / Elephant
+      case "postgresql":
         drawPixelRect(3, 3, 8, 2);
         drawPixelRect(2, 5, 10, 6);
         drawPixelRect(12, 6, 2, 5);
@@ -370,28 +419,28 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(8, 11, 2, 3);
         break;
 
-      case "mongodb": // Leaf
+      case "mongodb":
         drawPixelRect(7, 2, 2, 3);
         drawPixelRect(5, 5, 6, 6);
         drawPixelRect(6, 11, 4, 3);
         drawPixelRect(7, 4, 2, 8);
         break;
 
-      case "redis": // Stacked
+      case "redis":
         drawPixelRect(4, 3, 8, 2);
         drawPixelRect(3, 5, 10, 2);
         drawPixelRect(4, 8, 8, 2);
         drawPixelRect(3, 10, 10, 2);
         break;
 
-      case "fastapi": // Lightning
+      case "fastapi":
         drawPixelRect(8, 1, 4, 4);
         drawPixelRect(6, 5, 6, 3);
         drawPixelRect(4, 8, 6, 4);
         drawPixelRect(6, 12, 2, 3);
         break;
 
-      case "docker": // Whale
+      case "docker":
         drawPixelRect(5, 4, 2, 2);
         drawPixelRect(8, 4, 2, 2);
         drawPixelRect(5, 7, 2, 2);
@@ -401,7 +450,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(13, 9, 2, 2);
         break;
 
-      case "git": // Branch
+      case "git":
         drawPixelRect(3, 3, 3, 3);
         drawPixelRect(4, 6, 2, 5);
         drawPixelRect(3, 11, 3, 3);
@@ -410,7 +459,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(10, 4, 3, 3);
         break;
 
-      case "vercel": // Triangle
+      case "vercel":
         drawPixelRect(7, 2, 2, 2);
         drawPixelRect(6, 4, 4, 2);
         drawPixelRect(5, 6, 6, 2);
@@ -419,14 +468,14 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(2, 12, 12, 2);
         break;
 
-      case "linux": // Terminal
+      case "linux":
         drawPixelRect(3, 4, 2, 2);
         drawPixelRect(5, 6, 2, 2);
         drawPixelRect(3, 8, 2, 2);
         drawPixelRect(8, 10, 5, 2);
         break;
 
-      case "cicd": // Loop
+      case "cicd":
         drawPixelRect(5, 3, 6, 2);
         drawPixelRect(3, 5, 2, 6);
         drawPixelRect(11, 5, 2, 6);
@@ -435,7 +484,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(3, 11, 2, 2);
         break;
 
-      case "figma": // F
+      case "figma":
         drawPixelRect(4, 2, 4, 4);
         drawPixelRect(8, 2, 4, 4);
         drawPixelRect(4, 6, 4, 4);
@@ -443,7 +492,7 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(4, 10, 4, 4);
         break;
 
-      case "vscode": // Brackets
+      case "vscode":
         drawPixelRect(3, 4, 3, 2);
         drawPixelRect(2, 6, 2, 4);
         drawPixelRect(3, 10, 3, 2);
@@ -452,14 +501,14 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
         drawPixelRect(10, 10, 3, 2);
         break;
 
-      case "postman": // Airplane
+      case "postman":
         drawPixelRect(3, 3, 10, 2);
         drawPixelRect(5, 5, 6, 2);
         drawPixelRect(7, 7, 3, 2);
         drawPixelRect(8, 9, 2, 4);
         break;
 
-      case "ai": // Sparkle
+      case "ai":
         drawPixelRect(7, 2, 2, 4);
         drawPixelRect(7, 10, 2, 4);
         drawPixelRect(2, 7, 4, 2);
@@ -476,47 +525,36 @@ export function drawKeycapTexture(tech: TechItem): THREE.CanvasTexture {
   }
 
   const texture = new THREE.CanvasTexture(canvas);
-  texture.anisotropy = 16;
+  texture.minFilter = THREE.LinearFilter;
+  texture.magFilter = THREE.LinearFilter;
   return texture;
 }
 
-// Procedural Small Keycap Geometry (Clean, smooth, tapered mechanical switch profile)
-function createKeycapGeometry(size = 1.25, height = 0.55): THREE.BufferGeometry {
-  const geom = new THREE.BoxGeometry(size, height, size, 8, 8, 8);
-  const pos = geom.attributes.position;
-
-  for (let i = 0; i < pos.count; i++) {
-    let x = pos.getX(i);
-    let y = pos.getY(i);
-    let z = pos.getZ(i);
-
-    const normY = (y + height / 2) / height;
-
-    // Smooth mechanical taper: bottom is wider, top is narrower
-    const taper = 1.12 - normY * 0.28;
-    x *= taper;
-    z *= taper;
-
-    // Concave dish on top surface
-    if (y > height * 0.42) {
-      const dist = Math.sqrt(x * x + z * z);
-      const dish = Math.max(0, 0.06 * (1 - Math.min(1, (dist / (size * 0.5)) ** 2)));
-      y -= dish;
-    }
-
-    pos.setXYZ(i, x, y, z);
+export function getOrCreateKeycapTexture(tech: TechItem): THREE.CanvasTexture {
+  const key = `${tech.id}_${tech.color}_${tech.textColor}`;
+  let tex = textureCache.get(key);
+  if (!tex) {
+    tex = drawKeycapTexture(tech);
+    textureCache.set(key, tex);
   }
-
-  geom.computeVertexNormals();
-  return geom;
+  return tex;
 }
 
-// Synthesize tactile switch click audio
+// Reusable audio player using singleton context
 function playSwitchSound() {
   try {
-    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    const AudioContextClass =
+      window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     if (!AudioContextClass) return;
-    const ctx = new AudioContextClass();
+
+    if (!sharedAudioCtx || sharedAudioCtx.state === "closed") {
+      sharedAudioCtx = new AudioContextClass();
+    }
+    if (sharedAudioCtx.state === "suspended") {
+      sharedAudioCtx.resume();
+    }
+
+    const ctx = sharedAudioCtx;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
@@ -532,14 +570,13 @@ function playSwitchSound() {
 
     osc.start();
     osc.stop(ctx.currentTime + 0.04);
-  } catch (e) {
+  } catch {
     // Audio uninitialized or blocked
   }
 }
 
 // ============================================================================
-// LEFT CANVAS: AVAILABLE CATEGORY 3D KEYCAPS
-// Small keys, smooth, clickable with switch depression, tooltip shows ONLY name
+// LEFT CANVAS: CATEGORY 3D KEYCAPS (STABLE SINGLETON WEBGL RENDERER)
 // ============================================================================
 interface CategoryKeysCanvasProps {
   category: "Frontend" | "Backend" | "Infra & Deployment" | "Tools";
@@ -547,19 +584,33 @@ interface CategoryKeysCanvasProps {
   selectedTech: TechItem;
 }
 
+interface KeyEntity {
+  mesh: THREE.Mesh;
+  tech: TechItem;
+  velocity: number;
+  isPressed: boolean;
+  isHovered: boolean;
+  materials: THREE.MeshStandardMaterial[];
+}
+
 export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
   category,
   onSelectTech,
-  selectedTech,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoveredTech, setHoveredTech] = useState<TechItem | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  const techList = CATEGORIZED_TECHS[category];
   const onSelectRef = useRef(onSelectTech);
   onSelectRef.current = onSelectTech;
 
+  const isVisibleRef = useRef(true);
+  const deckGroupRef = useRef<THREE.Group | null>(null);
+  const plateMeshRef = useRef<THREE.Mesh | null>(null);
+  const keysRef = useRef<KeyEntity[]>([]);
+  const interactiveMeshesRef = useRef<THREE.Mesh[]>([]);
+
+  // 1. Initial WebGL Mount (EXACTLY ONCE, NEVER DESTROYED ON TAB CLICK)
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -567,17 +618,20 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
     const scene = new THREE.Scene();
     scene.background = null;
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const width = container.clientWidth || 400;
+    const height = container.clientHeight || 340;
 
     const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
-    // Isometric angle focusing on the category macropad
     camera.position.set(0, 5.8, 7.8);
     camera.lookAt(0, -0.2, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
@@ -590,7 +644,7 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
     keyLight.position.set(3, 8, 6);
     scene.add(keyLight);
 
-    const rimLight = new THREE.PointLight(0xffffff, 2.8, 20);
+    const rimLight = new THREE.PointLight(0xffffff, 2.6, 20);
     rimLight.position.set(6, 5, -4);
     scene.add(rimLight);
 
@@ -599,74 +653,22 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
     scene.add(accentLight);
 
     const deckGroup = new THREE.Group();
+    deckGroupRef.current = deckGroup;
     scene.add(deckGroup);
 
-    // Dark Switch Plate Base
-    const keyCount = techList.length;
-    const spacing = 1.45;
-    const plateWidth = keyCount * spacing + 0.6;
-    const plateDepth = 2.6;
-
-    const plateGeom = new THREE.BoxGeometry(plateWidth, 0.35, plateDepth);
+    // Dark Switch Plate Base (Reused geometry & material)
+    const plateGeom = new THREE.BoxGeometry(1, 0.35, 2.6);
     const plateMat = new THREE.MeshStandardMaterial({
-      color: "#717171",
+      color: "#606060",
       roughness: 0.8,
-      metalness: 0.75,
-      
+      metalness: 0.65,
     });
     const plateMesh = new THREE.Mesh(plateGeom, plateMat);
     plateMesh.position.y = -0.32;
+    plateMeshRef.current = plateMesh;
     deckGroup.add(plateMesh);
 
-    // Create Small 3D Keycaps
-    const keyGeom = createKeycapGeometry(1.2, 0.52);
-
-    interface KeyEntity {
-      mesh: THREE.Mesh;
-      tech: TechItem;
-      velocity: number;
-      isPressed: boolean;
-      isHovered: boolean;
-      materials: THREE.Material[];
-    }
-
-    const keys: KeyEntity[] = [];
-    const interactiveMeshes: THREE.Mesh[] = [];
-
-    techList.forEach((tech, i) => {
-      const posX = (i - (keyCount - 1) / 2) * spacing;
-      const topTexture = drawKeycapTexture(tech);
-
-      const sideMat = new THREE.MeshStandardMaterial({
-        color: tech.color,
-        roughness: 0.26,
-        metalness: 0.04,
-      });
-
-      const topMat = new THREE.MeshStandardMaterial({
-        map: topTexture,
-        roughness: 0.2,
-        metalness: 0.04,
-      });
-
-      const materials = [sideMat, sideMat, topMat, sideMat, sideMat, sideMat];
-      const mesh = new THREE.Mesh(keyGeom, materials);
-      mesh.position.set(posX, 0, 0);
-
-      deckGroup.add(mesh);
-      interactiveMeshes.push(mesh);
-
-      keys.push({
-        mesh,
-        tech,
-        velocity: 0,
-        isPressed: false,
-        isHovered: false,
-        materials,
-      });
-    });
-
-    // Pointer Raycasting for Hover & Click
+    // Pointer Raycasting
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2(-1000, -1000);
     let targetTiltX = 0;
@@ -692,16 +694,16 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
       targetTiltY = 0;
       setHoveredTech(null);
       container.style.cursor = "default";
-      keys.forEach((k) => (k.isHovered = false));
+      keysRef.current.forEach((k) => (k.isHovered = false));
     };
 
     const handleClick = () => {
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(interactiveMeshes);
+      const intersects = raycaster.intersectObjects(interactiveMeshesRef.current);
 
       if (intersects.length > 0) {
         const hit = intersects[0].object as THREE.Mesh;
-        const key = keys.find((k) => k.mesh === hit);
+        const key = keysRef.current.find((k) => k.mesh === hit);
         if (key) {
           key.isPressed = true;
           key.velocity = -6.0;
@@ -719,6 +721,7 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
       if (!container) return;
       const newW = container.clientWidth;
       const newH = container.clientHeight;
+      if (newW <= 0 || newH <= 0) return;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
@@ -726,12 +729,20 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
 
     window.addEventListener("resize", handleResize);
 
+    // Pause render loop when scrolled out of view!
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisibleRef.current = entry.isIntersecting;
+    });
+    observer.observe(container);
+
     // Animation Loop with Spring Physics
     let animId: number;
     let lastTime = performance.now();
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
+
+      if (!isVisibleRef.current) return; // ZERO CPU/GPU OVERHEAD WHEN OFFSCREEN!
 
       const now = performance.now();
       const delta = Math.min((now - lastTime) / 1000, 0.05);
@@ -741,13 +752,13 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
       deckGroup.rotation.x += (targetTiltX - deckGroup.rotation.x) * 0.08;
 
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(interactiveMeshes);
+      const intersects = raycaster.intersectObjects(interactiveMeshesRef.current);
 
       let found: TechItem | null = null;
 
       if (intersects.length > 0) {
         const hit = intersects[0].object as THREE.Mesh;
-        keys.forEach((k) => {
+        keysRef.current.forEach((k) => {
           if (k.mesh === hit) {
             k.isHovered = true;
             found = k.tech;
@@ -757,14 +768,14 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
         });
         container.style.cursor = "pointer";
       } else {
-        keys.forEach((k) => (k.isHovered = false));
+        keysRef.current.forEach((k) => (k.isHovered = false));
         container.style.cursor = "default";
       }
 
       setHoveredTech(found);
 
       // Spring physics per key
-      keys.forEach((k) => {
+      keysRef.current.forEach((k) => {
         let targetY = 0;
         if (k.isPressed) {
           targetY = -0.22;
@@ -789,39 +800,85 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener("resize", handleResize);
       container.removeEventListener("mousemove", handlePointerMove);
       container.removeEventListener("mouseleave", handlePointerLeave);
       container.removeEventListener("click", handleClick);
 
-      keys.forEach((k) => {
-        k.materials.forEach((m) => {
-          const mat = m as THREE.MeshStandardMaterial;
-          if (mat.map) mat.map.dispose();
-          mat.dispose();
-        });
-      });
-
-      keyGeom.dispose();
       plateGeom.dispose();
       plateMat.dispose();
+
       renderer.dispose();
+      renderer.forceContextLoss();
 
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
     };
-  }, [category, techList]);
+  }, []);
+
+  // 2. Lightweight Category Switch (NO WEBGL CONTEXT RECREATION)
+  useEffect(() => {
+    const deckGroup = deckGroupRef.current;
+    const plateMesh = plateMeshRef.current;
+    if (!deckGroup || !plateMesh) return;
+
+    const techList = CATEGORIZED_TECHS[category];
+    const keyGeom = getSmallKeycapGeometry();
+
+    // Clean up old keycap meshes from the group
+    keysRef.current.forEach((k) => {
+      deckGroup.remove(k.mesh);
+      k.materials.forEach((m) => m.dispose());
+    });
+    keysRef.current = [];
+    interactiveMeshesRef.current = [];
+
+    // Resize switch plate base
+    const keyCount = techList.length;
+    const spacing = 1.45;
+    const plateWidth = keyCount * spacing + 0.6;
+    plateMesh.scale.x = plateWidth;
+
+    // Build new keycaps using cached geometry and cached textures
+    techList.forEach((tech, i) => {
+      const posX = (i - (keyCount - 1) / 2) * spacing;
+      const topTexture = getOrCreateKeycapTexture(tech);
+
+      const sideMat = new THREE.MeshStandardMaterial({
+        color: tech.color,
+        roughness: 0.26,
+        metalness: 0.04,
+      });
+
+      const topMat = new THREE.MeshStandardMaterial({
+        map: topTexture,
+        roughness: 0.2,
+        metalness: 0.04,
+      });
+
+      const materials = [sideMat, sideMat, topMat, sideMat, sideMat, sideMat];
+      const mesh = new THREE.Mesh(keyGeom, materials);
+      mesh.position.set(posX, 0, 0);
+
+      deckGroup.add(mesh);
+      interactiveMeshesRef.current.push(mesh);
+
+      keysRef.current.push({
+        mesh,
+        tech,
+        velocity: 0,
+        isPressed: false,
+        isHovered: false,
+        materials,
+      });
+    });
+  }, [category]);
 
   return (
     <div className="relative w-full h-[320px] sm:h-[380px] md:h-[420px] select-none overflow-hidden rounded-2xl bg-neutral-950 border border-neutral-800 shadow-2xl">
       <div ref={containerRef} className="w-full h-full relative" />
-
-      {/* Top Left Label */}
-     
-
-      {/* Bottom Hint */}
-      
 
       {/* Floating Tooltip: ONLY SHOWS THE ICON NAME */}
       {hoveredTech && (
@@ -840,8 +897,7 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
 };
 
 // ============================================================================
-// RIGHT CANVAS: "RIGHT JUST SHOW THE ICON"
-// Hero close-up 3D Keycap matching reference photo with bold black pixel icon
+// RIGHT CANVAS: HERO 3D KEYCAP (STABLE SINGLETON WEBGL RENDERER)
 // ============================================================================
 interface HeroIconCanvasProps {
   tech: TechItem;
@@ -849,7 +905,14 @@ interface HeroIconCanvasProps {
 
 export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const meshRef = useRef<THREE.Mesh | null>(null);
+  const materialsRef = useRef<THREE.MeshStandardMaterial[]>([]);
+  const isVisibleRef = useRef(true);
+  const bounceScaleRef = useRef(1);
+  const techRef = useRef(tech);
+  techRef.current = tech;
 
+  // 1. Initial WebGL Mount (EXACTLY ONCE, NEVER DESTROYED ON TECH CLICK)
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -857,43 +920,46 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
     const scene = new THREE.Scene();
     scene.background = null;
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    const width = container.clientWidth || 320;
+    const height = container.clientHeight || 340;
 
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-    // Direct close-up perspective matching user's uploaded reference image
     camera.position.set(0, 3.4, 4.4);
     camera.lookAt(0, 0, 0);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
 
-    // Studio Lighting matching reference image (Soft Key + Sharp Rim highlight)
-    const ambient = new THREE.AmbientLight(0xffffff, 1.4);
+    // Studio Lighting
+    const ambient = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambient);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
     keyLight.position.set(2, 6, 4);
     scene.add(keyLight);
 
-    const rimLight = new THREE.PointLight(0xffffff, 3.8, 15);
+    const rimLight = new THREE.PointLight(0xffffff, 3.4, 15);
     rimLight.position.set(4, 3, -3);
     scene.add(rimLight);
 
-    const accentRim = new THREE.PointLight(0xff2d87, 2.0, 15);
+    const accentRim = new THREE.PointLight(0xff2d87, 1.8, 15);
     accentRim.position.set(-4, -1, 3);
     scene.add(accentRim);
 
-    // Hero Keycap with XL Inner Dish Radius
-    const geom = createKeycapGeometry(1.65, 0.75);
-    const topTexture = drawKeycapTexture(tech);
+    // Hero Keycap with cached geometry and texture
+    const geom = getHeroKeycapGeometry();
+    const topTexture = getOrCreateKeycapTexture(techRef.current);
 
     const sideMat = new THREE.MeshStandardMaterial({
-      color: tech.color,
+      color: techRef.current.color,
       roughness: 0.24,
       metalness: 0.04,
     });
@@ -905,10 +971,13 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
     });
 
     const materials = [sideMat, sideMat, topMat, sideMat, sideMat, sideMat];
+    materialsRef.current = materials;
+
     const keyMesh = new THREE.Mesh(geom, materials);
+    meshRef.current = keyMesh;
     scene.add(keyMesh);
 
-    // Subtle floating animation + Mouse parallax
+    // Mouse parallax
     let targetRotY = 0;
     let targetRotX = 0;
 
@@ -932,6 +1001,7 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
       if (!container) return;
       const newW = container.clientWidth;
       const newH = container.clientHeight;
+      if (newW <= 0 || newH <= 0) return;
       camera.aspect = newW / newH;
       camera.updateProjectionMatrix();
       renderer.setSize(newW, newH);
@@ -939,14 +1009,26 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
 
     window.addEventListener("resize", handleResize);
 
+    // Pause render loop when scrolled offscreen!
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisibleRef.current = entry.isIntersecting;
+    });
+    observer.observe(container);
+
     let animId: number;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
 
-      // Smooth idle floating and parallax tilt
+      if (!isVisibleRef.current) return; // ZERO CPU/GPU OVERHEAD WHEN OFFSCREEN!
+
       keyMesh.rotation.y += (targetRotY - keyMesh.rotation.y) * 0.06;
       keyMesh.rotation.x += (targetRotX - keyMesh.rotation.x) * 0.06;
+
+      // Smooth tactile bounce scale animation
+      bounceScaleRef.current += (1 - bounceScaleRef.current) * 0.12;
+      const s = bounceScaleRef.current;
+      keyMesh.scale.set(s, s, s);
 
       renderer.render(scene, camera);
     };
@@ -955,31 +1037,46 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
 
     return () => {
       cancelAnimationFrame(animId);
+      observer.disconnect();
       window.removeEventListener("resize", handleResize);
       container.removeEventListener("mousemove", handlePointerMove);
       container.removeEventListener("mouseleave", handlePointerLeave);
 
-      materials.forEach((m) => {
-        const mat = m as THREE.MeshStandardMaterial;
-        if (mat.map) mat.map.dispose();
-        mat.dispose();
-      });
-      geom.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
 
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
     };
+  }, []);
+
+  // 2. Instant Material / Texture Swap on Tech Change (ZERO WEBGL CONTEXT RECREATION)
+  useEffect(() => {
+    if (!meshRef.current || materialsRef.current.length === 0) return;
+
+    const mats = materialsRef.current;
+    const newTex = getOrCreateKeycapTexture(tech);
+
+    // Update side colors
+    for (let i = 0; i < 6; i++) {
+      if (i !== 2) {
+        mats[i].color.set(tech.color);
+      }
+    }
+    // Update top texture
+    mats[2].map = newTex;
+    mats[2].color.set("#ffffff");
+    mats[2].needsUpdate = true;
+
+    // Trigger subtle tactile pop bounce animation!
+    bounceScaleRef.current = 0.82;
   }, [tech]);
 
   return (
     <div className="relative w-full h-[320px] sm:h-[380px] md:h-[420px] select-none overflow-hidden rounded-2xl bg-neutral-950 border border-neutral-800 shadow-2xl flex flex-col items-center justify-center p-4">
       {/* 3D Hero Keycap Canvas */}
       <div ref={containerRef} className="w-full h-full relative" />
-
-     
-     
 
       {/* Bottom Name with Dashed Underline */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">

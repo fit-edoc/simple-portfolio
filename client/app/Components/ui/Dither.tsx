@@ -431,11 +431,18 @@ export default function Dither({
       }
     };
 
+    let isVisible = true;
+    const visibilityObserver = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting;
+    });
+    visibilityObserver.observe(container);
+
     // Main animation & dither computation loop
     const render = (timeNow: number) => {
       animId = requestAnimationFrame(render);
 
       if (
+        !isVisible ||
         containerWidth <= 0 ||
         containerHeight <= 0 ||
         !offscreenCanvas ||
@@ -894,6 +901,7 @@ export default function Dither({
     return () => {
       cancelAnimationFrame(animId);
       resizeObserver.disconnect();
+      visibilityObserver.disconnect();
       container.removeEventListener("mousemove", handlePointerMove);
       container.removeEventListener("mouseenter", handlePointerEnter);
       container.removeEventListener("mouseleave", handlePointerLeave);
