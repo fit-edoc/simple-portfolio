@@ -116,7 +116,7 @@ const Hero = () => {
               {/* Capitalized Name in Geist Font - Tight Leading */}
               <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-neutral-950 leading-[0.95] text-left drop-shadow-[0_2px_10px_rgba(255,255,255,1)]">
                 I Am{" "}
-                <span className="font-normal text-black border-dashed border-b -py-2">
+                <span className="font-normal text-black border-dashed border-b sm:border-none -py-2">
                   Himanshu Verma
                 </span>
               </h1>
