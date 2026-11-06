@@ -47,6 +47,14 @@ export const metadata: Metadata = {
     siteName: "Himanshu Docs",
     locale: "en_IN",
     type: "website",
+      images: [
+    {
+      url: "/portfolio.png",
+      width: 1200,
+      height: 630,
+      alt: "Himanshu Docs - Full Stack Developer Portfolio",
+    },
+  ],
   },
   twitter: {
     card: "summary_large_image",
