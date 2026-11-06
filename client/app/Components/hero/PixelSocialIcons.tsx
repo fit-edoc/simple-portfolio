@@ -84,19 +84,19 @@ const socialLinks: SocialItem[] = [
     id: "github",
     name: "GitHub",
     href: "https://github.com/fit-edoc",
-    icon: <PixelatedGithub className="w-5 h-5 sm:w-6 sm:h-6" />,
+    icon: <PixelatedGithub className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6" />,
   },
   {
     id: "x",
     name: "X / Twitter",
     href: "https://x.com/fitedocc",
-    icon: <PixelatedX className="w-5 h-5 sm:w-6 sm:h-6" />,
+    icon: <PixelatedX className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6" />,
   },
   {
     id: "linkedin",
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/himanshu-verma-6b4a94329/",
-    icon: <PixelatedLinkedin className="w-5 h-5 sm:w-6 sm:h-6" />,
+    icon: <PixelatedLinkedin className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6" />,
   },
 ];
 
@@ -104,7 +104,7 @@ export const PixelSocialIcons: React.FC<{ className?: string }> = ({ className =
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
-    <div className={`flex items-center gap-3 sm:gap-4 ${className}`}>
+    <div className={`flex items-center gap-2.5 sm:gap-3.5 ${className}`}>
       {socialLinks.map((item) => (
         <div key={item.id} className="relative flex items-center justify-center">
           <AnimatePresence>
@@ -128,7 +128,7 @@ export const PixelSocialIcons: React.FC<{ className?: string }> = ({ className =
             onMouseEnter={() => setHoveredId(item.id)}
             onMouseLeave={() => setHoveredId(null)}
             aria-label={item.name}
-            className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-neutral-200/90 shadow-sm hover:shadow-md hover:border-neutral-300 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+            className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl bg-white border border-neutral-200/90 shadow-xs hover:shadow-md hover:border-neutral-300 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
           >
             {item.icon}
           </a>
