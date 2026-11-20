@@ -5,6 +5,50 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { projects, Project as ProjectType } from "../../data/projectData";
+import { ArrowRight } from "lucide-react";
+import {
+  IconBrandNextjs,
+  IconBrandTypescript,
+  IconBrandNodejs,
+  IconBrandTailwind,
+  IconBrandMongodb,
+  IconBrandRedux,
+  IconBrandReact,
+  IconBrandPython,
+  IconBrandDocker,
+  IconBrandGit,
+  IconDatabase,
+  IconDroplet,
+  IconBolt,
+  IconCode,
+} from "@tabler/icons-react";
+
+// Helper to render crisp white line icons for tech stack items
+const renderLineIcon = (name: string, fallbackIcon?: React.ReactNode, size = 20) => {
+  const normalized = name.toLowerCase().replace(/[\s.-]/g, "");
+
+  if (normalized.includes("next")) return <IconBrandNextjs size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("typescript")) return <IconBrandTypescript size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("node")) return <IconBrandNodejs size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("tailwind")) return <IconBrandTailwind size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("mongo")) return <IconBrandMongodb size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("redux")) return <IconBrandRedux size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("react") || normalized.includes("mern")) return <IconBrandReact size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("postgres") || normalized.includes("sql") || normalized.includes("db")) return <IconDatabase size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("drizzle")) return <IconDroplet size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("fastapi") || normalized.includes("api")) return <IconBolt size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("python")) return <IconBrandPython size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("docker")) return <IconBrandDocker size={size} stroke={1.8} className="text-white shrink-0" />;
+  if (normalized.includes("git")) return <IconBrandGit size={size} stroke={1.8} className="text-white shrink-0" />;
+
+  return fallbackIcon ? (
+    <span className="text-white [&>svg]:text-white [&>svg]:fill-white shrink-0 text-base flex items-center justify-center">
+      {fallbackIcon}
+    </span>
+  ) : (
+    <IconCode size={size} stroke={1.8} className="text-white shrink-0" />
+  );
+};
 
 // ============================================================================
 // CHARACTER-BASED ROLLING TEXT COMPONENT
@@ -131,12 +175,12 @@ const ProjectRow: React.FC<ProjectRowProps> = ({
   };
 
   return (
-    <article className="w-full py-16 sm:py-24 md:py-32 lg:py-6 border-t border-neutral-200/60 dark:border-neutral-800/60 first:border-t-0">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 xl:gap-24 items-center">
+    <article className="w-full py-16 sm:py-24 md:py-32 lg:py-6 border-t border-neutral-200/60  first:border-t-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 xl:gap-24 items-stretch">
         
         {/* ===================================================================
             THUMBNAIL COLUMN:
-            Strict 1:1 Aspect Ratio + Project Name and Actions Directly Beneath
+            Live Iframe inside a square container with 30px padding and fluid heat map animation
             Desktop Order: Alternates based on index (isEven ? order-1 : order-2)
             Mobile Order: Always comes first (order 1)
            =================================================================== */}
@@ -145,125 +189,165 @@ const ProjectRow: React.FC<ProjectRowProps> = ({
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className={`w-full lg:col-span-6 xl:col-span-6 flex flex-col ${
+          className={`w-full lg:col-span-6 xl:col-span-6 flex flex-col justify-between h-full ${
             isEven ? "lg:order-1" : "lg:order-2"
           }`}
         >
-          {/* Prominent 1:1 Aspect Ratio Image */}
-          <div className="relative w-full aspect-square overflow-hidden rounded-[2px] bg-neutral-100 dark:bg-neutral-900 group/image">
-            {project.href ? (
-              <a
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full h-full relative cursor-pointer"
-                aria-label={`View live deployment of ${project.title}`}
-              >
-                {project.img && (
+          {/* Showcase 16:9 Container with 30px padding and fluid heat map background */}
+          <div className="relative w-full aspect-video overflow-hidden rounded-2xl p-4 sm:p-6 lg:p-[30px] flex items-center justify-center bg-[#05060F] shadow-2xl group/image">
+            {/* Heat Map Gradient Fluid Animation Backdrop */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+              <div className="absolute inset-0 bg-[#05060F]" />
+              
+              {/* Primary Fluid Heat Map Layer */}
+              <div
+                className="absolute -inset-[30%] opacity-90 blur-[22px] sm:blur-[26px] animate-heat-fluid-spin"
+                style={{
+                  background: `
+                    radial-gradient(circle at 18% 28%, #FF8A1F 0%, transparent 45%),
+                    radial-gradient(circle at 82% 22%, #C8641E 0%, transparent 40%),
+                    radial-gradient(circle at 50% 82%, #7A4A2E 0%, transparent 50%),
+                    radial-gradient(circle at 72% 72%, #FFB02E 0%, transparent 35%),
+                    radial-gradient(circle at 38% 62%, #FFE9A8 0%, transparent 26%),
+                    radial-gradient(circle at 8% 88%, #2A2552 0%, #14163A 55%, transparent 88%)
+                  `,
+                }}
+              />
+
+              {/* Secondary Glowing Fluid Wave Layer */}
+              <div
+                className="absolute -inset-[20%] opacity-75 blur-[20px] sm:blur-[24px] mix-blend-screen animate-heat-fluid-pulse"
+                style={{
+                  background: `
+                    radial-gradient(circle at 68% 32%, #FF8A1F 0%, transparent 42%),
+                    radial-gradient(circle at 32% 68%, #FFB02E 0%, transparent 36%),
+                    radial-gradient(circle at 50% 42%, #FFE9A8 0%, transparent 28%),
+                    radial-gradient(circle at 88% 88%, #C8641E 0%, transparent 46%)
+                  `,
+                }}
+              />
+            </div>
+
+            {/* Inner Live Iframe Container - 16:9 Desktop Viewport Preview */}
+            <a
+              href={project.href || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-10 w-full h-full rounded-xl overflow-hidden shadow-2xl bg-white dark:bg-[#05060F] border border-white/20 dark:border-white/10 cursor-pointer block"
+              aria-label={`Open live preview of ${project.title}`}
+            >
+              {project.href ? (
+                <div className="relative w-full h-full overflow-hidden">
+                  <iframe
+                    src={project.href}
+                    title={project.title}
+                    loading="lazy"
+                    tabIndex={-1}
+                    scrolling="no"
+                    className="absolute top-0 left-0 border-0 pointer-events-none select-none"
+                    style={{
+                      width: "250%",
+                      height: "250%",
+                      transform: "scale(0.4)",
+                      transformOrigin: "top left",
+                      overflow: "hidden",
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
+                  />
+                </div>
+              ) : (
+                project.img && (
                   <Image
                     src={project.img}
                     alt={project.title}
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority={index < 2}
-                    className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/image:scale-[1.025]"
+                    className="object-cover"
                   />
-                )}
-              </a>
-            ) : (
-              project.img && (
-                <Image
-                  src={project.img}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority={index < 2}
-                  className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/image:scale-[1.025]"
-                />
-              )
-            )}
+                )
+              )}
+            </a>
           </div>
 
-          {/* Project Name & Actions Placed Directly Beneath the Thumbnail */}
-          <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3 sm:gap-4">
-            {/* Project Name (text-lg, medium weight, character-roll on hover, dashed underline) */}
-            <div className="group/text inline-block border-b border-dashed border-neutral-400 dark:border-neutral-600 pb-0.5">
-              <h3 className="text-base sm:text-lg font-medium tracking-tight text-neutral-900 dark:text-neutral-100">
-                <RollingText text={project.title} />
-              </h3>
-            </div>
+          {/* Minimal Text Actions: Live Preview ↗ and Source Code ↗ directly beneath thumbnail */}
+          <div className="mt-4 sm:mt-5 flex items-center justify-between sm:justify-start gap-5 sm:gap-6 text-sm text-neutral-500 dark:text-neutral-400 min-h-[36px]">
+            {project.href && (
+              <a
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/text inline-flex items-center gap-1.5 rounded-full text-neutral-900 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors py-1 px-2.5 bg-[#f5f5f3] dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600"
+              >
+                <RollingText text="Live Preview" className="text-xs sm:text-sm font-normal" />
+                <span className="inline-block text-xs transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/text:translate-x-0.5 group-hover/text:-translate-y-0.5 opacity-70 group-hover/text:opacity-100 no-underline">
+                  ↗
+                </span>
+              </a>
+            )}
 
-            {/* Minimal Text Actions: Live Preview ↗ and Source Code ↗ with dashed underline */}
-            <div className="flex items-center gap-5 sm:gap-6 text-sm text-neutral-500 dark:text-neutral-400">
-              {project.href && (
-                <a
-                  href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/text inline-flex items-center gap-1.5 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors border-b border-dashed border-neutral-400 dark:border-neutral-600 pb-0.5"
-                >
-                  <RollingText text="Live Preview" className="text-xs sm:text-sm font-normal" />
-                  <span className="inline-block text-xs transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/text:translate-x-0.5 group-hover/text:-translate-y-0.5 opacity-70 group-hover/text:opacity-100 no-underline">
-                    ↗
-                  </span>
-                </a>
-              )}
-
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/text inline-flex items-center gap-1.5 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors border-b border-dashed border-neutral-400 dark:border-neutral-600 pb-0.5"
-                >
-                  <RollingText text="Source Code" className="text-xs sm:text-sm font-normal" />
-                  <span className="inline-block text-xs transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/text:translate-x-0.5 group-hover/text:-translate-y-0.5 opacity-70 group-hover/text:opacity-100 no-underline">
-                    ↗
-                  </span>
-                </a>
-              )}
-            </div>
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/text inline-flex items-center gap-1.5 text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors border-b border-dashed border-neutral-400 dark:border-neutral-600 pb-0.5"
+              >
+                <RollingText text="Source Code" className="text-xs sm:text-sm font-normal" />
+                <span className="inline-block text-xs transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/text:translate-x-0.5 group-hover/text:-translate-y-0.5 opacity-70 group-hover/text:opacity-100 no-underline">
+                  <ArrowRight size={20} className="inline-block"/>
+                </span>
+              </a>
+            )}
           </div>
         </motion.div>
 
         {/* ===================================================================
             PROJECT INFORMATION COLUMN:
-            Quotation-like Editorial Typography + Circular Technology Containers
+            Large Project Name + Editorial Description + Circular Technology Containers
             Desktop Order: Alternates based on index (isEven ? order-2 : order-1)
             Mobile Order: Follows thumbnail and actions (order 2)
+            Matches alignment with Left Column (Top & Bottom synchronized)
            =================================================================== */}
         <motion.div
           variants={infoVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-60px" }}
-          className={`w-full lg:col-span-6 xl:col-span-6 flex flex-col justify-center ${
+          className={`w-full lg:col-span-6 xl:col-span-6 flex flex-col justify-between h-full ${
             isEven ? "lg:order-2" : "lg:order-1"
           }`}
         >
-          <div className="max-w-xl xl:max-w-2xl">
+          {/* Top: Large Product Name + Description */}
+          <div className="max-w-xl xl:max-w-2xl flex flex-col gap-3 sm:gap-4">
+            {/* Product Title (Large, unboxed, bold editorial typography) */}
+            <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-semibold tracking-[-0.03em] text-neutral-950 dark:text-white leading-[1.1]">
+              <RollingText text={project.title} />
+            </h3>
+
             {/* Project Description (Quotation-like editorial treatment through typography and spacing) */}
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-[25px] font-normal text-neutral-800 dark:text-neutral-200 leading-normal sm:leading-relaxed md:leading-tight tracking-[-0.015em]">
+            <p className="text-base sm:text-lg md:text-xl lg:text-[21px] font-normal text-neutral-700 dark:text-neutral-300 leading-normal sm:leading-relaxed md:leading-tight tracking-[-0.015em]">
               {project.description}
             </p>
-
-            {/* Technology Icons in Consistent Circular Containers (No "Tech Stack" heading) */}
-            {project.techstack && project.techstack.length > 0 && (
-              <div className="mt-8 sm:mt-10 md:mt-12 flex flex-wrap items-center gap-3">
-                {project.techstack.map((tool) => (
-                  <div
-                    key={tool.name}
-                    title={tool.name}
-                    className="w-10 h-10 sm:w-11 sm:h-11   rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center bg-transparent text-neutral-700 dark:text-neutral-300 hover:border-neutral-400 dark:hover:border-neutral-600 hover:text-black dark:hover:text-white transition-colors duration-200"
-                  >
-                    <span className="text-base sm:text-3xl flex p-2  items-center justify-center">
-                      {tool.icon}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
+
+          {/* Bottom: Technology Stack with Circular Line Icons on Black Background (Icons only, no names) */}
+          {project.techstack && project.techstack.length > 0 && (
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 min-h-[40px]">
+              {project.techstack.map((tool) => (
+                <div
+                  key={tool.name}
+                  title={tool.name}
+                  aria-label={tool.name}
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-black text-white border border-neutral-800 flex items-center justify-center shadow-sm transition-transform duration-200 ease-out hover:scale-110 hover:border-neutral-600 select-none group/icon cursor-default"
+                >
+                  <span className="text-white flex items-center justify-center transition-transform duration-200 group-hover/icon:scale-105">
+                    {renderLineIcon(tool.name, tool.icon, 20)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </motion.div>
 
       </div>
@@ -289,10 +373,10 @@ const Project = () => {
         {/* ===================================================================
             SECTION HEADER: MINIMAL & EDITORIAL
            =================================================================== */}
-        <header className="w-full  sm:mb-24 md:mb-28 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-neutral-200/60 dark:border-neutral-800/60">
+        <header className="w-full max-w-[1350px] mx-auto rounded-2xl sm:mb-24 md:mb-28 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-neutral-200/60 dark:border-neutral-800/60">
           <div>
             
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-[-0.035em] text-neutral-950 dark:text-white leading-[1.05]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.035em] text-neutral-950 dark:text-white leading-[1.05]">
               Proof of Work
             </h2>
           </div>
@@ -305,7 +389,7 @@ const Project = () => {
         {/* ===================================================================
             ALTERNATING EDITORIAL PROJECTS LIST
            =================================================================== */}
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col  sm:gap-[100px]">
           {projectsList.map((project, index) => (
             <ProjectRow
               key={project.id}
