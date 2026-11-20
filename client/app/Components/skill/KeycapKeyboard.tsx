@@ -647,7 +647,7 @@ interface KeyEntity {
   velocity: number;
   isPressed: boolean;
   isHovered: boolean;
-  materials: THREE.MeshStandardMaterial[];
+  materials: THREE.Material[];
 }
 
 export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
@@ -708,6 +708,7 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
+    renderer.debug.checkShaderErrors = false;
     container.appendChild(renderer.domElement);
 
     // Studio Lighting
@@ -732,10 +733,9 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
 
     // Dark Switch Plate Base
     const plateGeom = new THREE.BoxGeometry(1, 0.35, 2.6);
-    const plateMat = new THREE.MeshStandardMaterial({
+    const plateMat = new THREE.MeshPhongMaterial({
       color: "#606060",
-      roughness: 0.8,
-      metalness: 0.65,
+      shininess: 30,
     });
     const plateMesh = new THREE.Mesh(plateGeom, plateMat);
     plateMesh.position.y = -0.32;
@@ -865,7 +865,14 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
         }
       });
 
-      renderer.render(scene, camera);
+      try {
+        renderer.render(scene, camera);
+      } catch (err) {
+        console.warn("CategoryKeysCanvas render error, falling back to 3D CSS:", err);
+        setUseFallback(true);
+        cancelAnimationFrame(animId);
+        return;
+      }
     };
 
     animate();
@@ -918,16 +925,14 @@ export const CategoryKeysCanvas: React.FC<CategoryKeysCanvasProps> = ({
       const posX = (i - (keyCount - 1) / 2) * spacing;
       const topTexture = getOrCreateKeycapTexture(tech);
 
-      const sideMat = new THREE.MeshStandardMaterial({
+      const sideMat = new THREE.MeshPhongMaterial({
         color: tech.color,
-        roughness: 0.26,
-        metalness: 0.04,
+        shininess: 30,
       });
 
-      const topMat = new THREE.MeshStandardMaterial({
+      const topMat = new THREE.MeshPhongMaterial({
         map: topTexture,
-        roughness: 0.2,
-        metalness: 0.04,
+        shininess: 45,
       });
 
       const materials = [sideMat, sideMat, topMat, sideMat, sideMat, sideMat];
@@ -1037,7 +1042,7 @@ interface HeroIconCanvasProps {
 export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const meshRef = useRef<THREE.Mesh | null>(null);
-  const materialsRef = useRef<THREE.MeshStandardMaterial[]>([]);
+  const materialsRef = useRef<THREE.MeshPhongMaterial[]>([]);
   const isVisibleRef = useRef(true);
   const bounceScaleRef = useRef(1);
   const [useFallback, setUseFallback] = useState(false);
@@ -1084,6 +1089,7 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
+    renderer.debug.checkShaderErrors = false;
     container.appendChild(renderer.domElement);
 
     // Studio Lighting
@@ -1106,16 +1112,14 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
     const geom = getHeroKeycapGeometry();
     const topTexture = getOrCreateKeycapTexture(techRef.current);
 
-    const sideMat = new THREE.MeshStandardMaterial({
+    const sideMat = new THREE.MeshPhongMaterial({
       color: techRef.current.color,
-      roughness: 0.24,
-      metalness: 0.04,
+      shininess: 30,
     });
 
-    const topMat = new THREE.MeshStandardMaterial({
+    const topMat = new THREE.MeshPhongMaterial({
       map: topTexture,
-      roughness: 0.2,
-      metalness: 0.04,
+      shininess: 50,
     });
 
     const materials = [sideMat, sideMat, topMat, sideMat, sideMat, sideMat];
@@ -1176,7 +1180,14 @@ export const HeroIconCanvas: React.FC<HeroIconCanvasProps> = ({ tech }) => {
       const s = bounceScaleRef.current;
       keyMesh.scale.set(s, s, s);
 
-      renderer.render(scene, camera);
+      try {
+        renderer.render(scene, camera);
+      } catch (err) {
+        console.warn("CategoryKeysCanvas render error, falling back to 3D CSS:", err);
+        setUseFallback(true);
+        cancelAnimationFrame(animId);
+        return;
+      }
     };
 
     animate();
