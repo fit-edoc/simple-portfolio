@@ -5,35 +5,51 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  --font-geist-sans: var(--font-google-sans-code);
+  --font-geist-mono: var(--font-google-sans-code);
+  --font-heading: var(--font-google-sans-code);
+
+  /* Thermal Heat-map Palette */
+  --heat-0: #05060F;
+  --heat-1: #14163A;
+  --heat-2: #2A2552;
+  --heat-3: #4A3A63;
+  --heat-4: #7A4A2E;
+  --heat-5: #C8641E;
+  --heat-6: #FF8A1F;
+  --heat-7: #FFB02E;
+  --heat-8: #FFE9A8;
 }
-
-
-
-
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
-  --font-heading: var(--font-heading);
-  --font-geist: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-google-sans-code), monospace, sans-serif;
+  --font-mono: var(--font-google-sans-code), monospace;
+  --font-heading: var(--font-google-sans-code), monospace, sans-serif;
+  --font-geist: var(--font-google-sans-code), monospace, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-google-sans-code), monospace, sans-serif;
   overflow-x: hidden;
   position: relative;
 }
 
 .font-heading {
-  font-family: var(--font-heading), system-ui, sans-serif;
+  font-family: var(--font-google-sans-code), monospace, sans-serif;
+  font-weight: 600;
 }
 
 .font-geist {
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-google-sans-code), monospace, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-google-sans-code), monospace, sans-serif;
+  font-weight: 600;
 }
 
 /* Premium Grain/Noise Overlay */
@@ -125,6 +141,49 @@ body {
     clip-path: circle(150% at 50% 50%);
     transform: scale(1) rotate(0deg);
     filter: blur(0px);
+  }
+}
+
+/* Fluid Heat Map Gradient Animation */
+@keyframes heatFluidSpin {
+  0% {
+    transform: rotate(0deg) scale(1) translate(0%, 0%);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.18) translate(4%, -4%);
+  }
+  100% {
+    transform: rotate(360deg) scale(1) translate(0%, 0%);
+  }
+}
+
+@keyframes heatFluidPulse {
+  0% {
+    transform: scale(0.95) translate(-3%, 3%);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.22) translate(3%, -3%);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(0.95) translate(-3%, 3%);
+    opacity: 0.55;
+  }
+}
+
+.animate-heat-fluid-spin {
+  animation: heatFluidSpin 16s ease-in-out infinite alternate;
+}
+
+.animate-heat-fluid-pulse {
+  animation: heatFluidPulse 11s ease-in-out infinite alternate-reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-heat-fluid-spin,
+  .animate-heat-fluid-pulse {
+    animation: none;
   }
 }
 
