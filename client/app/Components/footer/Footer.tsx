@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 export const Footer = () => {
   return (
     <footer className="w-full pb-12 sm:pb-16 bg-transparent text-foreground relative font-geist">
-      <div className="max-w-6xl mx-auto px-6 border-x-[0.5px] border-black/10 dark:border-white/10">
+      <div className="max-w-7xl mx-auto px-6 border-x-[0.5px] border-black/10 dark:border-white/10">
         
         {/* Hairline Separator */}
         <div className="w-full border-t border-neutral-200/70 dark:border-neutral-800/70 pt-8 sm:pt-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
@@ -63,7 +63,7 @@ export const Footer = () => {
               rel="noopener noreferrer"
               className="text-neutral-800 hover:text-black dark:text-neutral-200 dark:hover:text-white underline underline-offset-4 decoration-dashed decoration-neutral-400 dark:decoration-neutral-600 transition-colors select-none"
             >
-              X / Twitter
+              X 
             </a>
             <a
               href="https://www.linkedin.com/in/himanshu-verma-6b4a94329/"
