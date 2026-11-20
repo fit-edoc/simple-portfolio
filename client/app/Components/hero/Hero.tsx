@@ -1,9 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
-import Dither from "../ui/Dither";
 import { PixelSocialIcons } from "./PixelSocialIcons";
+
+const Dither = dynamic(() => import("../ui/Dither"), {
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-[#05060F]" />,
+});
 
 // Curated high-aesthetic retro & cyber palette for dynamic Bayer dithering
 const DITHER_PALETTE = [
@@ -80,16 +85,13 @@ const Hero = () => {
       <div className="absolute top-0 left-0 w-full h-[32vh] sm:h-[42vh] md:h-[54vh] max-h-[500px] overflow-hidden select-none z-10 pointer-events-auto">
         <Dither
           pixelSize={3}
-          colorFront={ditherColor}
-          colorBack="#0a0a0a"
-          speed={0.1}
-          intensity={1}
-          repelRadius={120}
-          repelStrength={0.35}
+          speed={1.0}
+          intensity={1.0}
+          grain={0.03}
           className="w-full h-full"
         />
         {/* Smooth, opaque gradient fade into pure white so text area is crisp & legible */}
-        <div className="absolute bottom-0 left-0 right-0 h-28 sm:h-36 md:h-44 w-full bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none" />
+
       </div>
 
       {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
@@ -113,7 +115,7 @@ const Hero = () => {
 
               {/* Capitalized Name in Geist Font - Tight Leading */}
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-neutral-950 leading-[1.05] sm:leading-[0.95] text-left">
-                I Am{" "}
+                I 'm{" "}
                 <span className="font-normal text-black border-dashed border-b border-neutral-300 sm:border-none pb-0.5 sm:pb-0">
                   Himanshu Verma
                 </span>
@@ -196,7 +198,7 @@ const Hero = () => {
                     </AnimatePresence>
                   </span>
 
-                  <span>&nbsp;{timeData.period}&nbsp;IST</span>
+              
                 </span>
               ) : (
                 <span>IST</span>
