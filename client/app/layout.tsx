@@ -1,24 +1,13 @@
 import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
 
-import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import type { Metadata } from 'next';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const youngSerif = localFont({
-  src: '../public/ok.ttf',
-  variable: '--font-heading',
-  weight: '400',
+const googleSansCode = localFont({
+  src: "../public/fonts/GoogleSansCode-Variable.ttf",
+  variable: "--font-google-sans-code",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -100,7 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} ${youngSerif.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300 relative`}>
+      <body className={`${googleSansCode.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300 relative`}>
         {/* Grain overlay */}
         {/* <div className="grain-overlay pointer-events-none" /> */}
 
