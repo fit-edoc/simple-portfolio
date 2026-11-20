@@ -84,19 +84,19 @@ const socialLinks: SocialItem[] = [
     id: "github",
     name: "GitHub",
     href: "https://github.com/fit-edoc",
-    icon: <PixelatedGithub className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6" />,
+    icon: <PixelatedGithub className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-8 md:h-8" />,
   },
   {
     id: "x",
-    name: "X / Twitter",
+    name: "X",
     href: "https://x.com/fitedocc",
-    icon: <PixelatedX className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6" />,
+    icon: <PixelatedX className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-8 md:h-8" />,
   },
   {
     id: "linkedin",
     name: "LinkedIn",
     href: "https://www.linkedin.com/in/himanshu-verma-6b4a94329/",
-    icon: <PixelatedLinkedin className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-6 md:h-6" />,
+    icon: <PixelatedLinkedin className="w-5 h-5 sm:w-5.5 sm:h-5.5 md:w-8 md:h-8" />,
   },
 ];
 
@@ -110,11 +110,11 @@ export const PixelSocialIcons: React.FC<{ className?: string }> = ({ className =
           <AnimatePresence>
             {hoveredId === item.id && (
               <motion.div
-                initial={{ opacity: 0, y: 6, scale: 0.9 }}
-                animate={{ opacity: 1, y: -6, scale: 1 }}
-                exit={{ opacity: 0, y: 4, scale: 0.9 }}
-                transition={{ duration: 0.15 }}
-                className="absolute bottom-full mb-2 px-2.5 py-1 bg-neutral-900 text-white text-[11px] font-mono tracking-wider whitespace-nowrap shadow-xl rounded-md pointer-events-none z-30"
+                initial={{ opacity: 0, y: 6, scale: 0.9  ,filter:"blur(10px)"}}
+                animate={{ opacity: 1, y: -6, scale: 1 ,filter:"blur(0px)"}}
+                exit={{ opacity: 0, y: 4, scale: 0.9, filter:"blur(10px)" }}
+                transition={{ duration: 0.15,ease:"linear" }}
+                className="absolute -bottom-11 mb-2 px-2.5 py-1 bg-neutral-900 text-white text-[11px] font-mono tracking-wider whitespace-nowrap shadow-xl rounded-md pointer-events-none z-30"
               >
                 {item.name}
               </motion.div>
@@ -128,7 +128,7 @@ export const PixelSocialIcons: React.FC<{ className?: string }> = ({ className =
             onMouseEnter={() => setHoveredId(item.id)}
             onMouseLeave={() => setHoveredId(null)}
             aria-label={item.name}
-            className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl bg-white border border-neutral-200/90 shadow-xs hover:shadow-md hover:border-neutral-300 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+            className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl bg-[#f5f5f3] shadow-xs hover:shadow-md hover:border-neutral-300 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
           >
             {item.icon}
           </a>

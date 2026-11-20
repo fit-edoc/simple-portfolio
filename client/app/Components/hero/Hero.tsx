@@ -52,7 +52,7 @@ const Hero = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const formatted = now.toLocaleTimeString("en-US", {
+      const formatter = new Intl.DateTimeFormat("en-US", {
         timeZone: "Asia/Kolkata",
         hour: "2-digit",
         minute: "2-digit",
@@ -60,18 +60,18 @@ const Hero = () => {
         hour12: true,
       });
 
-      const [timeStr, period] = formatted.split(" ");
-      if (timeStr) {
-        const [hh, mm, ss] = timeStr.split(":");
-        if (hh && mm && ss) {
-          setTimeData({
-            hoursMinutes: `${hh}:${mm}:`,
-            tensDigit: ss[0] || "0",
-            onesDigit: ss[1] || "0",
-            period: period || "",
-          });
-        }
-      }
+      const parts = formatter.formatToParts(now);
+      const hour = parts.find((p) => p.type === "hour")?.value || "12";
+      const minute = parts.find((p) => p.type === "minute")?.value || "00";
+      const second = parts.find((p) => p.type === "second")?.value || "00";
+      const dayPeriod = parts.find((p) => p.type === "dayPeriod")?.value?.toUpperCase() || "AM";
+
+      setTimeData({
+        hoursMinutes: `${hour}:${minute}:`,
+        tensDigit: second[0] || "0",
+        onesDigit: second[1] || "0",
+        period: dayPeriod,
+      });
     };
 
     updateTime();
@@ -82,7 +82,7 @@ const Hero = () => {
   return (
     <section className="w-full min-h-[100dvh] md:h-screen md:min-h-[640px] relative overflow-hidden bg-white text-black font-geist flex flex-col justify-end select-none">
       {/* 4x4 Bayer Ordered Dithering Hero Top with Spring-Physics Hover */}
-      <div className="absolute top-0 left-0 w-full h-[32vh] sm:h-[42vh] md:h-[54vh] max-h-[500px] overflow-hidden select-none z-10 pointer-events-auto">
+      <div className="absolute top-0 left-0 w-full h-[32vh] sm:h-[42vh] md:h-[45vh] max-h-[500px] overflow-hidden select-none z-10 pointer-events-auto">
         <Dither
           pixelSize={3}
           speed={1.0}
@@ -95,7 +95,7 @@ const Hero = () => {
       </div>
 
       {/* Main Layout Container - All Text & Controls Anchored in the Bottom */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 border-x-[0.5px] border-black/10 w-full relative z-20 flex flex-col justify-end pt-24 sm:pt-28 md:pt-4 pb-6 sm:pb-8 md:pb-12 pointer-events-none">
+      <div className="max-w-[1350px] mx-auto border-b border-black/15 rounded-2xl px-4 sm:px-6 md:px-8  w-full relative z-20 flex flex-col justify-end pt-24 sm:pt-28 md:pt-4 pb-6 sm:pb-8 md:pb-12 pointer-events-none">
         
         {/* Bottom Content Row: Left-Aligned Text + Bottom-Right Social Icons */}
         <div className="w-full flex flex-col md:flex-row md:items-end md:justify-between gap-4 sm:gap-6 md:gap-8 pointer-events-auto">
@@ -113,10 +113,10 @@ const Hero = () => {
                 Hello,
               </span>
 
-              {/* Capitalized Name in Geist Font - Tight Leading */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-[-0.035em] text-neutral-950 leading-[1.05] sm:leading-[0.95] text-left">
-                I 'm{" "}
-                <span className="font-normal text-black border-dashed border-b border-neutral-300 sm:border-none pb-0.5 sm:pb-0">
+              {/* Capitalized Name in Google Sans Code Font - Tight Leading */}
+              <h1 className="text-3xl sm:text-4xl md:text-5x font-thin lg:text-6xl  tracking-[-0.035em] text-neutral-950 leading-[1.05] sm:leading-[0.95] text-left">
+                I&apos;m{" "}
+                <span className="text-black/50 border-dashed border-b border-neutral-300 sm:border-none pb-0.5 sm:pb-0">
                   Himanshu Verma
                 </span>
               </h1>
@@ -129,7 +129,7 @@ const Hero = () => {
               transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="mt-2.5 sm:mt-3 md:mt-5 text-left w-full"
             >
-              <p className="text-[13px] sm:text-sm md:text-[15px] lg:text-[16.5px] font-normal text-neutral-700 leading-relaxed md:leading-[1.65] text-left tracking-normal max-w-full md:max-w-2xl lg:max-w-3xl break-words">
+              <p className="text-[13px] sm:text-sm md:text-[15px] lg:text-[14.5px] font-normal text-neutral-700 leading-relaxed md:leading-[1.65] text-left tracking-normal max-w-full md:max-w-2xl lg:max-w-5xl">
                 <span className="md:block">
                   Full Stack Engineer specializing in resilient web applications and AI-driven products.{" "}
                 </span>
@@ -198,7 +198,7 @@ const Hero = () => {
                     </AnimatePresence>
                   </span>
 
-              
+                  <span>&nbsp;{timeData.period}&nbsp;IST</span>
                 </span>
               ) : (
                 <span>IST</span>
