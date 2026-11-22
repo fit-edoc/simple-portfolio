@@ -109,14 +109,14 @@ const Hero = () => {
               className="flex flex-col items-start text-left w-full"
             >
               {/* Hello */}
-              <span className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white sm:text-neutral-600 tracking-tight block mb-0.5 sm:mb-1 text-left">
+              <span className="text-sm sm:text-base md:text-lg lg:text-xl font-medium sm:text-neutral-600 tracking-tight block mb-0.5 sm:mb-1 text-left">
                 Hello,
               </span>
 
               {/* Capitalized Name in Google Sans Code Font - Tight Leading */}
-              <h1 className="text-3xl sm:text-4xl md:text-5x font-thin lg:text-6xl  tracking-[-0.035em] text-white sm:text-neutral-950 leading-[1.05] sm:leading-[0.95] text-left">
+              <h1 className="text-3xl sm:text-4xl md:text-5x font-thin lg:text-6xl  tracking-[-0.035em] text-neutral-950 leading-[1.05] sm:leading-[0.95] text-left">
                 I&apos;m{" "}
-                <span className="text-white/50 sm:text-black/50 border-dashed border-b border-neutral-300 sm:border-none pb-0.5 sm:pb-0">
+                <span className="text-black/50 border-dashed border-b border-neutral-300 sm:border-none pb-0.5 sm:pb-0">
                   Himanshu Verma
                 </span>
               </h1>
