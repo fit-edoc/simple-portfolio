@@ -5,9 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
-  --font-geist-sans: var(--font-google-sans-code);
+  --font-geist-sans: var(--font-inter);
   --font-geist-mono: var(--font-google-sans-code);
-  --font-heading: var(--font-google-sans-code);
+  --font-heading: var(--font-inter);
 
   /* Thermal Heat-map Palette */
   --heat-0: #05060F;
@@ -24,31 +24,31 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-google-sans-code), monospace, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-google-sans-code), monospace;
-  --font-heading: var(--font-google-sans-code), monospace, sans-serif;
-  --font-geist: var(--font-google-sans-code), monospace, sans-serif;
+  --font-heading: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-geist: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-google-sans-code), monospace, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   position: relative;
 }
 
 .font-heading {
-  font-family: var(--font-google-sans-code), monospace, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-weight: 600;
 }
 
 .font-geist {
-  font-family: var(--font-google-sans-code), monospace, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-google-sans-code), monospace, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-weight: 600;
 }
 
@@ -69,25 +69,6 @@ h1, h2, h3, h4, h5, h6 {
 .dark .grain-overlay {
   opacity: 0.075;
 }
-
-/* Smooth Scrollbar Customization */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgb(86, 86, 86);
-  border-radius: 10px;
-  border: 4px solid var(--background);
-}
-
-/* ::-webkit-scrollbar-thumb:hover {
-  background: rgb(185, 56, 0);
-} */
 
 
 ::selection {
@@ -186,6 +167,142 @@ h1, h2, h3, h4, h5, h6 {
     animation: none;
   }
 }
+
+/* Puffy colorful tiles */
+.puffy {
+  box-shadow: 0 12px 22px -8px rgba(30, 20, 60, 0.45), inset 0 3px 0 rgba(255, 255, 255, 0.55), inset 0 -6px 12px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+}
+
+.puffy:hover,
+.puffy:focus-visible {
+  transform: translateY(-4px) scale(1.06);
+  outline: none;
+}
+
+/* Tech Stack Dash divider & row tile transitions */
+.dash {
+  height: 1px;
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 50%, transparent 0);
+  background-size: 6px 1px;
+}
+
+.row .tile {
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.row:hover .tile {
+  background: #000;
+  color: #fff;
+}
+
+/* Handwritten Signature */
+.font-signature {
+  font-family: 'Herr Von Muellerhoff', 'Alex Brush', 'Mrs Saint Delafield', cursive;
+}
+
+/* Smooth Right-to-Left Clip Mask Reveal (Zero Blur) */
+@keyframes signatureClipRTL {
+  0% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 0%);
+    opacity: 1;
+  }
+}
+
+.signature-clip-rtl {
+  animation: signatureClipRTL 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: clip-path;
+}
+
+/* Underline flourish drawing right-to-left with pathLength 0 to 1 */
+@keyframes pathLengthDrawRTL {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.path-length-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: pathLengthDrawRTL 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.2s;
+  will-change: stroke-dashoffset;
+}
+
+/* Vinyl Spin */
+@keyframes spinVinyl {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-vinyl {
+  animation: spinVinyl 3.2s linear infinite;
+}
+
+/* Crowd Grooving */
+@keyframes crowdBounce1 {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+@keyframes crowdBounce2 {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-4px) rotate(1.5deg); }
+}
+
+@keyframes crowdBounce3 {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  45% { transform: translateY(-6px) scaleY(1.04); }
+  65% { transform: translateY(0) scaleY(0.96); }
+}
+
+.crowd-bounce-1 {
+  animation: crowdBounce1 0.72s ease-in-out infinite;
+}
+
+.crowd-bounce-2 {
+  animation: crowdBounce2 0.8s ease-in-out infinite;
+}
+
+.crowd-bounce-3 {
+  animation: crowdBounce3 0.65s ease-in-out infinite;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .signature-clip-rtl,
+  .path-length-draw,
+  .ink-draw,
+  .spin-vinyl,
+  .crowd-bounce-1,
+  .crowd-bounce-2,
+  .crowd-bounce-3 {
+    animation: none !important;
+  }
+}
+
+
+
+
 
 
 

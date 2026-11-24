@@ -1,8 +1,25 @@
 import SmoothScroll from "./Components/common/SmoothScroll";
 import "./globals.css";
 
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import type { Metadata } from 'next';
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  fallback: [
+    "system-ui",
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+  ],
+});
 
 const googleSansCode = localFont({
   src: "../public/fonts/GoogleSansCode-Variable.ttf",
@@ -70,6 +87,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Herr+Von+Muellerhoff&family=Mrs+Saint+Delafield&display=swap"
+          rel="stylesheet"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -89,7 +112,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${googleSansCode.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300 relative`}>
+      <body className={`${inter.variable} ${googleSansCode.variable} font-sans antialiased min-h-screen bg-background text-foreground transition-colors duration-300 relative`}>
         {/* Grain overlay */}
         {/* <div className="grain-overlay pointer-events-none" /> */}
 
