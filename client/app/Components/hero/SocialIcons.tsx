@@ -67,7 +67,7 @@ export const SocialIcons: React.FC = () => {
       {SOCIAL_ITEMS.map((item) => (
         <a
           key={item.name}
-          className="puffy grid place-items-center w-14 h-14 md:w-16 md:h-16 rounded-3xl text-white select-none"
+          className="puffy grid place-items-center w-14 h-14 md:w-12 md:h-12 rounded-2xl text-white select-none"
           style={{ background: item.bg }}
           href={item.href}
           target="_blank"

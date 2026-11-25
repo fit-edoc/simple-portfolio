@@ -25,15 +25,19 @@ export const OilScene: React.FC = () => {
     let H = 0;
     let dpr = 1;
     let u = 1;
+    let isMobile = false;
     let bg: HTMLCanvasElement | null = null;
     let bands: HTMLCanvasElement[] = [];
     let ov: HTMLCanvasElement[] = [];
     let boil = 0;
     let last = 0;
     let animId: number | null = null;
-    let isVisible = true;
+    let isIntersecting = true;
+    let isDocumentVisible = !document.hidden;
     let isMounted = true;
     let rz: ReturnType<typeof setTimeout> | undefined;
+    let prevW = 0;
+    let prevH = 0;
 
     const mk = (w: number, h: number): [HTMLCanvasElement, CanvasRenderingContext2D] => {
       const c = document.createElement("canvas");
@@ -119,7 +123,8 @@ export const OilScene: React.FC = () => {
       stops: string[],
       hatch: string[],
       seed: number,
-      den: number
+      den: number,
+      maxStrokes: number
     ) {
       const yMin = Math.min(...poly.map((p) => p[1]));
       const g = c.createLinearGradient(0, yMin, 0, H);
@@ -135,14 +140,14 @@ export const OilScene: React.FC = () => {
       c.clip();
       c.lineCap = "round";
       const r = rng(seed);
-      const n = Math.min(7000, Math.floor((W * (H - yMin) * den) / (u * u)));
+      const n = Math.min(maxStrokes, Math.floor((W * (H - yMin) * den) / (u * u)));
       for (let i = 0; i < n; i++) {
         const x = r() * W;
         const y = yMin + r() * (H - yMin);
-        const dx = (10 + r() * 16) * u;
+        const dx = (12 + r() * 18) * u;
         c.strokeStyle = hatch[(r() * hatch.length) | 0];
         c.globalAlpha = 0.3 + r() * 0.35;
-        c.lineWidth = (2 + r() * 2.5) * u;
+        c.lineWidth = (2.6 + r() * 3.2) * u;
         c.beginPath();
         c.moveTo(x, y);
         c.quadraticCurveTo(x + dx * 0.5, y - r() * 4 * u, x + dx, y - (r() * 7 - 2) * u);
@@ -153,19 +158,37 @@ export const OilScene: React.FC = () => {
 
     function build() {
       if (!cv) return;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      // Mobile check: screen width < 768px or touch device with screen width < 1024px
+      isMobile =
+        window.innerWidth < 768 ||
+        ("ontouchstart" in window && window.innerWidth < 1024) ||
+        (navigator.maxTouchPoints > 0 && window.innerWidth < 1024);
+
+      // Capped DPR: mobile strictly 1 to prevent memory exhaustion; desktop capped at 1.25
+      dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
+
       W = cv.clientWidth || cv.parentElement?.clientWidth || window.innerWidth;
       H = cv.clientHeight || cv.parentElement?.clientHeight || 450;
       if (W <= 0 || H <= 0) return;
 
-      cv.width = W * dpr;
-      cv.height = H * dpr;
+      prevW = W;
+      prevH = H;
+
+      cv.width = Math.ceil(W * dpr);
+      cv.height = Math.ceil(H * dpr);
       u = Math.min(H / 380, W / 620);
+
+      // Clean old offscreen canvas references before reallocating
+      bg = null;
+      bands = [];
+      ov = [];
 
       let c: CanvasRenderingContext2D;
       [bg, c] = mk(W, H);
       const r = rng(4);
 
+      // Sky gradient
       let g = c.createLinearGradient(0, 0, 0, H * 0.62);
       g.addColorStop(0, "#cfe0f5");
       g.addColorStop(0.55, "#ffe3c2");
@@ -173,18 +196,24 @@ export const OilScene: React.FC = () => {
       c.fillStyle = g;
       c.fillRect(0, 0, W, H);
 
+      // Sky daubs (optimized stroke count with broader brush)
+      const skyCount = isMobile
+        ? Math.min(320, Math.floor((W * H * 0.001) / (u * u)))
+        : Math.min(1100, Math.floor((W * H * 0.0022) / (u * u)));
+
       daub(
         c,
         r,
-        Math.min(5000, Math.floor((W * H * 0.0045) / (u * u))),
+        skyCount,
         0,
         H * 0.62,
         ["#cfe0f5", "#e3dff2", "#ffe9c9", "#ffd7a8", "#ffc79b"],
-        9 * u,
-        30 * u,
+        (isMobile ? 12 : 10) * u,
+        (isMobile ? 36 : 32) * u,
         0.55
       );
 
+      // Sun glow
       const radG = c.createRadialGradient(W * 0.8, H * 0.22, 0, W * 0.8, H * 0.22, H * 0.6);
       radG.addColorStop(0, "rgba(255,250,215,.95)");
       radG.addColorStop(1, "rgba(255,240,200,0)");
@@ -196,26 +225,32 @@ export const OilScene: React.FC = () => {
       c.arc(W * 0.8, H * 0.22, 22 * u, 0, 7);
       c.fill();
 
+      // Mountain ridge 1 (far purple peaks with snow flecks)
       const far = ridge(3, 0.55, 0.42, 7);
+      const farDen = isMobile ? 0.0012 : 0.0024;
+      const farMax = isMobile ? 550 : 1400;
       paint(
         c,
         far,
         ["#d3c8f1", "#a99ad3", "#8f86c6"],
         ["#ffffff", "#7f72b8", "#d9ccf4", "#b7a5e0"],
         11,
-        0.006
+        farDen,
+        farMax
       );
 
+      // Snow flecks on mountain peaks
       const rs = rng(31);
       c.lineCap = "round";
+      const snowCount = isMobile ? 16 : 35;
       far.forEach((p, i) => {
         if (i % 2) return;
-        for (let j = 0; j < 55; j++) {
+        for (let j = 0; j < snowCount; j++) {
           const dy = rs() * 26 * u;
           const dx = (rs() - 0.5) * dy * 1.4;
           c.strokeStyle = ["#fff", "#f4eeff", "#e6defa"][j % 3];
           c.globalAlpha = 0.85;
-          c.lineWidth = 3 * u;
+          c.lineWidth = 3.2 * u;
           c.beginPath();
           c.moveTo(p[0] + dx, p[1] + dy);
           c.lineTo(p[0] + dx + 6 * u, p[1] + dy - 1.5 * u);
@@ -224,22 +259,30 @@ export const OilScene: React.FC = () => {
         c.globalAlpha = 1;
       });
 
+      // Mountain ridge 2 (mid blue peaks)
+      const midDen = isMobile ? 0.0012 : 0.0024;
+      const midMax = isMobile ? 500 : 1300;
       paint(
         c,
         ridge(8, 0.6, 0.2, 9),
         ["#8fb6d8", "#6a9ccb", "#5b8fbf"],
         ["#dff3ff", "#4f7fb3", "#9cc6e6", "#6aa9c8"],
         12,
-        0.006
+        midDen,
+        midMax
       );
 
+      // Mountain ridge 3 (near green-yellow hills)
+      const nearDen = isMobile ? 0.0012 : 0.0024;
+      const nearMax = isMobile ? 450 : 1200;
       paint(
         c,
         ridge(12, 0.64, 0.07, 11),
         ["#cfd85a", "#9fc255", "#7fb056"],
         ["#fff3a0", "#6aa04c", "#d9e58a", "#4f9a55"],
         13,
-        0.006
+        nearDen,
+        nearMax
       );
 
       const pals = [
@@ -251,6 +294,10 @@ export const OilScene: React.FC = () => {
       const bases = ["#c8cf58", "#a4bb50", "#6fa24c", "#46905a"];
       const flow = ["#ff7aa8", "#ffffff", "#ffb347", "#9b8cff"];
 
+      // 4 rolling grass bands
+      const maxGrass = isMobile ? 750 : 1800;
+      const grassDivisor = isMobile ? 180 : 90;
+
       bands = TOPS.map((_, k) => {
         const [b, x] = mk(W + 2 * M, H);
         const rr = rng(100 + k);
@@ -258,14 +305,14 @@ export const OilScene: React.FC = () => {
         x.fillStyle = bases[k];
         x.beginPath();
         x.moveTo(0, H);
-        for (let px = -M; px <= W + M; px += 6) {
+        for (let px = -M; px <= W + M; px += isMobile ? 10 : 6) {
           x.lineTo(px + M, topY(k, px) + 4 * u);
         }
         x.lineTo(W + 2 * M, H);
         x.closePath();
         x.fill();
 
-        const n = Math.min(11000, Math.floor(((W + 2 * M) * vis * 2.4) / (58 * u * u)));
+        const n = Math.min(maxGrass, Math.floor(((W + 2 * M) * vis * 2.4) / (grassDivisor * u * u)));
         const st: [number, number, number, number, number][] = [];
         for (let i = 0; i < n; i++) {
           const px = -M + rr() * (W + 2 * M);
@@ -281,11 +328,11 @@ export const OilScene: React.FC = () => {
           if (ty < t - 3 * u) ty = t - b2 * 3 * u;
           const lean = L * 0.35 + (b2 - 0.5) * 7 * u;
           const pal = pals[k];
-          x.lineWidth = (2 + a * 2.2) * u;
+          x.lineWidth = (2.5 + a * 2.6) * u;
           x.strokeStyle =
             b2 > 0.94 && by - t > 6 * u ? flow[(a * 4) | 0] : pal[(b2 * pal.length * 0.999) | 0];
           if (b2 > 0.94 && by - t > 6 * u) {
-            x.lineWidth = 2.6 * u;
+            x.lineWidth = 2.8 * u;
             x.beginPath();
             x.moveTo(px + M, by - 4 * u);
             x.lineTo(px + M + 1.5 * u, by - 5 * u);
@@ -301,19 +348,24 @@ export const OilScene: React.FC = () => {
       });
 
       // Brush-texture overlays; cycling them gives the hand-painted "boil"
-      ov = [0, 1, 2].map((i) => {
+      // On mobile: 2 lightweight canvases; on desktop: 3 canvases
+      const ovCount = isMobile ? 2 : 3;
+      const ovMaxStrokes = isMobile ? 320 : 800;
+      const ovDivisor = isMobile ? 380 : 200;
+
+      ov = Array.from({ length: ovCount }, (_, i) => {
         const [o, x] = mk(W, H);
         const q = rng(500 + i);
         x.lineCap = "round";
-        for (let n = Math.min(5000, Math.floor((W * H) / (140 * u * u))); n--; ) {
+        for (let n = Math.min(ovMaxStrokes, Math.floor((W * H) / (ovDivisor * u * u))); n--; ) {
           const px = q() * W;
           const py = q() * H;
-          const L = (8 + q() * 16) * u;
+          const L = (9 + q() * 18) * u;
           x.strokeStyle =
             q() < 0.5
               ? `rgba(255,248,225,${0.05 + q() * 0.1})`
               : `rgba(60,40,70,${0.04 + q() * 0.07})`;
-          x.lineWidth = (2 + q() * 4) * u;
+          x.lineWidth = (2.6 + q() * 4.2) * u;
           x.beginPath();
           x.moveTo(px, py);
           x.quadraticCurveTo(
@@ -368,12 +420,13 @@ export const OilScene: React.FC = () => {
       ctx.clip();
       const r = rng(seed + boil * 7);
       ctx.lineCap = "round";
-      for (let i = 0; i < n; i++) {
+      const count = isMobile ? Math.max(3, Math.round(n * 0.55)) : n;
+      for (let i = 0; i < count; i++) {
         const x = bb[0] + r() * bb[2];
         const y = bb[1] + r() * bb[3];
         ctx.strokeStyle = tones[(r() * tones.length) | 0];
         ctx.globalAlpha = 0.5 + r() * 0.4;
-        ctx.lineWidth = 1.4 + r() * 2;
+        ctx.lineWidth = 1.6 + r() * 2.2;
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x + 2 + r() * 5, y + (r() - 0.5) * 3);
@@ -402,7 +455,7 @@ export const OilScene: React.FC = () => {
         [-8, -43, 16, 22],
         SW,
         ["#ff8f5c", "#c84f2c", "#f59a6a"],
-        26,
+        24,
         1
       );
       dab(() => ctx.arc(1, -52, 7.6, 0, 7), [-7, -60, 16, 16], SK, ["#ffd9b8", "#e0a77e"], 10, 2);
@@ -440,7 +493,7 @@ export const OilScene: React.FC = () => {
       ctx.stroke();
 
       const T = ["#3a3a56", "#262638", "#505078"];
-      dab(() => ctx.ellipse(0, -18, 16, 8.5, 0, 0, 7), [-16, -27, 32, 18], DOG, T, 18, 5);
+      dab(() => ctx.ellipse(0, -18, 16, 8.5, 0, 0, 7), [-16, -27, 32, 18], DOG, T, 16, 5);
       leg(9, 0);
       leg(13, 0.6);
       lim(13, -24, 17, -20, 2.8, "#ff4d6d");
@@ -670,23 +723,25 @@ export const OilScene: React.FC = () => {
 
     function frame(t: number) {
       if (!bg || ov.length === 0 || bands.length === 0) return;
-      boil = Math.floor(t * 5) % 3;
+
+      boil = Math.floor(t * 5) % ov.length;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
       ctx.drawImage(bg, 0, 0, W, H);
 
-      // Painted clouds + birds
+      // Painted clouds + birds (optimized strokes)
       ctx.lineCap = "round";
+      const cloudPuffs = isMobile ? 12 : 24;
       for (let i = 0; i < 3; i++) {
         const cx = ((t * 6 + i * W * 0.42) % (W * 1.3)) - W * 0.15;
         const cy = H * (0.07 + 0.07 * i);
         const q = rng(900 + i);
-        for (let j = 0; j < 30; j++) {
+        for (let j = 0; j < cloudPuffs; j++) {
           const dx = (q() - 0.5) * 90 * u;
           const dy = (q() - 0.5) * 20 * u - Math.abs(dx) * 0.12;
           ctx.strokeStyle = j % 3 ? "#fffaf0" : "#ffe9d2";
           ctx.globalAlpha = 0.6;
-          ctx.lineWidth = (5 + q() * 5) * u;
+          ctx.lineWidth = (6 + q() * 6) * u;
           ctx.beginPath();
           ctx.moveTo(cx + dx, cy + dy);
           ctx.lineTo(cx + dx + 14 * u, cy + dy + (q() - 0.5) * 3 * u);
@@ -717,10 +772,13 @@ export const OilScene: React.FC = () => {
       const ms = 1.55 * u;
       const ds = 1.5 * u;
 
+      // Band slicing: larger step on mobile to slash draw calls
+      const sliceStep = isMobile ? 8 : 5;
+
       bands.forEach((b, k) => {
         const y0 = Math.max(0, Math.floor(TOPS[k] * H - 30 * u));
-        for (let y = y0; y < H; y += 4) {
-          const h = Math.min(4, H - y);
+        for (let y = y0; y < H; y += sliceStep) {
+          const h = Math.min(sliceStep, H - y);
           const sx = Math.sin(t * 1.3 + y * 0.045 + k) * (1.2 + k * 0.5) * u;
           ctx.drawImage(b, 0, y * dpr, b.width, h * dpr, -M + sx, y, W + 2 * M, h);
         }
@@ -741,51 +799,99 @@ export const OilScene: React.FC = () => {
       }
     }
 
+    // Adaptive frame throttling: ~18 FPS mobile, ~24 FPS desktop
+    // Produces the ideal stop-motion painterly boil while saving 60-70% CPU/GPU
     function loop(ms: number) {
       if (!isMounted) return;
-      if (isVisible && !reduce) {
-        if (ms - last > 33) {
-          last = ms;
-          frame(ms / 1000);
-        }
+
+      const shouldAnimate = isIntersecting && isDocumentVisible && !reduce;
+      if (!shouldAnimate) {
+        animId = null;
+        return; // Halt RAF completely when offscreen or in background tab
       }
+
+      const frameInterval = isMobile ? 55 : 41; // ms between frames
+      if (ms - last >= frameInterval) {
+        last = ms - ((ms - last) % frameInterval);
+        frame(ms / 1000);
+      }
+
       animId = requestAnimationFrame(loop);
+    }
+
+    function resumeAnimation() {
+      if (animId === null && isIntersecting && isDocumentVisible && !reduce && isMounted) {
+        last = performance.now();
+        animId = requestAnimationFrame(loop);
+      }
+    }
+
+    function pauseAnimation() {
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
     }
 
     function start() {
       build();
       frame(reduce ? 2.6 : 1);
+      resumeAnimation();
     }
 
+    // Initial build and paint
     start();
 
+    // Debounced resize handler that ignores mobile vertical address bar collapsing
     const handleResize = () => {
       clearTimeout(rz);
-      rz = setTimeout(start, 150);
+      rz = setTimeout(() => {
+        if (!cv || !isMounted) return;
+        const newW = cv.clientWidth || cv.parentElement?.clientWidth || window.innerWidth;
+        const newH = cv.clientHeight || cv.parentElement?.clientHeight || 450;
+        // Ignore tiny height changes caused by mobile address bar show/hide
+        if (Math.abs(newW - prevW) > 25 || Math.abs(newH - prevH) > 130) {
+          start();
+        }
+      }, 200);
     };
     window.addEventListener("resize", handleResize);
 
+    // Pause when scrolled out of view; resume instantly when entering viewport
     const observer = new IntersectionObserver(([entry]) => {
-      isVisible = entry.isIntersecting;
-    });
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting) {
+        resumeAnimation();
+      } else {
+        pauseAnimation();
+      }
+    }, { threshold: 0.05 });
+
     observer.observe(cv);
 
+    // Pause when browser tab is inactive / hidden
     const handleVisibility = () => {
-      isVisible = !document.hidden;
+      isDocumentVisible = !document.hidden;
+      if (isDocumentVisible) {
+        resumeAnimation();
+      } else {
+        pauseAnimation();
+      }
     };
     document.addEventListener("visibilitychange", handleVisibility);
 
-    if (!reduce) {
-      animId = requestAnimationFrame(loop);
-    }
-
     return () => {
       isMounted = false;
-      if (animId !== null) cancelAnimationFrame(animId);
+      pauseAnimation();
       clearTimeout(rz);
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("visibilitychange", handleVisibility);
       observer.disconnect();
+
+      // Free canvas references
+      bg = null;
+      bands = [];
+      ov = [];
     };
   }, []);
 

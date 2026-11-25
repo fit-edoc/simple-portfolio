@@ -88,9 +88,7 @@ export const ShippedProducts: React.FC = () => {
           className="text-lg md:text-xl font-semibold tracking-tight text-black"
         >
           Products I've shipped
-          <span className="text-black/35 font-normal ml-2 select-none">
-            {SHIPPED_PRODUCTS.length}
-          </span>
+          
         </h2>
 
         {/* Product List */}
@@ -116,7 +114,7 @@ export const ShippedProducts: React.FC = () => {
                 {/* Right: Details */}
                 <div className="flex-1 min-w-0">
                   {/* Name with ↗ arrow */}
-                  <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-black inline-flex items-center gap-1.5">
+                  <h3 className="text-2xl  font-semibold tracking-tight text-black inline-flex items-center gap-1.5">
                     <span>{product.name}</span>
                     <span
                       className="inline-block transition-all duration-300 ease-out opacity-0 -translate-x-1 translate-y-1 text-black group-hover/item:opacity-100 group-hover/item:translate-x-0 group-hover/item:translate-y-0 motion-reduce:translate-x-0 motion-reduce:translate-y-0 motion-reduce:transition-none select-none"
