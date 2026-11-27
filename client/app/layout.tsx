@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     type: "website",
       images: [
     {
-      url: "/portfolio.png",
+      url: "/favicon.jpg",
       width: 1200,
       height: 630,
       alt: "Himanshu Docs - Full Stack Developer Portfolio",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/profile.png",
+    icon: "/favicon.jpg",
   },
 };
 
