@@ -76,7 +76,7 @@ const ProductRow: React.FC<{ product: Product; index: number }> = ({
   product,
   index,
 }) => {
-  const rowRef = useRef<HTMLAnchorElement | null>(null);
+  const rowRef = useRef<HTMLDivElement | null>(null);
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
@@ -209,7 +209,6 @@ const ProductRow: React.FC<{ product: Product; index: number }> = ({
         </Link>
       </div>
     </div>
-  );
   );
 };
 
