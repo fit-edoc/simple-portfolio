@@ -1,135 +1,75 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Intro } from "./Intro";
-import { SocialIcons } from "./SocialIcons";
-
-const OilScene = dynamic(() => import("./OilScene"), {
-  ssr: false,
-  loading: () => (
-    <div
-      className="absolute inset-0 w-full h-full bg-gradient-to-b from-[#cfe0f5] via-[#ffe3c2] to-[#8fb84f]"
-      aria-hidden="true"
-    />
-  ),
-});
-
-/**
- * Rolling second counter that animates only the right digit from bottom to top
- */
-const SecondCounter: React.FC<{ second: string }> = ({ second }) => {
-  const shouldReduceMotion = useReducedMotion();
-
-  if (shouldReduceMotion || second === "--" || second.length < 2) {
-    return <span className="tabular-nums font-semibold text-black">{second}</span>;
-  }
-
-  const tens = second[0];
-  const ones = second[1];
-
-  return (
-    <span className="inline-flex items-center tabular-nums font-semibold text-black">
-      {/* Left digit: static */}
-      <span>{tens}</span>
-
-      {/* Right digit: counter rolling from bottom to top */}
-      <span className="relative inline-flex items-center justify-center overflow-hidden h-[1.3em] w-[1ch] align-baseline">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={ones}
-            initial={{ y: "100%", opacity: 0 }}
-            animate={{ y: "0%", opacity: 1 }}
-            exit={{ y: "-100%", opacity: 0 }}
-            transition={{
-              duration: 0.3,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="inline-block tabular-nums font-semibold text-black"
-          >
-            {ones}
-          </motion.span>
-        </AnimatePresence>
-      </span>
-    </span>
-  );
-};
-
-interface TimeState {
-  hour: string;
-  minute: string;
-  second: string;
-  period: string;
-}
+import BannerCanvas from "./BannerCanvas";
+import PixelSocialIcons from "./PixelSocialIcons";
+import ThemeToggle from "../common/ThemeToggle";
 
 export const Hero: React.FC = () => {
-  const [timeState, setTimeState] = useState<TimeState>({
-    hour: "--",
-    minute: "--",
-    second: "--",
-    period: "",
-  });
+  const [clockText, setClockText] = useState("India · --");
 
   useEffect(() => {
-    const formatter = new Intl.DateTimeFormat("en-US", {
-      timeZone: "Asia/Kolkata",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-    });
-
-    const tick = () => {
-      const parts = formatter.formatToParts(new Date());
-      let h = "--";
-      let m = "--";
-      let s = "--";
-      let p = "";
-
-      for (const part of parts) {
-        if (part.type === "hour") h = part.value;
-        if (part.type === "minute") m = part.value;
-        if (part.type === "second") s = part.value;
-        if (part.type === "dayPeriod") p = part.value.toLowerCase();
+    function tick() {
+      try {
+        const t = new Date().toLocaleTimeString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        });
+        setClockText("India · " + t.replace(/\s/g, "").toLowerCase());
+      } catch (e) {
+        // Fallback
       }
-
-      setTimeState({ hour: h, minute: m, second: s, period: p });
-    };
-
+    }
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <main className="md:h-screen md:grid md:grid-rows-2 font-sans">
-      {/* Top half: animated oil painting illustration */}
-      <section className="relative h-[55vh] md:h-auto bg-amber-100 overflow-hidden">
-        <OilScene />
-      </section>
+    <div>
+      {/* Top Banner with Interactive Pixel Dither Halftone Wave Canvas */}
+      <BannerCanvas />
 
-      {/* Bottom half: white background, black text, intro & timezone/socials */}
-      <section className="bg-white text-black px-6 py-8 md:px-12 md:py-10 flex flex-col md:flex-row md:justify-between items-end gap-10">
-        <Intro />
-        <div className="flex flex-col items-start md:items-end gap-8 md:justify-between">
-          {/* Timezone and right digit rolling counter */}
-          <div className="flex items-center text-sm text-black/50 tabular-nums">
-            <p className="flex items-center gap-0.5">
-              <span>India · </span>
-              <span id="time" className="inline-flex items-center">
-                <span>{timeState.hour}:{timeState.minute}:</span>
-                <SecondCounter second={timeState.second} />
-                {timeState.period && <span className="ml-1">{timeState.period}</span>}
+      {/* Main Hero / Bio Section */}
+      <main className="flex justify-between gap-10 flex-wrap px-[8%] pt-[clamp(40px,7vw,100px)] pb-[clamp(56px,7vw,96px)]">
+        <div className="flex flex-col justify-between items-start gap-8 max-w-[600px] min-h-0 min-[701px]:min-h-[280px]">
+          {/* Light / Dark Theme Toggle on the Left */}
+          <ThemeToggle />
+
+          {/* 8 Lines Introduction with matched width on every line */}
+          <div className="w-full max-w-[620px] text-[clamp(13px,2.4vw,23px)] leading-[1.6] m-0 select-text">
+            {[
+              <>Hey, I am <b className="font-normal" style={{ color: "var(--link)" }}>Himanshu Verma</b>, a full stack engineer.</>,
+              <>I build web products end to end, from the first</>,
+              <>database table to the last pixel on the screen.</>,
+              <>I enjoy turning vague ideas into fast, reliable</>,
+              <>software, whether that means designing APIs and</>,
+              <>shaping clean data models or crafting intuitive</>,
+              <>interfaces which people love using each day. I</>,
+              <>care deeply about the small details and shipping.</>,
+            ].map((line, idx) => (
+              <span
+                key={idx}
+                className="block w-full [text-align-last:justify] [text-justify:inter-word]"
+              >
+                {line}
               </span>
-            </p>
+            ))}
           </div>
-          <SocialIcons />
         </div>
-      </section>
-    </main>
+
+        <div className="flex flex-col justify-between items-start min-[701px]:items-end gap-[60px] min-h-0 min-[701px]:min-h-[280px]">
+          <p className="text-xs m-0" style={{ color: "var(--mut)" }}>
+            {clockText}
+          </p>
+          <PixelSocialIcons />
+        </div>
+      </main>
+    </div>
   );
 };
 
 export default Hero;
-
